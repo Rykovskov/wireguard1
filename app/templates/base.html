@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/bootstrap.min.css') }}">
+    {% if title %}
+    <title>{{title}} - Система управления пользователями WireGuard</title>
+    {% else %}
+    <title>Система управления пользователями WireGuard</title>
+    {% endif %}
+  </head>
+  <body>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </body>
+</html>
