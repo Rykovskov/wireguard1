@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session
 from flask_login import login_required, login_user, current_user, logout_user
 from .models import Users, db
-from .forms import LoginForm
+from .forms import LoginForm, CreateAdminUserForm
 
 
 @app.route('/')
@@ -26,11 +26,33 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route('/admin/')
+@app.route('/admin/', methods=['post', 'get'])
 @login_required
 def admin():
-     return render_template('admin.html')
+    form = CreateAdminUserForm()
+    res = Users.query.order_by(Users.name_users).all()
 
+    if form.validate_on_submit():
+        print(form.login.data)
+        if form.login.data != '':
+            print('1111111111111')
+            #Проверяем нет ли такого пользователя уже в базе
+            q1 = len(Users.query.filter_by(name_users = form.login.data).all())
+            print('Col user - ', q1)
+            if q1 == 0:
+                print(form.Password.data)
+                print(form.Confirm_Password.data)
+                if form.Password.data == form.Confirm_Password.data:
+                    print('password confirm')
+                    #Создаем пользователя
+                    new_user = Users(name_users=form.login.data)
+                    new_user.set_password(form.Password.data)
+                    db.session.add_all([new_user,])
+                    db.session.commit()
+                    print('Crete user complete')
+                    res = Users.query.order_by(Users.name_users).all()
+                    return render_template('admin.html', form=form, cur_user=current_user.name_users, sp_users=res)
+    return render_template('admin.html', form=form, cur_user=current_user.name_users, sp_users=res)
 
 @app.route('/logout/')
 @login_required

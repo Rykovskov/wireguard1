@@ -1,10 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <meta charset="UTF-8">
+        <title>Current user {{cur_user}}</title>
+    </head>
+    <form action="" method="post" name="login">
+        {{form.hidden_tag()}}
+        <DIV class="container">
+            <body>
+                <H2 align="center">Current user - {{cur_user}}</H2>
+                <p>
+                <table class="table table-bordered">
+                    <tr>
+                        <td></td><Td><b>ID</b></Td><td><b>Login</b></Td>
+                    </tr>
+                    {% for u in sp_users %}
+                        <tr>
+                            <td><input type="checkbox" name="{{ u.id_users }}"></td><td>{{u.id_users}}</td><td>{{u.name_users}}</td>
+                        <tr>
+                    {% endfor %}
+                </table>
+                <DIV align='right'>
 
-</body>
-</html>
+                    <p>Please enter new user login: {{form.login(size=20)}}</p>
+                    <p>Please enter your password: {{form.Password(size=20)}}</p>
+                    <p>Please enter confirm password: {{form.Confirm_Password(size=20)}}</p>
+                    <p><input type="submit" value="Create user" placeholder="Create new user"></p>
+                    <p><input type="submit" value="Delete selected user" placeholder="Remove selected users"></p>
+                </DIV>
+            </body>
+        </DIV>
+    </form>
+{% endblock %}

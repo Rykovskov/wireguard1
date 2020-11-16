@@ -9,6 +9,8 @@ class LoginForm(FlaskForm):
     remember = BooleanField("Remember Me")
     submit = SubmitField()
 
-class CreateAdminUserForm(Form):
+class CreateAdminUserForm(FlaskForm):
     login = StringField('login', validators = [DataRequired()])
     Password = StringField('Password', validators=[DataRequired()])
+    Confirm_Password = StringField('Confirm_Password', validators=[DataRequired()])
+    submit = SubmitField()
