@@ -52,6 +52,12 @@ def admin():
                     print('Crete user complete')
                     res = Users.query.order_by(Users.name_users).all()
                     return render_template('admin.html', form=form, cur_user=current_user.name_users, sp_users=res)
+                else:
+                    flash("Passowrd do not match", 'error')
+                    return redirect(url_for('admin'))
+            else:
+                flash("User exist", 'error')
+                return redirect(url_for('admin'))
     return render_template('admin.html', form=form, cur_user=current_user.name_users, sp_users=res)
 
 @app.route('/logout/')

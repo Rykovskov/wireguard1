@@ -2,7 +2,9 @@
 {% extends "base.html" %}
 {% block content %}
     <head>
-        <meta charset="UTF-8">
+         {% if error %}
+            <p class=error><strong>Error:{{ error }}</strong>
+         {% endif %}
         <title>Current user {{cur_user}}</title>
     </head>
     <form action="" method="post" name="login">
@@ -13,11 +15,11 @@
                 <p>
                 <table class="table table-bordered">
                     <tr>
-                        <td></td><Td><b>ID</b></Td><td><b>Login</b></Td>
+                        <td></td><Td align="center"><b>ID</b></Td><td align="center"><b>Login</b></Td>
                     </tr>
                     {% for u in sp_users %}
                         <tr>
-                            <td><input type="checkbox" name="{{ u.id_users }}"></td><td>{{u.id_users}}</td><td>{{u.name_users}}</td>
+                            <td width="10"><input type="checkbox" name="{{ u.id_users }}"></td><td>{{u.id_users}}</td><td>{{u.name_users}}</td>
                         <tr>
                     {% endfor %}
                 </table>
