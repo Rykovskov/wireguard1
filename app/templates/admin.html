@@ -2,33 +2,32 @@
 {% extends "base.html" %}
 {% block content %}
     <head>
-         {% if error %}
-            <p class=error><strong>Error:{{ error }}</strong>
-         {% endif %}
         <title>Current user {{cur_user}}</title>
     </head>
-    <form action="" method="post" name="login">
+    <form action="" method="post" name="UserList">
         {{form.hidden_tag()}}
         <DIV class="container">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <p>
                 <table class="table table-bordered">
-                    <tr>
-                        <td></td><Td align="center"><b>ID</b></Td><td align="center"><b>Login</b></Td>
-                    </tr>
-                    {% for u in sp_users %}
+                <tr>
+                    <Td align="center"><b>ID</b></Td><td align="center"><b>Login</b></Td><td align="center"><b>Selected</b></Td>
+                </tr>
+                    {% for merit in form.user_list %}
                         <tr>
-                            <td width="10"><input type="checkbox" name="{{ u.id_users }}"></td><td>{{u.id_users}}</td><td>{{u.name_users}}</td>
-                        <tr>
+                            <td>{{ merit.id_user.data }}</td>
+                            <td>{{ merit.name_user.data }}</td>
+                            <td>{{ merit.select_user }}</td>
+                        </tr>
                     {% endfor %}
                 </table>
                 <DIV align='right'>
-
-                    <p>Please enter new user login: {{form.login(size=20)}}</p>
-                    <p>Please enter your password: {{form.Password(size=20)}}</p>
-                    <p>Please enter confirm password: {{form.Confirm_Password(size=20)}}</p>
-                    <p><input type="submit" value="Create user" placeholder="Create new user"></p>
+                    <p>New user login: {{ form.new_login() }}</p>
+                    <p>Password: {{ form.new_pass() }}</p>
+                    <p>Confirm password: {{ form.new_confirm_pass() }}</p>
+                    <p>{{ form.new_user() }}</p>
+                    <p>{{ form.delete_user() }}</p>
                     <p><input type="submit" value="Delete selected user" placeholder="Remove selected users"></p>
                 </DIV>
             </body>
