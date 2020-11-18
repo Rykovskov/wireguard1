@@ -33,10 +33,15 @@ def admin():
     res = Users.query.order_by(Users.name_users).all()
     init_merits = [dict(id_user=s.id_users, name_user=s.name_users, select_user='') for s in res]
     useradminform = CreateAdminUserForm(user_list=init_merits)
-    print(init_merits)
-    if useradminform.validate_on_submit():
-        print("OK")
-        print(useradminform.data['user_list'])
+    if request.method == 'POST':
+        result = request.form
+        d = useradminform.data['user_list'][1]
+        print(useradminform.new_pass.data)
+        print(useradminform.new_login.data)
+        print(result.listvalues())
+        for u in d:
+            print(u)
+
     return render_template('admin.html', form=useradminform, cur_user=current_user.name_users, sp_users=res)
 
 
