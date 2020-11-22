@@ -35,13 +35,38 @@ def admin():
     useradminform = CreateAdminUserForm(user_list=init_merits)
     if request.method == 'POST':
         result = request.form
-        d = useradminform.data['user_list'][1]
-        print(useradminform.new_pass.data)
-        print(useradminform.new_login.data)
-        print(result.listvalues())
-        for u in d:
-            print(u)
-
+        print(result)
+        if useradminform.delete_user.data:
+            print(useradminform.delete_user.data)
+            print('Удаляем выделенных пользователей')
+            for u in res:
+                if result.get(u.name_users) == 'on':
+                    del_user = Users.query.filter_by(id_users=u.id_users).first()
+                    db.session.delete(del_user)
+                    db.session.commit()
+        if useradminform.new_user.data:
+            if (useradminform.new_login.data != '') and (useradminform.new_pass.data != ''):
+                #Проверяем нет ли такого пользователя уже в базе
+                q1 = len(Users.query.filter_by(name_users = useradminform.new_login.data).all())
+                if q1 == 0:
+                    if useradminform.new_pass.data == useradminform.new_confirm_pass.data:
+                        print('password confirm')
+                        #Создаем пользователя
+                        new_user = Users(name_users=useradminform.new_login.data)
+                        new_user.set_password(useradminform.new_pass.data)
+                        db.session.add_all([new_user,])
+                        db.session.commit()
+                        print('Crete user complete')
+                    else:
+                        flash("Пароли не совпадают!!!", 'error')
+                        return redirect(url_for('admin'))
+                else:
+                    flash("Пользователь уже существует!!!", 'error')
+                    return redirect(url_for('admin'))
+            else:
+                flash("Не заполнен логин или пароль!!!", 'error')
+                return redirect(url_for('admin'))
+        res = Users.query.order_by(Users.name_users).all()
     return render_template('admin.html', form=useradminform, cur_user=current_user.name_users, sp_users=res)
 
 

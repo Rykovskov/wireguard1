@@ -1,0 +1,40 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Current user {{cur_user}}</title>
+    </head>
+    <form action="" method="post" name="VpnUserList">
+        {{form.hidden_tag()}}
+        <DIV class="container">
+            <body>
+                <H2 align="center">Current user - {{cur_user}}</H2>
+                <table>
+                    <td>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td></td><Td><b>ID</b></Td><td><b>Login</b></Td>
+                            </tr>
+                            {% for u in sp_vpn_users %}
+                            <tr>
+                            <td><input type="checkbox" name="{{ u.name_vpn_users }}"></td><td>{{u.name_vpn_users}}</td><td>{{u.name_users}}</td>
+                            <tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td>
+                        teet
+                    </td>
+
+                <p>
+                <DIV align='right'>
+                    <p>New user login: {{ form.new_login() }}</p>
+                    <p>Password: {{ form.new_pass() }}</p>
+                    <p>Confirm password: {{ form.new_confirm_pass() }}</p>
+                    <p>{{ form.new_user() }}</p>
+                    <p>{{ form.delete_user() }}</p>
+                </DIV>
+            </body>
+        </DIV>
+    </form>
+{% endblock %}

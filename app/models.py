@@ -9,6 +9,8 @@ class Allowedips(db.Model):
     id_allowedips = db.Column(db.Integer(), primary_key=True)
     ip_allowedips = db.Column(db.String(15), nullable=False)
     mask_allowedips = db.Column(db.String(15), nullable=False)
+    vpn_users = db.Column(db.Integer, db.ForeignKey('Vpn_users.id_vpn_users'))
+
     def __repr__(self):
         return "<{}:{}>".format(self.ip_allowedips, self.mask_allowedips[:15])
 
@@ -45,13 +47,20 @@ class Vpn_key(db.Model):
     def __repr__(self):
         return "<{}:{}>".format(self.publickey, self.privatekey)
 
+class organizations(db.model):
+    __tablename__ = 'organizations'
+    id_organizations = db.Column(db.Integer(), primary_key=True)
+    name_organizations = db.Column(db.String(255), nullable=False)
+    server_organizations = db.Column(db.String(255))
+    vpn_key_organizations = db.Column(db.Integer())
+    vpn_users = db.relationship('Vpn_users', backref='id_vpn_users', lazy='dynamic')
+
 
 class Vpn_users(db.Model):
     __tablename__ = 'vpn_users'
     id_vpn_users = db.Column(db.Integer(), primary_key=True)
     name_vpn_users = db.Column(db.String(255), nullable=False)
     email_vpn_users = db.Column(db.String(255), nullable=False)
-    organizations = db.Column(db.Integer(), nullable=False)
     vpn_key = db.Column(db.Integer(), nullable=False)
     allowedips = db.Column(db.Integer(), nullable=False)
     dt_create_vpn_users = db.Column(db.DateTime(), default=datetime.utcnow)
@@ -59,6 +68,8 @@ class Vpn_users(db.Model):
     dt_activate_vpn_users = db.Column(db.DateTime(), default=datetime.utcnow)
     dt_disable_vpn_users = db.Column(db.DateTime())
     active_vpn_users = db.Column(db.Boolean())
+    organizations = db.Column(db.Integer, db.ForeignKey('organizations.id_organizations'))
+    allowedips_sp = db.relationship('Allowedips', backref='allowedips', lazy='dynamic')
 
     def __repr__(self):
         return "<{}:{}>".format(self.name_vpn_users, self.active_vpn_users)
