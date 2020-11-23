@@ -9,29 +9,34 @@
         <DIV class="container">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
-                <table>
-                    <td>
-                        <table class="table table-bordered">
-                            <tr>
-                                <td></td><Td><b>ID</b></Td><td><b>Login</b></Td>
-                            </tr>
-                            {% for u in sp_vpn_users %}
-                            <tr>
-                            <td><input type="checkbox" name="{{ u.name_vpn_users }}"></td><td>{{u.name_vpn_users}}</td><td>{{u.name_users}}</td>
-                            <tr>
-                            {% endfor %}
-                        </table>
-                    </td>
-                    <td>
-                        teet
-                    </td>
-
-                <p>
+                <table class="table table-bordered">
+                       <tr>
+                           <td></td>
+                           <Td><b>Name</b></Td>
+                           <td><b>E-mail</b></Td>
+                           <td><b>Организация</b></Td>
+                           <td><b>Добавлен</b></Td>
+                           <td><b>Активирован</b></Td>
+                           <td><b>Отключен</b></Td>
+                       </tr>
+                    {% for u in sp_vpn_users %}
+                        <tr>
+                            <td><input type="checkbox" name="{{ u.name_vpn_users }}"></td>
+                            <td>{{u.name_vpn_users}}</td>
+                            <td>{{u.email_vpn_users}}</td>
+                            <td>{{u.organizations}}</td>
+                            <td>{{u.dt_create_vpn_users}}</td>
+                            <td>{{u.dt_activate_vpn_users}}</td>
+                            <td>{{u.dt_disable_vpn_users}}</td>
+                        <tr>
+                    {% endfor %}
+                </table>
+                <DIV class="container" align='left'>
+                    <p> Подрообно:</p>
+                </DIV>
                 <DIV align='right'>
-                    <p>New user login: {{ form.new_login() }}</p>
-                    <p>Password: {{ form.new_pass() }}</p>
-                    <p>Confirm password: {{ form.new_confirm_pass() }}</p>
                     <p>{{ form.new_user() }}</p>
+                    <p>{{ form.edit_user() }}</p>
                     <p>{{ form.delete_user() }}</p>
                 </DIV>
             </body>

@@ -1,0 +1,23 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Current user {{cur_user}}</title>
+    </head>
+    <form action="" method="post" name="NewVpnUser">
+        {{form.hidden_tag()}}
+        <DIV class="container">
+            <body>
+                <H2 align="center">Current user - {{cur_user}}</H2>
+                <p>Имя пользователя: {{ form.new_vpn_login() }}</p>
+                <p>Организация: {{ form.new_vpn_login() }}</p>
+                <p>IP доступа: <input type="text" name="al_ip"></p>
+
+                <DIV align='right'>
+                    <p>{{ form.save_user() }}</p>
+                    <p>{{ form.cancel_user() }}</p>
+                </DIV>
+            </body>
+        </DIV>
+    </form>
+{% endblock %}

@@ -43,3 +43,12 @@ class NewVpnUserForm(FlaskForm):
     allowedips_mask = StringField('Маска')
     save_user = SubmitField("Редактировать пользователя")
     cancel_user = SubmitField("Удалить выбранных")
+
+
+class OrganizationsForm(FlaskForm):
+    id_organizations = IntegerField('Id')
+    name_organizations = StringField('Наименование организации')
+    server_organizations = StringField('IP адрес сервера')
+    vpn_key_organizations = StringField('Публичный ключ')
+    add_org = SubmitField("Добавить организацию")
+    del_org = SubmitField("Удалить выбранные организации")

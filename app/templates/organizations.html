@@ -1,0 +1,38 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Current user {{cur_user}}</title>
+    </head>
+    <form action="" method="post" name="organizations">
+        {{form.hidden_tag()}}
+        <DIV class="container">
+            <title>Current user {{cur_user}}</title>
+            <H2 align="center">Current user - {{cur_user}}</H2>
+            <table class="table table-bordered">
+                <tr>
+                    <td></td>
+                    <td><b>Наименование</b></Td>
+                    <td><b>Сервер</b></Td>
+                    <td><b>Publick Key</b></Td>
+                </tr>
+                {% for o in sp_org %}
+                    <tr>
+                        <td><input type="checkbox" name="{{ o.name_organizations }}"></td>
+                        <td>{{o.name_organizations}}</td>
+                        <td>{{o.server_organizations}}</td>
+                        <td>{{o.vpn_key_organizations}}</td>
+                    <tr>
+                {% endfor %}
+            </table>
+            <p>
+            <DIV align='right'>
+                    <p>Наименование: {{ form.name_organizations() }}</p>
+                    <p>IP адрес сервера: {{ form.server_organizations() }}</p>
+                    <p>Публичный ключь: {{ form.vpn_key_organizations() }}</p>
+                    <p> {{ form.add_org() }}</p>
+                    <p> {{ form.del_org() }}</p>
+            </DIV>
+        </DIV>
+    </form>>
+{% endblock %}
