@@ -54,7 +54,8 @@ class Organizations(db.Model):
     id_organizations = db.Column(db.Integer(), primary_key=True)
     name_organizations = db.Column(db.String(255), nullable=False)
     server_organizations = db.Column(db.String(255))
-    vpn_key_organizations = db.Column(db.Integer())
+    public_vpn_key_organizations = db.Column(db.String(255))
+    private_vpn_key_organizations = db.Column(db.String(255))
     vpn_users = db.relationship('Vpn_users', backref='vpn_users', lazy='dynamic')
 
 

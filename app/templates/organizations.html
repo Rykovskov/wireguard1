@@ -15,13 +15,15 @@
                     <td><b>Наименование</b></Td>
                     <td><b>Сервер</b></Td>
                     <td><b>Publick Key</b></Td>
+                    <td><b>Private Key</b></Td>
                 </tr>
                 {% for o in sp_org %}
                     <tr>
                         <td><input type="checkbox" name="{{ o.name_organizations }}"></td>
                         <td>{{o.name_organizations}}</td>
                         <td>{{o.server_organizations}}</td>
-                        <td>{{o.vpn_key_organizations}}</td>
+                        <td>{{o.public_vpn_key_organizations}}</td>
+                        <td>{{o.private_vpn_key_organizations}}</td>
                     <tr>
                 {% endfor %}
             </table>
@@ -29,7 +31,8 @@
             <DIV align='right'>
                     <p>Наименование: {{ form.name_organizations() }}</p>
                     <p>IP адрес сервера: {{ form.server_organizations() }}</p>
-                    <p>Публичный ключь: {{ form.vpn_key_organizations() }}</p>
+                    <p>Публичный ключь: {{ form.public_vpn_key_organizations() }}</p>
+                    <p>Закрытый ключь: {{ form.private_vpn_key_organizations() }}</p>
                     <p> {{ form.add_org() }}</p>
                     <p> {{ form.del_org() }}</p>
             </DIV>

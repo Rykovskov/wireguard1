@@ -49,6 +49,7 @@ class OrganizationsForm(FlaskForm):
     id_organizations = IntegerField('Id')
     name_organizations = StringField('Наименование организации')
     server_organizations = StringField('IP адрес сервера')
-    vpn_key_organizations = StringField('Публичный ключ')
+    public_vpn_key_organizations = StringField('Публичный ключ')
+    private_vpn_key_organizations = StringField('Закрытый ключ')
     add_org = SubmitField("Добавить организацию")
     del_org = SubmitField("Удалить выбранные организации")

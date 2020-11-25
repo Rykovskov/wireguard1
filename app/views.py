@@ -114,12 +114,12 @@ def organizations():
                     return redirect(url_for('organizations'))
         if form.add_org.data:
             #проверяем что все поля заполнены
-            if form.name_organizations.data !='' and form.server_organizations.data !='' and form.vpn_key_organizations.data != '':
+            if form.name_organizations.data !='' and form.server_organizations.data !='' and form.public_vpn_key_organizations.data != '' and form.private_vpn_key_organizations.data != '':
                 #проверяем что такой организации еще нет
                 q1 = len(Organizations.query.filter_by(name_organizations=form.name_organizations.data).all())
                 if q1 == 0:
                     #Добавляем новую организацию
-                    new_org = Organizations(name_organizations=form.name_organizations.data, server_organizations=form.server_organizations.data, vpn_key_organizations=form.vpn_key_organizations.data)
+                    new_org = Organizations(name_organizations=form.name_organizations.data, server_organizations=form.server_organizations.data, public_vpn_key_organizations=form.public_vpn_key_organizations.data, private_vpn_key_organizations=form.private_vpn_key_organizations.data)
                     db.session.add_all([new_org, ])
                     db.session.commit()
                 else:
@@ -129,6 +129,10 @@ def organizations():
                 flash("Не все поля заполнены!!!", 'error')
                 return redirect(url_for('organizations'))
         res = Organizations.query.order_by(Organizations.name_organizations).all()
+    form.private_vpn_key_organizations.data = ''
+    form.public_vpn_key_organizations.data = ''
+    form.name_organizations.data = ''
+    form.server_organizations.data = ''
     return render_template('Organizations.html', form=form, cur_user=current_user.name_users, sp_org=res)
 
 
