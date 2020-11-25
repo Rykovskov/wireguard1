@@ -9,9 +9,22 @@
         <DIV class="container">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
-                <p>Имя пользователя: {{ form.new_vpn_login() }}</p>
-                <p>Организация: {{ form.new_vpn_login() }}</p>
-                <p>IP доступа: <input type="text" name="al_ip"></p>
+                <table class="table">
+                    <tr>
+                        <td align="left">Имя пользователя:</td><td align="right">{{ form.new_vpn_login() }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">E-mail:</td><td align="right">{{ form.email_vpn_users() }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Организация: </td><td align="right">{{ form.new_vpn_organizations() }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">IP доступа: </td><td align="right"><textarea name="al_ip"></textarea></td>
+                    </tr>
+                </table>
+                <p></p>
+                <p></p>
 
                 <DIV align='right'>
                     <p>{{ form.save_user() }}</p>

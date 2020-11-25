@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, ValidationError
-from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField, DateField
 from wtforms.validators import DataRequired
 
 
@@ -39,10 +39,13 @@ class VpnUsersForm(FlaskForm):
 class NewVpnUserForm(FlaskForm):
     new_vpn_login = StringField('Имя пользователя')
     new_vpn_organizations = SelectField('Организация')
+    email_vpn_users = StringField('E-mail адрес')
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска')
-    save_user = SubmitField("Редактировать пользователя")
-    cancel_user = SubmitField("Удалить выбранных")
+    dt_activations = DateField()
+    now_active = BooleanField('Активировать', default="checked")
+    save_user = SubmitField("Сохранить пользователя")
+    cancel_user = SubmitField("Отменить")
 
 
 class OrganizationsForm(FlaskForm):

@@ -1,9 +1,11 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session
 from flask_login import login_required, login_user, current_user, logout_user
-from .models import Users, Vpn_users, Organizations, db
+from .models import Users, Vpn_users, Organizations, db, Allowedips
 from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm
 from werkzeug.datastructures import MultiDict
+from sqlalchemy import text
+import os
 
 
 @app.route('/')
@@ -82,11 +84,42 @@ def vpn_users():
 @app.route('/add_vpn_user', methods=['post', 'get'])
 @login_required
 def new_vpn_users():
-    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+    res_org = Organizations.query.order_by(Organizations.name_organizations).all()
     form = NewVpnUserForm()
+    form.new_vpn_organizations.choices = res_org
     if request.method == 'POST':
         result = request.form
-        print(result)
+        if form.save_user.data:
+            #Сохраняем пользователя
+            sql = text("select nextval('vpn_users_id_vpn_users_seq') as ss")
+            r = db.engine.execute(sql)
+            id_next_vpn_user = int(([row[0] for row in r])[0])+1
+            print(id_next_vpn_user)
+            id_org = result['new_vpn_organizations'].split(':')[:-1]
+            sp_ip = result['al_ip'].split('\r\n')
+            #сохраняем список разрешенных ип
+            for ips in sp_ip:
+                #Отделяем маску от адреса
+                ip_addr, mask = ips.split('/')
+                new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
+                db.session.add_all([new_allowedips, ])
+                db.session.commit()
+            WireGuard = os.path.abspath("C:\\Program Files\\WireGuard\\")
+            os.chdir(WireGuard)
+            os.system("wg genkey > d:\privatekey")
+            os.system("wg pubkey < d:\privatekey > d:\publickey")
+            f_priv_key = open('d:\privatekey')
+            priv_key = f_priv_key.readline()
+            f_priv_key.close()
+            f_pub_key = open('d:\publickey')
+            pub_key = f_pub_key.readline()
+            f_pub_key.close()
+
+            new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user, name_vpn_users=form.new_vpn_login, email_vpn_users=form.email_vpn_users.data, organizations=id_org)
+            db.session.add_all([new_vpn_user, ])
+            db.session.commit()
+            #return redirect(url_for('vpn_users'))
+
     return render_template('add_vpn_user.html', form=form, cur_user=current_user.name_users)
 
 
