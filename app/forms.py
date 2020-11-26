@@ -3,7 +3,6 @@ from wtforms import Form, ValidationError
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField, DateField
 from wtforms.validators import DataRequired
 
-
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = StringField("Password", validators=[DataRequired()])
@@ -42,7 +41,8 @@ class NewVpnUserForm(FlaskForm):
     email_vpn_users = StringField('E-mail адрес')
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска')
-    dt_activations = DateField()
+    dt_activations = DateField('Дата активации пользователя')
+    dt_disable_vpn_users = DateField('Дата отключения пользователя')
     now_active = BooleanField('Активировать', default="checked")
     save_user = SubmitField("Сохранить пользователя")
     cancel_user = SubmitField("Отменить")
