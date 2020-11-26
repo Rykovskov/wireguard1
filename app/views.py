@@ -114,11 +114,26 @@ def new_vpn_users():
             f_pub_key = open('d:\publickey')
             pub_key = f_pub_key.readline()
             f_pub_key.close()
+            dt_activ = result.get('date_act')
+            dt_disable = result.get('date_dis')
+            print('id_next_vpn_user', id_next_vpn_user)
+            print('form.new_vpn_login', form.new_vpn_login.data)
+            print('form.email_vpn_users.data', form.email_vpn_users.data)
+            print('id_org[0]', id_org[0])
+            print('dt_activ', dt_activ)
+            print('dt_disable', dt_disable)
+            print('priv_key', priv_key)
+            print('pub_key', pub_key)
 
-            new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user, name_vpn_users=form.new_vpn_login, email_vpn_users=form.email_vpn_users.data, organizations=id_org)
+            new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
+                                     name_vpn_users=form.new_vpn_login.data,
+                                     email_vpn_users=form.email_vpn_users.data,
+                                     organizations=id_org[0],
+                                     dt_activate_vpn_users=dt_activ,
+                                     dt_disable_vpn_users=dt_disable)
             db.session.add_all([new_vpn_user, ])
             db.session.commit()
-            #return redirect(url_for('vpn_users'))
+            return redirect(url_for('vpn_users'))
 
     return render_template('add_vpn_user.html', form=form, cur_user=current_user.name_users)
 
