@@ -13,7 +13,7 @@ class Allowedips(db.Model):
     vpn_user = db.Column(db.Integer, db.ForeignKey('vpn_users.id_vpn_users'))
 
     def __repr__(self):
-        return "<{}:{}>".format(self.ip_allowedips, self.mask_allowedips[:15])
+        return "<{}/{}>".format(self.ip_allowedips, self.mask_allowedips[:15])
 
 
 @login_manager.user_loader
@@ -72,6 +72,7 @@ class Vpn_users(db.Model):
     active_vpn_users = db.Column(db.Boolean())
     organizations = db.Column(db.Integer, db.ForeignKey('organizations.id_organizations'))
     allowedips = db.relationship('Allowedips', backref='allowedips', lazy='dynamic')
+    name_org =  db.relationship('Organizations', backref='organizations',  lazy="select", uselist=False)
 
     def __repr__(self):
-        return "<{}:{}>".format(self.name_vpn_users, self.active_vpn_users)
+        return "<{}:  {}>".format(self.name_vpn_users, self.active_vpn_users)

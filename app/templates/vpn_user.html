@@ -9,6 +9,9 @@
         <DIV class="container">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
+                <DIV align='right'>
+                    <p>Показывать отключенных <input type="checkbox" name="view_disable" checked></p>
+                </DIV>
                 <table class="table table-bordered">
                        <tr>
                            <td></td>
@@ -16,24 +19,25 @@
                            <td><b>E-mail</b></Td>
                            <td><b>Организация</b></Td>
                            <td><b>Добавлен</b></Td>
-                           <td><b>Активирован</b></Td>
-                           <td><b>Отключен</b></Td>
+                           <td><b>Дата актививации</b></Td>
+                           <td><b>Дата отключения</b></Td>
+                           <td><b>Статус</b></Td>
+                           <td><b>Разрешенные IP</b></Td>
                        </tr>
                     {% for u in sp_vpn_users %}
                         <tr>
                             <td><input type="checkbox" name="{{ u.name_vpn_users }}"></td>
                             <td>{{u.name_vpn_users}}</td>
                             <td>{{u.email_vpn_users}}</td>
-                            <td>{{u.organizations}}</td>
+                            <td>{{u.name_org}}</td>
                             <td>{{u.dt_create_vpn_users}}</td>
                             <td>{{u.dt_activate_vpn_users}}</td>
                             <td>{{u.dt_disable_vpn_users}}</td>
+                            <td>{{u.active_vpn_users}}</td>
+                            <td>{{u.allowedips.all()}}</td>
                         <tr>
                     {% endfor %}
                 </table>
-                <DIV class="container" align='left'>
-                    <p> Подрообно:</p>
-                </DIV>
                 <DIV align='right'>
                     <p>{{ form.new_user() }}</p>
                     <p>{{ form.edit_user() }}</p>

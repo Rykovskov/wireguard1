@@ -1,12 +1,12 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session
 from flask_login import login_required, login_user, current_user, logout_user
-from .models import Users, Vpn_users, Organizations, db, Allowedips
+from .models import Users, Vpn_users, Organizations, db, Allowedips, Vpn_key
 from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
 import os
-
+from sqlalchemy.orm import joinedload
 
 @app.route('/')
 @login_required
@@ -75,10 +75,13 @@ def admin():
 def vpn_users():
     res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
     form = VpnUsersForm()
+    res_ip = res[0].allowedips.all()
+
     if request.method == 'POST':
         result = request.form
         print(result)
-    return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_users=res)
+        if result[]
+    return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res, sp_addres=res_ip)
 
 
 @app.route('/add_vpn_user', methods=['post', 'get'])
@@ -109,28 +112,37 @@ def new_vpn_users():
             os.system("wg genkey > d:\privatekey")
             os.system("wg pubkey < d:\privatekey > d:\publickey")
             f_priv_key = open('d:\privatekey')
-            priv_key = f_priv_key.readline()
+            priv_key = f_priv_key.readline()[:-1:]
             f_priv_key.close()
             f_pub_key = open('d:\publickey')
-            pub_key = f_pub_key.readline()
+            pub_key = f_pub_key.readline()[:-1:]
             f_pub_key.close()
             dt_activ = result.get('date_act')
             dt_disable = result.get('date_dis')
-            print('id_next_vpn_user', id_next_vpn_user)
-            print('form.new_vpn_login', form.new_vpn_login.data)
-            print('form.email_vpn_users.data', form.email_vpn_users.data)
-            print('id_org[0]', id_org[0])
-            print('dt_activ', dt_activ)
-            print('dt_disable', dt_disable)
-            print('priv_key', priv_key)
-            print('pub_key', pub_key)
-
+            #Вставляем новый VPN key
+            new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
+            db.session.add_all([new_vpn_key, ])
+            db.session.commit()
+            id_new_vpn = new_vpn_key.id_vpn_key
+            act_user = form.now_active.data
+            #print('id_next_vpn_user', id_next_vpn_user)
+            #print('form.new_vpn_login', form.new_vpn_login.data)
+            #print('form.email_vpn_users.data', form.email_vpn_users.data)
+            #print('id_org[0]', id_org[0])
+            #print('dt_activ', dt_activ)
+            #print('dt_disable', dt_disable)
+            #print('priv_key', priv_key)
+            #print('pub_key', pub_key)
+            #print('id_new_vpn', id_new_vpn)
+            print('act_user', act_user)
             new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
                                      name_vpn_users=form.new_vpn_login.data,
                                      email_vpn_users=form.email_vpn_users.data,
                                      organizations=id_org[0],
                                      dt_activate_vpn_users=dt_activ,
-                                     dt_disable_vpn_users=dt_disable)
+                                     dt_disable_vpn_users=dt_disable,
+                                     vpn_key=id_new_vpn,
+                                     active_vpn_users=act_user)
             db.session.add_all([new_vpn_user, ])
             db.session.commit()
             return redirect(url_for('vpn_users'))
