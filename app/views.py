@@ -6,7 +6,7 @@ from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm,
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
 import os
-from sqlalchemy.orm import joinedload
+import datetime
 
 @app.route('/')
 @login_required
@@ -80,7 +80,28 @@ def vpn_users():
     if request.method == 'POST':
         result = request.form
         print(result)
-        if result[]
+        if result['disable_user']:
+            #Отключаем выбранных
+            for u in res:
+                print(u)
+                if result.get(u.name_vpn_users) == 'on':
+                    print('result.get(u.name_vpn_users)', result.get(u.name_vpn_users))
+                    update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
+                    update_user.active_vpn_users = False
+                    update_user.dt_disable_vpn_users = datetime.datetime.now()
+                    db.session.commit()
+
+        if form.new_user.data:
+            #Показываем форму добавления нового пользователя
+            return redirect(url_for('new_vpn_users'))
+        if form.delete_user.data:
+            for u in res:
+                if result.get(u.name_vpn_users) == 'on':
+                    del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
+                    db.session.delete(del_user)
+                    db.session.commit()
+        res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+
     return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res, sp_addres=res_ip)
 
 

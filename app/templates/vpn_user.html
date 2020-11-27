@@ -30,15 +30,16 @@
                             <td>{{u.name_vpn_users}}</td>
                             <td>{{u.email_vpn_users}}</td>
                             <td>{{u.name_org}}</td>
-                            <td>{{u.dt_create_vpn_users}}</td>
-                            <td>{{u.dt_activate_vpn_users}}</td>
-                            <td>{{u.dt_disable_vpn_users}}</td>
+                            <td>{{u.dt_create_vpn_usersstr}}</td>
+                            <td>{{u.dt_activate_vpn_usersstr}}</td>
+                            <td>{{u.dt_disable_vpn_usersstr}}</td>
                             <td>{{u.active_vpn_users}}</td>
                             <td>{{u.allowedips.all()}}</td>
                         <tr>
                     {% endfor %}
                 </table>
                 <DIV align='right'>
+                    <p><input type="submit" value="Отключить" name="disable_user"></p>
                     <p>{{ form.new_user() }}</p>
                     <p>{{ form.edit_user() }}</p>
                     <p>{{ form.delete_user() }}</p>
