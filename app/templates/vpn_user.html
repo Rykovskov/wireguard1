@@ -2,15 +2,21 @@
 {% extends "base.html" %}
 {% block content %}
     <head>
+        <script>
+            $('#view_disable').change(function()
+                {
+                    $('#VpnUserList').submit();
+                }
+        </script>
         <title>Current user {{cur_user}}</title>
     </head>
-    <form action="" method="post" name="VpnUserList">
+    <form action="javascript:void(0);" method="post" name="VpnUserList">
         {{form.hidden_tag()}}
         <DIV class="container">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <DIV align='right'>
-                    <p>Показывать отключенных <input type="checkbox" name="view_disable" checked></p>
+                    <p>Показывать отключенных <input type="checkbox" name="view_disable" id="view_disable" checked></p>
                 </DIV>
                 <table class="table table-bordered">
                        <tr>
