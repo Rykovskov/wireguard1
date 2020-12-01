@@ -76,7 +76,6 @@ def vpn_users():
     res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
     form = VpnUsersForm()
     res_ip = res[0].allowedips.all()
-
     if request.method == 'POST':
         result = request.form
         print(result)

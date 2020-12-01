@@ -3,10 +3,20 @@
 {% block content %}
     <head>
         <script>
-            $('#view_disable').change(function()
-                {
-                    $('#VpnUserList').submit();
-                }
+            $(document).ready(function(){
+            $('#view_disable').change(function() {
+                        $.ajax({
+                            url: '/vpn_users',
+                            data: { 'view_disable': this.checked },
+                            type: 'POST',
+                            success: function(response) {
+                            console.log(response);
+                            },
+                        });
+
+            });
+        });
+
         </script>
         <title>Current user {{cur_user}}</title>
     </head>
@@ -16,7 +26,7 @@
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <DIV align='right'>
-                    <p>Показывать отключенных <input type="checkbox" name="view_disable" id="view_disable" checked></p>
+                    <p>Показывать отключенных <input type="checkbox" name="view_disable" id="view_disable" checked ></p>
                 </DIV>
                 <table class="table table-bordered">
                        <tr>
