@@ -75,25 +75,41 @@ def admin():
 def vpn_users():
     res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
     form = VpnUsersForm()
-    res_ip = res[0].allowedips.all()
+    #res_ip = res[0].allowedips.all()
+    print('request', request)
     if request.method == 'POST':
         result = request.form
-        print(result)
-        #print('result[disable_user] ', result['d_user'])
-        print('result[enable_user1] ', result['e_user'])
+        print('request', request)
+        print('result', result)
+        print('view_disable  ', result['view_disable'])
+        if str(result['view_disable']) == 'true':
+            print('Показываем отключенных пользователей')
+            res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+            print('res true -- ', res)
+            return redirect(url_for('admin'))
+        if str(result['view_disable']) == 'false':
+            print('Показываем включенных пользователей')
+            res = Vpn_users.query.filter_by(active_vpn_users='False').all()
+            print('res false -- ', res)
+            print("#return redirect(url_for('vpn_user'))")
+            return redirect(url_for('admin'))
+        print('1111', res)
         if result['disable_user']:
-            #Отключаем выбранных
+            print('#Отключаем выбранных')
             for u in res:
-                print(u)
+                print('u - ', u)
                 if result.get(u.name_vpn_users) == 'on':
                     print('result.get(u.name_vpn_users)', result.get(u.name_vpn_users))
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = False
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
+                    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+        print('2222')
         if form.new_user.data:
             print('#Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
+        print('3333', res)
         if form.delete_user.data:
             print('#Показываем форму удаления пользователя')
             for u in res:
@@ -101,9 +117,10 @@ def vpn_users():
                     del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     db.session.delete(del_user)
                     db.session.commit()
-        res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
-
-    return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res, sp_addres=res_ip)
+                    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+        print('res 1 -- ', res)
+        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
+    return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
 
 
 @app.route('/add_vpn_user', methods=['post', 'get'])
