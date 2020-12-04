@@ -7,7 +7,7 @@
             $('#view_disable').change(function() {
                         $.ajax({
                             url: '/vpn_users',
-                            data: { 'view_disable': this.checked },
+                            data: { 'view_disable1': this.checked },
                             type: 'POST',
                             success: function(response) {
                             console.log(response);
