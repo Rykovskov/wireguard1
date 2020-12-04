@@ -7,7 +7,7 @@
             $('#view_disable').change(function() {
                         $.ajax({
                             url: '/vpn_users',
-                            data: { 'view_disable1': this.checked },
+                            data: { 'view_disable1': this.checked, CSRF: getCSRFTokenValue()},
                             type: 'POST',
                             success: function(response) {
                             console.log(response);
@@ -26,7 +26,7 @@
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <DIV align='right'>
-                    <p>Показывать отключенных <input action="javascript:void(0);"  type="checkbox" name="view_disable" id="view_disable" checked ></p>
+                    <p>Показывать отключенных <input action="javascript:void(0);"  type="checkbox" name="view_disable" id="view_disable" unchecked ></p>
                 </DIV>
                 <table class="table table-bordered">
                        <tr>

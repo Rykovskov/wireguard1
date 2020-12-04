@@ -75,7 +75,9 @@ def admin():
 def vpn_users():
     form = VpnUsersForm()
     result = request.form
+    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
     if request.method == 'GET':
+        print('----------------GET-------------------')
         if 'vis_disable' in request.args:
             print("request.args.get('vis_disable')", request.args.get('vis_disable'))
             if request.args.get('vis_disable') == 'False':
@@ -89,7 +91,12 @@ def vpn_users():
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         print('render GET', res)
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
+
+
     if request.method == 'POST':
+        print('----------------POST-------------------')
+        for k in result.keys():
+            print('key - ', k, '---', result[k])
         if 'view_disable1' in result.keys():
             if str(result['view_disable1']) == 'true':
                 print('Показываем отключенных пользователей')
@@ -108,6 +115,18 @@ def vpn_users():
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
                     res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+        if 'e_user' in result.keys():
+            print('#Влючаем выбранных')
+            for u in res:
+                print('u - ', u)
+                if result.get(u.name_vpn_users) == 'on':
+                    print('result.get(u.name_vpn_users)', result.get(u.name_vpn_users))
+                    update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
+                    update_user.active_vpn_users = True
+                    update_user.dt_disable_vpn_users = datetime.datetime.now()
+                    db.session.commit()
+                    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+
         if form.new_user.data:
             print('#Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
