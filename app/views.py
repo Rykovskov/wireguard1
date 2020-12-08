@@ -73,37 +73,40 @@ def admin():
 @app.route('/vpn_users', methods=['post', 'get'])
 @login_required
 def vpn_users():
+    view_d = 'on'
     form = VpnUsersForm()
     result = request.form
     res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
     if request.method == 'GET':
         print('----------------GET-------------------')
-        if 'vis_disable' in request.args:
-            print("request.args.get('vis_disable')", request.args.get('vis_disable'))
-            if request.args.get('vis_disable') == 'False':
-                print('1')
-                res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
-            else:
-                print('2')
-                res = Vpn_users.query.filter_by(active_vpn_users='True').all()
-        else:
-            print('3')
-            res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+        #if 'vis_disable' in request.args:
+        #    print("request.args.get('vis_disable')", request.args.get('vis_disable'))
+        #    if request.args.get('vis_disable') == 'False':
+        #        print('1')
+        #        res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+        #    else:
+        #        print('2')
+        #        res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+        #else:
+        print('3')
+        res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         print('render GET', res)
-        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
+        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res, view_d=view_d)
 
 
     if request.method == 'POST':
         print('----------------POST-------------------')
         for k in result.keys():
             print('key - ', k, '---', result[k])
-        if 'view_disable1' in result.keys():
-            if str(result['view_disable1']) == 'true':
+        if 'view_disable' in result.keys():
+            if str(result['view_disable']) == 'on':
                 print('Показываем отключенных пользователей')
-                return redirect(url_for('vpn_users', vis_disable='True'))
+                view_d = 'on'
+                res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             else:
                 print('Показываем включенных пользователей')
-                return redirect(url_for('vpn_users',  vis_disable='False'))
+                view_d = 'off'
+                res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'd_user' in result.keys():
             print('#Отключаем выбранных')
             for u in res:
@@ -114,7 +117,7 @@ def vpn_users():
                     update_user.active_vpn_users = False
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
-                    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+                    #res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         if 'e_user' in result.keys():
             print('#Влючаем выбранных')
             for u in res:
@@ -125,7 +128,7 @@ def vpn_users():
                     update_user.active_vpn_users = True
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
-                    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+                    #res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
 
         if form.new_user.data:
             print('#Показываем форму добавления нового пользователя')
@@ -139,7 +142,7 @@ def vpn_users():
                     db.session.commit()
                     res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         print('render POST', res)
-        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
+        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res, view_d=view_d)
 
 
 

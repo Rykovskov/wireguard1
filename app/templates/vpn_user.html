@@ -3,18 +3,40 @@
 {% block content %}
     <head>
         <script>
-            alert('Text1 changed!');
+            var view_d = '{{ form.v_user.data }}';
+            function f1() {
+             if ( $("#v_user").is(":checked") ) {
+                    view_d = true;
+                    $('#updt_e').click()
+                    alert('1', view_d)
+                }
+                else{
+                    view_d = false;
+                    $('#updt_d').click()
+                }
+            };
+            $(document).ready(function(){
+
+                alert(view_d);
+                if (view_d) {
+
+                   $("#view_disable").checked=true
+                }
+                else {
+                   $("#view_disable").checked=false
+                }
+            });
         </script>
         <title>Current user {{cur_user}}</title>
     </head>
-    <form action="javascript:void(0);"   method="post" name="VpnUserList">
+    <form action=""   method="post" name="VpnUserList">
         {{form.hidden_tag()}}
         <DIV class="container">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <DIV align='right'>
-                    <p>Показывать отключенных <input type="checkbox" name="view_disable" id="view_disable" unchecked ></p>
-                    <input id="text" type="text" name="form-text">
+                    <p>Показывать отключенных <input type="checkbox" onclick="f1()" name="view_disable" id="view_disable" ></p>
+                    <p>{{ form.v_user }}</p>
                 </DIV>
                 <table class="table table-bordered">
                        <tr>
@@ -45,12 +67,11 @@
                 <DIV align='right'>
                     <p><input type="submit" value="Отключить пользователя" name="d_user"></p>
                     <p><input type="submit" value="Включить пользователя" name="e_user"></p>
-                    <p><input type="submit" value="Обновить" name="updt" id = "updt"></p>
                     <p>{{ form.new_user() }}</p>
                     <p>{{ form.edit_user() }}</p>
                     <p>{{ form.delete_user() }}</p>
-                    <p>{{ form.update_list() }}</p>
-
+                    <input type="submit" value="updt_e" name="updt_e" id = "updt_e" style="visibility: hidden">
+                    <input type="submit" value="updt_d" name="updt_d" id = "updt_d" style="visibility: hidden">
                 </DIV>
             </body>
         </DIV>
