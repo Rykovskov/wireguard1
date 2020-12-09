@@ -33,7 +33,8 @@ class VpnUsersForm(FlaskForm):
     new_user = SubmitField("Новый пользователь")
     edit_user = SubmitField("Редактировать пользователя")
     delete_user = SubmitField("Удалить выбранных")
-    v_user = BooleanField('Visible user')
+    update_list = SubmitField("Обновить")
+
 
 class NewVpnUserForm(FlaskForm):
     new_vpn_login = StringField('Имя пользователя')
