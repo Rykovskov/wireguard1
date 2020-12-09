@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="052e5199-a337-452e-9c68-3eaa28e1825b" name="Default Changelist" comment="" />
+    <list default="true" id="052e5199-a337-452e-9c68-3eaa28e1825b" name="Default Changelist" comment="First commit">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/wireguard.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/wireguard.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/vpn_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/vpn_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,30 +40,47 @@
       </list>
     </option>
   </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
+    </option>
+  </component>
+  <component name="Git.Pull.Settings">
+    <option name="BRANCH" value="master" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IgnoredFileRootStore">
-    <option name="generatedRoots">
-      <set>
-        <option value="D:\wireguard\.idea" />
-      </set>
-    </option>
-  </component>
+  <component name="JupyterTrust" id="b8e819fb-b8cd-418b-82f4-a80b1f01d4bb" />
   <component name="ProjectId" id="1jWDvUOQKpplKXnPjuuOR2euVZu" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/static" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.notebooks.jupyter.connections.configuration.JupyterServerConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -51,24 +92,25 @@
     </option>
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\wireguard\app\static" />
-      <recent name="D:\wireguard\templates" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wireguard1\app\static\JS" />
       <recent name="D:\wireguard\app\static\CSS" />
       <recent name="D:\wireguard\app" />
+      <recent name="D:\wireguard\templates" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\wireguard\app\static" />
       <recent name="D:\wireguard\templates" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="wireguard" type="Python.FlaskServer">
       <module name="wireguard" />
-      <option name="target" value="D:\wireguard\runner.py" />
+      <option name="target" value="D:\wireguard1\runner.py" />
       <option name="targetType" value="PATH" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="D:\wireguard\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="C:\Users\rykovskov.m\AppData\Local\Microsoft\WindowsApps\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -78,18 +120,7 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -107,6 +138,14 @@
       <workItem from="1604511953909" duration="4152000" />
       <workItem from="1605373371289" duration="16280000" />
       <workItem from="1605453710700" duration="15415000" />
+      <workItem from="1605514543429" duration="15013000" />
+      <workItem from="1605594494682" duration="106621000" />
+      <workItem from="1606811160399" duration="7357000" />
+      <workItem from="1606986429069" duration="4680000" />
+      <workItem from="1607083751221" duration="8741000" />
+      <workItem from="1607346960876" duration="6028000" />
+      <workItem from="1607413835690" duration="12552000" />
+      <workItem from="1607493748109" duration="8060000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <created>1605470226451</created>
@@ -122,13 +161,131 @@
       <option name="project" value="LOCAL" />
       <updated>1605470256129</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="First commit">
+      <created>1605536864813</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1605536864813</updated>
+    </task>
+    <task id="LOCAL-00004" summary="First commit">
+      <created>1605708955104</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1605708955104</updated>
+    </task>
+    <task id="LOCAL-00005" summary="First commit">
+      <created>1605709909376</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1605709909376</updated>
+    </task>
+    <task id="LOCAL-00006" summary="First commit">
+      <created>1606132124285</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1606132124285</updated>
+    </task>
+    <task id="LOCAL-00007" summary="First commit">
+      <created>1606399790264</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1606399790265</updated>
+    </task>
+    <task id="LOCAL-00008" summary="First commit">
+      <created>1606402700102</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1606402700102</updated>
+    </task>
+    <task id="LOCAL-00009" summary="First commit">
+      <created>1606467244393</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1606467244393</updated>
+    </task>
+    <task id="LOCAL-00010" summary="First commit">
+      <created>1606478348325</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1606478348325</updated>
+    </task>
+    <task id="LOCAL-00011" summary="First commit">
+      <created>1606487290937</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1606487290937</updated>
+    </task>
+    <task id="LOCAL-00012" summary="First commit">
+      <created>1606817162068</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1606817162068</updated>
+    </task>
+    <task id="LOCAL-00013" summary="First commit">
+      <created>1607021155768</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1607021155768</updated>
+    </task>
+    <task id="LOCAL-00014" summary="First commit">
+      <created>1607090817112</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1607090817112</updated>
+    </task>
+    <task id="LOCAL-00015" summary="First commit">
+      <created>1607092977379</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1607092977379</updated>
+    </task>
+    <task id="LOCAL-00016" summary="First commit">
+      <created>1607353025339</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1607353025339</updated>
+    </task>
+    <task id="LOCAL-00017" summary="First commit">
+      <created>1607436017233</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1607436017233</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="First commit" />
     <option name="LAST_COMMIT_MESSAGE" value="First commit" />
   </component>
@@ -137,9 +294,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="178" key="#Deployment/0.0.1920.1040@0.0.1920.1040" timestamp="1605470168620" />
-    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605455489613">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605514828397">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1605514828397" />
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605455489613" />
     <state x="698" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605458435446">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -149,44 +307,69 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="585" y="216" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1605470616420" />
-    <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1605455483632">
+    <state x="184" y="86" key="DiffContextDialog" timestamp="1606112187343">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="184" y="86" key="DiffContextDialog/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1606112187343" />
+    <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1606814051534">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="261" key="FileChooserDialogImpl/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1606814051534" />
     <state x="740" y="261" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605455483632" />
     <state x="838" y="413" width="260" height="214" key="Github.ShareDialog" timestamp="1605470518460">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="838" y="413" width="260" height="214" key="Github.ShareDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605470518460" />
-    <state width="1877" height="257" key="GridCell.Tab.0.bottom" timestamp="1605469781139">
+    <state width="1877" height="197" key="GridCell.Tab.0.bottom" timestamp="1607522976329">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="257" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605469781139" />
-    <state width="1877" height="257" key="GridCell.Tab.0.center" timestamp="1605469781137">
+    <state width="1877" height="197" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1607522976329" />
+    <state width="1877" height="133" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1607021193454" />
+    <state width="1877" height="197" key="GridCell.Tab.0.center" timestamp="1607522976329">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="257" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605469781137" />
-    <state width="1877" height="257" key="GridCell.Tab.0.left" timestamp="1605469781137">
+    <state width="1877" height="197" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1607522976329" />
+    <state width="1877" height="133" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1607021193454" />
+    <state width="1877" height="197" key="GridCell.Tab.0.left" timestamp="1607522976328">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="257" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605469781137" />
-    <state width="1877" height="257" key="GridCell.Tab.0.right" timestamp="1605469781138">
+    <state width="1877" height="197" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1607522976328" />
+    <state width="1877" height="133" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1607021193454" />
+    <state width="1877" height="197" key="GridCell.Tab.0.right" timestamp="1607522976329">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="257" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605469781138" />
+    <state width="1877" height="197" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1607522976329" />
+    <state width="1877" height="133" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1607021193454" />
+    <state x="784" y="223" key="RollbackChangesDialog" timestamp="1606370677654">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="784" y="223" key="RollbackChangesDialog/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1606370677654" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1605455459098">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1605455459098" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1605470654328">
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1607436026642">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1605470654328" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1603998805752">
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1607436026642" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1607021173061" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1607426510438">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1607426510438" />
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1607353019176">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1607353019176" />
+    <state x="777" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1606046811089" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1606459635228">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.-13.1920.1040@0.0.1920.1040" timestamp="1606459635228" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603998805752" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/wireguard1$wireguard.coverage" NAME="wireguard Coverage Results" MODIFIED="1607522976314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wireguard$wireguard.coverage" NAME="wireguard Coverage Results" MODIFIED="1605469781110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

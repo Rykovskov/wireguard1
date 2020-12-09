@@ -89,24 +89,25 @@ def vpn_users():
         #        res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #else:
         print('3')
-        res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+        res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         print('render GET', res)
-        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res, view_d=view_d)
+        form.v_user.data = False
+        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
 
 
     if request.method == 'POST':
         print('----------------POST-------------------')
         for k in result.keys():
             print('key - ', k, '---', result[k])
-        if 'view_disable' in result.keys():
-            if str(result['view_disable']) == 'on':
-                print('Показываем отключенных пользователей')
-                view_d = 'on'
-                res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
-            else:
-                print('Показываем включенных пользователей')
-                view_d = 'off'
-                res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+
+        if 'updt_d' in result.keys():
+            form.v_user.data = True
+            print('Показываем отключенных пользователей')
+            res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+        if 'updt_e' in result.keys():
+            form.v_user.data = False
+            print('Скрываем отключенных пользователей')
+            res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'd_user' in result.keys():
             print('#Отключаем выбранных')
             for u in res:
@@ -142,7 +143,8 @@ def vpn_users():
                     db.session.commit()
                     res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         print('render POST', res)
-        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res, view_d=view_d)
+
+        return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
 
 
 
