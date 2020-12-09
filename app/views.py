@@ -76,24 +76,14 @@ def vpn_users():
     view_d = 'on'
     form = VpnUsersForm()
     result = request.form
-    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+    res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+
     if request.method == 'GET':
         print('----------------GET-------------------')
-        #if 'vis_disable' in request.args:
-        #    print("request.args.get('vis_disable')", request.args.get('vis_disable'))
-        #    if request.args.get('vis_disable') == 'False':
-        #        print('1')
-        #        res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
-        #    else:
-        #        print('2')
-        #        res = Vpn_users.query.filter_by(active_vpn_users='True').all()
-        #else:
-        print('3')
         res = Vpn_users.query.filter_by(active_vpn_users='True').all()
-        print('render GET', res)
+        #print('render GET', res)
         form.v_user.data = False
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
-
 
     if request.method == 'POST':
         print('----------------POST-------------------')
@@ -102,46 +92,41 @@ def vpn_users():
 
         if 'updt_d' in result.keys():
             form.v_user.data = True
-            print('Показываем отключенных пользователей')
+            #print('Показываем отключенных пользователей')
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         if 'updt_e' in result.keys():
             form.v_user.data = False
-            print('Скрываем отключенных пользователей')
+            #print('Скрываем отключенных пользователей')
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'd_user' in result.keys():
-            print('#Отключаем выбранных')
+            #print('#Отключаем выбранных')
             for u in res:
-                print('u - ', u)
                 if result.get(u.name_vpn_users) == 'on':
-                    print('result.get(u.name_vpn_users)', result.get(u.name_vpn_users))
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = False
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
-                    #res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'e_user' in result.keys():
-            print('#Влючаем выбранных')
+            #print('#Влючаем выбранных')
             for u in res:
-                print('u - ', u)
                 if result.get(u.name_vpn_users) == 'on':
-                    print('result.get(u.name_vpn_users)', result.get(u.name_vpn_users))
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = True
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
-                    #res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
-
+            res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if form.new_user.data:
-            print('#Показываем форму добавления нового пользователя')
+            #print('Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
         if form.delete_user.data:
-            print('#Показываем форму удаления пользователя')
+            #print('#Показываем форму удаления пользователя')
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     db.session.delete(del_user)
                     db.session.commit()
-                    res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         print('render POST', res)
 
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
