@@ -146,7 +146,7 @@ def new_vpn_users():
             sql = text("select nextval('vpn_users_id_vpn_users_seq') as ss")
             r = db.engine.execute(sql)
             id_next_vpn_user = int(([row[0] for row in r])[0])+1
-            print(id_next_vpn_user)
+            #print(id_next_vpn_user)
             id_org = result['new_vpn_organizations'].split(':')[:-1]
             sp_ip = result['al_ip'].split('\r\n')
             #сохраняем список разрешенных ип
