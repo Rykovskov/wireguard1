@@ -1,0 +1,11 @@
+[Interface]
+PrivateKey = YKWZ48rU9pK0wOJcxJRXHo5UXQ2QLgBmtlX4bVJpSnE=
+ListenPort = 51820
+
+[Peer]
+PublicKey = SJ8fl3Kh/v0FNdxJ6YtP9AnKp77nSenjc+dcUkjyoUY=
+AllowedIPs = 192.168.0.1/24 10.10.0.0/24 
+
+[Peer]
+PublicKey = dOoX78SkxsJaUlyw+EDb9yoPhlomFR9kcLrjjwIGXRg=
+AllowedIPs = 192.168.0.9/32 

@@ -87,8 +87,8 @@ def vpn_users():
 
     if request.method == 'POST':
         print('----------------POST-------------------')
-        for k in result.keys():
-            print('key - ', k, '---', result[k])
+        #for k in result.keys():
+        #    print('key - ', k, '---', result[k])
 
         if 'updt_d' in result.keys():
             form.v_user.data = True
@@ -100,6 +100,7 @@ def vpn_users():
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'd_user' in result.keys():
             #print('#Отключаем выбранных')
+            res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
@@ -108,9 +109,11 @@ def vpn_users():
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'e_user' in result.keys():
-            #print('#Влючаем выбранных')
+            res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+            print('#Влючаем выбранных')
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
+                    print('6666666666')
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = True
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
