@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from app import app, db
 from app.models import Users

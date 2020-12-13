@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from app import db, login_manager
 from datetime import datetime
 from flask_login import (LoginManager, UserMixin, login_required,

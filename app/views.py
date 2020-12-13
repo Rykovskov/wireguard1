@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session
 from flask_login import login_required, login_user, current_user, logout_user
@@ -245,7 +246,7 @@ def organizations():
     form.public_vpn_key_organizations.data = ''
     form.name_organizations.data = ''
     form.server_organizations.data = ''
-    return render_template('Organizations.html', form=form, cur_user=current_user.name_users, sp_org=res)
+    return render_template('organizations.html', form=form, cur_user=current_user.name_users, sp_org=res)
 
 
 @app.route('/logout')
