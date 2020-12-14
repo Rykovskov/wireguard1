@@ -5,8 +5,6 @@ import datetime
 import transliterate
 
 wireguard_patch = '/etc/wireguard'
-
-
 prefix_wg_config = 'wg_'
 
 conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host='localhost')
@@ -27,11 +25,12 @@ if res[0][0]:
     for org in org_sp:
         print(org)
         name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
+        name_wg_interface_file = name_wg_interface + '.conf'
         name_wg_interface_new = name_wg_interface + '.new'
+        name_wg_interface_new_file = name_wg_interface_new + '.conf'
         config_file_new = os.path.join(wireguard_patch, name_wg_interface_new)
         config_file_old = os.path.join(wireguard_patch, name_wg_interface)
-
-        f = open(config_file_new, 'w')
+        f = open(name_wg_interface_new_file, 'w')
         #Генерруем конфигурационный файл
         conf = []
         conf.append('[Interface]')
@@ -39,7 +38,6 @@ if res[0][0]:
         conf.append('ListenPort = ' + str(org[5]))
         cur.execute(sql_select_users, (org[0],))
         vpn_users_sp = cur.fetchall()
-        print(vpn_users_sp)
         #Обход пользователей
         for vpn_user in vpn_users_sp:
             conf.append('')
@@ -52,16 +50,18 @@ if res[0][0]:
             for alliwed_ip in sp_allowed_ips:
                 al_ip = al_ip + alliwed_ip[1]+'/'+alliwed_ip[2]+' '
             conf.append(al_ip)
-
-        print(conf)
         for item in conf:
             f.write("%s\n" % item)
         f.close()
         # перезаписываем файл в рабочий
-        os.replace(config_file_new, config_file_old)
+        os.replace(name_wg_interface_new_file, name_wg_interface_file)
         #Обновляем rebuild config
         cur.execute(sql_update_rebuild)
-        res = conn.commit()
-        print(res)
-else:
-    print('Ничего не делаем')
+        conn.commit()
+        #перезапускаем интерфейс
+        WireGuard = os.path.abspath("/etc/wireguard")
+        os.chdir(WireGuard)
+        os.system("/usr/bin/wg-quick down " + name_wg_interface)
+        os.system("/usr/bin/wg-quick down " + name_wg_interface)
+
+
