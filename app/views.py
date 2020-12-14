@@ -8,6 +8,7 @@ from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
 import os
 import datetime
+from datetime import timedelta
 
 sql_upd_conf = text("update rebuild_config set rebuld=true")
 
@@ -180,22 +181,15 @@ def new_vpn_users():
             f_pub_key.close()
             dt_activ = result.get('date_act')
             dt_disable = result.get('date_dis')
-            #Вставляем новый VPN key
+            if dt_disable == '':
+                dt_disable = dt_activ + timedelta(years=10)
+
+             #Вставляем новый VPN key
             new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
             db.session.add_all([new_vpn_key, ])
             db.session.commit()
             id_new_vpn = new_vpn_key.id_vpn_key
             act_user = form.now_active.data
-            #print('id_next_vpn_user', id_next_vpn_user)
-            #print('form.new_vpn_login', form.new_vpn_login.data)
-            #print('form.email_vpn_users.data', form.email_vpn_users.data)
-            #print('id_org[0]', id_org[0])
-            #print('dt_activ', dt_activ)
-            #print('dt_disable', dt_disable)
-            #print('priv_key', priv_key)
-            #print('pub_key', pub_key)
-            #print('id_new_vpn', id_new_vpn)
-            print('act_user', act_user)
             new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
                                      name_vpn_users=form.new_vpn_login.data,
                                      email_vpn_users=form.email_vpn_users.data,
