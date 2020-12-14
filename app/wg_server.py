@@ -14,7 +14,7 @@ sql_select_rebuild = """select * from rebuild_config  order by last_update desc 
 sql_select_org = """select * from organizations """
 sql_select_users = """select  id_vpn_users, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select * from allowedips where vpn_user = %s"""
-
+sql_update_rebuild = """update rebuild_config set rebuld=false"""
 cur = conn.cursor()
 cur.execute(sql_select_rebuild)
 res = cur.fetchall()
@@ -59,7 +59,7 @@ if res[0][0]:
         f.close()
         # перезаписываем файл в рабочий
         os.replace(config_file_new, config_file_old)
-
-
+        #Обновляем rebuild config
+        cur.execute(sql_update_rebuild)
 else:
     print('Ничего не делаем')
