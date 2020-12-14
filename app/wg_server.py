@@ -65,6 +65,6 @@ if res[0][0]:
         #conn.commit()
         #перезапускаем интерфейс
         os.system("/usr/bin/wg-quick down " + name_wg_interface)
-        os.system("/usr/bin/wg-quick down " + name_wg_interface)
+        os.system("/usr/bin/wg-quick up " + name_wg_interface)
 
 
