@@ -182,7 +182,7 @@ def new_vpn_users():
             dt_activ = result.get('date_act')
             dt_disable = result.get('date_dis')
             if dt_disable == '':
-                dt_disable = dt_activ + timedelta(ydays=3366)
+                dt_disable = dt_activ + timedelta(days=3366)
 
              #Вставляем новый VPN key
             new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
