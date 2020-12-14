@@ -5,7 +5,7 @@ import datetime
 import transliterate
 
 wireguard_patch = '/etc/wireguard'
-wireguard_patch = 'D:\\WireGuard\\'
+
 
 prefix_wg_config = 'wg_'
 
