@@ -61,5 +61,7 @@ if res[0][0]:
         os.replace(config_file_new, config_file_old)
         #Обновляем rebuild config
         cur.execute(sql_update_rebuild)
+        res = cur.fetchall()
+        print(res)
 else:
     print('Ничего не делаем')
