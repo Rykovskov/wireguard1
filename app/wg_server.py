@@ -34,17 +34,17 @@ if res[0][0]:
         f = open(name_wg_interface_new_file, 'w')
         #Генерруем конфигурационный файл
         conf = []
-        conf.append('[Interface]')
-        conf.append('Address = '+org[2])
-        conf.append('ListenPort = ' + str(org[5]))
-        conf.append('PrivateKey = ' + org[3])
+        conf.append('[Interface]\n')
+        conf.append('Address = '+org[2]+'\n')
+        conf.append('ListenPort = ' + str(org[5])+'\n')
+        conf.append('PrivateKey = ' + org[3]+'\n')
         cur.execute(sql_select_users, (org[0],))
         vpn_users_sp = cur.fetchall()
         #Обход пользователей
         for vpn_user in vpn_users_sp:
-            conf.append('')
-            conf.append('[Peer]')
-            conf.append('PublicKey = ' + vpn_user[1])
+            conf.append('\n')
+            conf.append('[Peer]\n')
+            conf.append('PublicKey = ' + vpn_user[1]+'\n')
             #Получаем список разрешенных подсетей
             al_ip = 'AllowedIPs = '
             cur.execute(sql_select_allowips, (vpn_user[0],))
@@ -52,15 +52,15 @@ if res[0][0]:
             for alliwed_ip in sp_allowed_ips:
                 al_ip = al_ip + alliwed_ip[1]+'/'+alliwed_ip[2]+','
             al_ip = al_ip[:-1]
-            conf.append(al_ip)
+            conf.append(al_ip+'\n')
         for item in conf:
-            f.write("%s\n" % item)
+            f.write("%s" % item)
         f.close()
         # перезаписываем файл в рабочий
         os.replace(config_file_new, config_file_old)
         #Обновляем rebuild config
-        cur.execute(sql_update_rebuild)
-        conn.commit()
+        #cur.execute(sql_update_rebuild)
+        #conn.commit()
         #перезапускаем интерфейс
         os.system("/usr/bin/wg-quick down " + name_wg_interface)
         os.system("/usr/bin/wg-quick down " + name_wg_interface)
