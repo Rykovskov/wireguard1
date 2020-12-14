@@ -168,7 +168,7 @@ def new_vpn_users():
                 new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
                 db.session.add_all([new_allowedips, ])
                 db.session.commit()
-            WireGuard = os.path.abspath("/etc/WireGuard")
+            WireGuard = os.path.abspath("/etc/wireguard")
             os.chdir(WireGuard)
             os.system("wg genkey > privatekey.tmp")
             os.system("wg pubkey < privatekey.tmp > publickey.tmp")
