@@ -3,6 +3,7 @@ import psycopg2
 import os
 import datetime
 import transliterate
+import codecs
 
 wireguard_patch = '/etc/wireguard'
 prefix_wg_config = 'wg_'
@@ -31,7 +32,7 @@ if res[0][0]:
         name_wg_interface_new_file = name_wg_interface_new + '.conf'
         config_file_new = os.path.join(wireguard_patch, name_wg_interface_new_file)
         config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
-        f = open(name_wg_interface_new_file, 'w')
+        #f = open(name_wg_interface_new_file, 'w')
         #Генерруем конфигурационный файл
         conf = []
         conf.append('[Interface]\n')
@@ -53,8 +54,9 @@ if res[0][0]:
                 al_ip = al_ip + alliwed_ip[1]+'/'+alliwed_ip[2]+','
             al_ip = al_ip[:-1]
             conf.append(al_ip+'\n')
-        for item in conf:
-            f.write("%s" % item)
+        with codecs.open(name_wg_interface_new_file, 'w', encoding='utf8') as f:
+            for item in conf:
+                f.write("%s" % item)
         f.close()
         # перезаписываем файл в рабочий
         os.replace(config_file_new, config_file_old)
