@@ -9,7 +9,7 @@ from sqlalchemy import text
 import os
 import datetime
 
-sql_upd_conf = text("update rebuild_config set rebuild=true")
+sql_upd_conf = text("update rebuild_config set rebuld=true")
 
 @app.route('/')
 @login_required
