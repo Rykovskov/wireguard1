@@ -16,7 +16,8 @@ sql_update_rebuild = """update rebuild_config set rebuld=false"""
 cur = conn.cursor()
 cur.execute(sql_select_rebuild)
 res = cur.fetchall()
-print(res[0][0])
+WireGuard = os.path.abspath(wireguard_patch)
+os.chdir(WireGuard)
 if res[0][0]:
     print('Данные обновились начинаем обработку')
     #Начинаем обход организаций
@@ -59,8 +60,6 @@ if res[0][0]:
         cur.execute(sql_update_rebuild)
         conn.commit()
         #перезапускаем интерфейс
-        WireGuard = os.path.abspath("/etc/wireguard")
-        os.chdir(WireGuard)
         os.system("/usr/bin/wg-quick down " + name_wg_interface)
         os.system("/usr/bin/wg-quick down " + name_wg_interface)
 
