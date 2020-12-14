@@ -22,7 +22,7 @@ def load_user(id_users):
     return db.session.query(Users).get(id_users)
 
 
-class rebuild_config
+class rebuild_config:
     __tablename__ = 'rebuild_config'
     rebuld = db.Column(db.Boolean())
     last_update = db.Column(db.DateTime(), default=datetime.utcnow)
