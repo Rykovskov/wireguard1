@@ -2,12 +2,14 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session
 from flask_login import login_required, login_user, current_user, logout_user
-from .models import Users, Vpn_users, Organizations, db, Allowedips, Vpn_key
+from .models import Users, Vpn_users, Organizations, db, Allowedips, Vpn_key, rebuild_config
 from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
 import os
 import datetime
+
+sql_upd_conf = text("update rebuild_config set rebuild=true")
 
 @app.route('/')
 @login_required
@@ -100,6 +102,8 @@ def vpn_users():
             #print('Скрываем отключенных пользователей')
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'd_user' in result.keys():
+            # Делаем пометку что база обнавлена
+            r = db.engine.execute(sql_upd_conf)
             #print('#Отключаем выбранных')
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             for u in res:
@@ -110,6 +114,8 @@ def vpn_users():
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'e_user' in result.keys():
+            # Делаем пометку что база обнавлена
+            r = db.engine.execute(sql_upd_conf)
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             print('#Влючаем выбранных')
             for u in res:
@@ -146,6 +152,8 @@ def new_vpn_users():
     if request.method == 'POST':
         result = request.form
         if form.save_user.data:
+            #Делаем пометку что база обнавлена
+            r = db.engine.execute(sql_upd_conf)
             #Сохраняем пользователя
             sql = text("select nextval('vpn_users_id_vpn_users_seq') as ss")
             r = db.engine.execute(sql)
@@ -160,14 +168,14 @@ def new_vpn_users():
                 new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
                 db.session.add_all([new_allowedips, ])
                 db.session.commit()
-            WireGuard = os.path.abspath("C:\\Program Files\\WireGuard\\")
+            WireGuard = os.path.abspath("/etc/WireGuard")
             os.chdir(WireGuard)
-            os.system("wg genkey > d:\privatekey")
-            os.system("wg pubkey < d:\privatekey > d:\publickey")
-            f_priv_key = open('d:\privatekey')
+            os.system("wg genkey > privatekey.tmp")
+            os.system("wg pubkey < privatekey.tmp > publickey.tmp")
+            f_priv_key = open('privatekey.tmp')
             priv_key = f_priv_key.readline()[:-1:]
             f_priv_key.close()
-            f_pub_key = open('d:\publickey')
+            f_pub_key = open('publickey.tmp')
             pub_key = f_pub_key.readline()[:-1:]
             f_pub_key.close()
             dt_activ = result.get('date_act')
