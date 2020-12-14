@@ -28,8 +28,8 @@ if res[0][0]:
         name_wg_interface_file = name_wg_interface + '.conf'
         name_wg_interface_new = name_wg_interface + '.new'
         name_wg_interface_new_file = name_wg_interface_new + '.conf'
-        config_file_new = os.path.join(wireguard_patch, name_wg_interface_new)
-        config_file_old = os.path.join(wireguard_patch, name_wg_interface)
+        config_file_new = os.path.join(wireguard_patch, name_wg_interface_new_file)
+        config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
         f = open(name_wg_interface_new_file, 'w')
         #Генерруем конфигурационный файл
         conf = []
@@ -54,7 +54,7 @@ if res[0][0]:
             f.write("%s\n" % item)
         f.close()
         # перезаписываем файл в рабочий
-        os.replace(name_wg_interface_new_file, name_wg_interface_file)
+        os.replace(config_file_new, config_file_old)
         #Обновляем rebuild config
         cur.execute(sql_update_rebuild)
         conn.commit()
