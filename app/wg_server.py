@@ -20,12 +20,10 @@ res = cur.fetchall()
 WireGuard = os.path.abspath(wireguard_patch)
 os.chdir(WireGuard)
 if res[0][0]:
-    print('Данные обновились начинаем обработку')
     #Начинаем обход организаций
     cur.execute(sql_select_org)
     org_sp = cur.fetchall()
     for org in org_sp:
-        print(org)
         name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
         name_wg_interface_file = name_wg_interface + '.conf'
         name_wg_interface_new = name_wg_interface + '.new'
@@ -65,6 +63,7 @@ if res[0][0]:
         conn.commit()
         #перезапускаем интерфейс
         os.system("/usr/bin/wg-quick down " + name_wg_interface)
-        os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        print(result)
 
 
