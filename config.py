@@ -2,7 +2,7 @@
 import os
 
 app_dir = os.path.abspath(os.path.dirname(__file__))
-WireGuard_dir = os.path.abspath('C:\Program Files\WireGuard')
+WireGuard_dir = os.path.abspath('/etc/WireGuard')
 
 
 class BaseConfig:
