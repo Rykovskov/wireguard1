@@ -49,7 +49,8 @@ if res[0][0]:
             cur.execute(sql_select_allowips, (vpn_user[0],))
             sp_allowed_ips = cur.fetchall()
             for alliwed_ip in sp_allowed_ips:
-                al_ip = al_ip + alliwed_ip[1]+'/'+alliwed_ip[2]+' '
+                al_ip = al_ip + alliwed_ip[1]+'/'+alliwed_ip[2]+', '
+            al_ip = al_ip[:-1]
             conf.append(al_ip)
         for item in conf:
             f.write("%s\n" % item)
