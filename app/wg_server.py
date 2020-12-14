@@ -54,7 +54,7 @@ if res[0][0]:
                 al_ip = al_ip + alliwed_ip[1]+'/'+alliwed_ip[2]+','
             al_ip = al_ip[:-1]
             conf.append(al_ip+'\n')
-        with codecs.open(name_wg_interface_new_file, 'w', encoding='utf8') as f:
+        with codecs.open(name_wg_interface_new_file, 'w', encoding='ascii') as f:
             for item in conf:
                 f.write("%s" % item)
         f.close()
