@@ -22,6 +22,14 @@ def load_user(id_users):
     return db.session.query(Users).get(id_users)
 
 
+class rebuild_config
+    __tablename__ = 'rebuild_config'
+    rebuld = db.Column(db.Boolean())
+    last_update = db.Column(db.DateTime(), default=datetime.utcnow)
+
+    def __repr__(self):
+        return "<{}:{}>".format(self.rebuld, self.last_update)
+
 class Users(db.Model, UserMixin):
     __tablename__ = 'users'
     id_users = db.Column(db.Integer(), primary_key=True)
