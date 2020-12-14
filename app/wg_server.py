@@ -61,8 +61,8 @@ if res[0][0]:
         # перезаписываем файл в рабочий
         os.replace(config_file_new, config_file_old)
         #Обновляем rebuild config
-        #cur.execute(sql_update_rebuild)
-        #conn.commit()
+        cur.execute(sql_update_rebuild)
+        conn.commit()
         #перезапускаем интерфейс
         os.system("/usr/bin/wg-quick down " + name_wg_interface)
         os.system("/usr/bin/wg-quick up " + name_wg_interface)
