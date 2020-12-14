@@ -170,8 +170,8 @@ def new_vpn_users():
                 db.session.commit()
             WireGuard = os.path.abspath("/etc/wireguard")
             os.chdir(WireGuard)
-            os.system("wg genkey > privatekey.tmp")
-            os.system("wg pubkey < privatekey.tmp > publickey.tmp")
+            os.system("/usr/bin/wg genkey > privatekey.tmp")
+            os.system("/usr/bin/wg pubkey < privatekey.tmp > publickey.tmp")
             f_priv_key = open('privatekey.tmp')
             priv_key = f_priv_key.readline()[:-1:]
             f_priv_key.close()
