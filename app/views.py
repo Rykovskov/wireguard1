@@ -127,6 +127,9 @@ def vpn_users():
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+        if form.get_setting.data:
+            #Cкачиваем настройки
+            print(form.get_setting.name)
         if form.new_user.data:
             #print('Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
