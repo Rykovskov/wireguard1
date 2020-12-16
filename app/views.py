@@ -149,9 +149,9 @@ def vpn_users():
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
-        for u in res1:
-            name_key = 'get_'+u[0]
-            print(u[0])
+        for un in res1:
+            name_key = 'get_'+un[0]
+            print(un[0])
             #if name_key in result.keys():
             #    print(name_key)
         print('render POST', res)
