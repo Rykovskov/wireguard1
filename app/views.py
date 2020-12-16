@@ -183,15 +183,15 @@ def vpn_users():
                     for item in conf:
                         f.write("%s" % item)
                 f.close()
-                return redirect(url_for('/download/wgclient.conf'))
+                return redirect(url_for('download', filename='wgclient.conf'))
 
         print('render POST', res)
 
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
 
-@app.route('/download/wgclient.conf')
-def download():
-    return send_from_directory('/opt/wireguard1/files', 'wgclient.conf')
+@app.route('/download/<filename>')
+def download(filename):
+    return send_from_directory('/opt/wireguard1/files/', filename)
 
 
 @app.route('/add_vpn_user', methods=['post', 'get'])
