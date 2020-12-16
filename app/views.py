@@ -150,8 +150,9 @@ def vpn_users():
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         for un in res1:
+            print(un)
             name_key = 'get_'+un[0]
-            print(un[0])
+            print(un[10])
             #if name_key in result.keys():
             #    print(name_key)
         print('render POST', res)
