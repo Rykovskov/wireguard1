@@ -173,7 +173,7 @@ def vpn_users():
                     for ip_adr in res_ip:
                         al_ip = al_ip + al_ip+ip_adr.ip_allowedips+'/'+ip_adr.mask_allowedips + ' '
                 else:
-                    al_ip = ip_adr.ip_allowedips+'/'+al_ip+ip_adr.mask_allowedips
+                    al_ip = res_ip.ip_allowedips+'/' + res_ip.mask_allowedips
                 conf.append('AllowedIPs = ' + al_ip + '\n')
                 conf.append('Endpoint =  ' + res_server.server_organizations + ':' + str(res_server.port) + '\n')
                 conf.append('PersistentKeepalive = 25\n')
