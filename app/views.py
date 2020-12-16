@@ -148,8 +148,8 @@ def vpn_users():
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
-        for user in res:
-            name_key = 'get_'+user[0]
+        for u in res:
+            name_key = 'get_'+u
             print(name_key)
             if name_key in result.keys():
                 print(name_key)
