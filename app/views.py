@@ -247,7 +247,8 @@ def new_vpn_users():
                                      dt_activate_vpn_users=dt_activ,
                                      dt_disable_vpn_users=dt_disable,
                                      vpn_key=id_new_vpn,
-                                     active_vpn_users=act_user)
+                                     active_vpn_users=act_user,
+                                     adres_vpn=form.adres_vpn.data)
             db.session.add_all([new_vpn_user, ])
             db.session.commit()
             return redirect(url_for('vpn_users'))
