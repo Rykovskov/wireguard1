@@ -9,13 +9,9 @@ from sqlalchemy import text
 import os
 import datetime
 from datetime import timedelta
+import codecs
 
 sql_upd_conf = text("update rebuild_config set rebuld=true")
-
-
-@app.route('/download/wgclient.conf')
-def download(filename):
-    return send_from_directory('/opt/wireguard1/files', 'wgclient.conf')
 
 
 @app.route('/')
@@ -150,15 +146,52 @@ def vpn_users():
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         for un in res1:
-            print(un)
-            name_key = 'get_'+un[0]
-            print(un[10])
-            #if name_key in result.keys():
-            #    print(name_key)
+            name_key = 'get_'+un.name_vpn_users
+            if name_key in result.keys():
+                print('Генерим файл настроек для пользователя ', un.name_vpn_users)
+                #Получаем пару ключей для пользователя
+                res_key = Vpn_key.query.filter_by(id_vpn_key=un.vpn_key).first()
+                print('res_key ', res_key)
+                # Получаем адрес сервера
+                res_server = Organizations.query.filter_by(id_organizations=un.organizations).first()
+                print('res_server ', res_server)
+                # Получаем список разрешенных адресов
+                res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).all()
+                col_res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).count()
+                print(col_res_ip)
+                print('res_ip ', res_ip)
+                conf = []
+                conf.append('[Interface]\n')
+                conf.append('PrivateKey = ' + res_key.privatekey + '\n')
+                conf.append('Address = ' + un.adres_vpn + '\n')
+                conf.append('\n')
+                conf.append('[Peer]\n')
+                conf.append('PublicKey = ' + res_server.public_vpn_key_organizations + '\n')
+                #Формируем список разрешенных ип
+                al_ip = ''
+                if col_res_ip > 1:
+                    for ip_adr in res_ip:
+                        al_ip = al_ip + al_ip+ip_adr.ip_allowedips+'/'+ip_adr.mask_allowedips + ' '
+                else:
+                    al_ip = ip_adr.ip_allowedips+'/'+al_ip+ip_adr.mask_allowedips
+                conf.append('AllowedIPs = ' + al_ip + '\n')
+                conf.append('Endpoint =  ' + res_server.server_organizations + ':' + str(res_server.port) + '\n')
+                conf.append('PersistentKeepalive = 25\n')
+                print(conf)
+                #Сохраняем файл
+                with codecs.open('/opt/wireguard1/files/wgclient.conf', 'w', encoding='UTF8') as f:
+                    for item in conf:
+                        f.write("%s" % item)
+                f.close()
+                return redirect(url_for('/download/wgclient.conf'))
+
         print('render POST', res)
 
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
 
+@app.route('/download/wgclient.conf')
+def download():
+    return send_from_directory('/opt/wireguard1/files', 'wgclient.conf')
 
 
 @app.route('/add_vpn_user', methods=['post', 'get'])

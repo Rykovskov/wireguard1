@@ -42,6 +42,7 @@
                            <td><b>Дата актививации</b></Td>
                            <td><b>Дата отключения</b></Td>
                            <td><b>Статус</b></Td>
+                           <td><b>Адрес клиента</b></Td>
                            <td><b>Разрешенные IP</b></Td>
                        </tr>
                     {% for u in sp_vpn_users %}
@@ -54,6 +55,7 @@
                             <td>{{u.dt_activate_vpn_usersstr}}</td>
                             <td>{{u.dt_disable_vpn_usersstr}}</td>
                             <td>{{u.active_vpn_users}}</td>
+                            <td>{{u.adres_vpn}}</td>
                             <td>{{u.allowedips.all()}}</td>
                             <td><input type="submit" value="Скачать настройки" name="get_{{ u.name_vpn_users }}"> </td>
                         <tr>

@@ -66,8 +66,9 @@ class Organizations(db.Model):
     public_vpn_key_organizations = db.Column(db.String(255))
     private_vpn_key_organizations = db.Column(db.String(255))
     vpn_users = db.relationship('Vpn_users', backref='vpn_users', lazy='dynamic')
+    port = db.Column(db.Integer(), nullable=False)
     def __repr__(self):
-        return "{}:  {}".format(self.id_organizations, self.name_organizations)
+        return "{}:  {} Srv: {}".format(self.id_organizations, self.name_organizations, self.server_organizations)
 
 class Vpn_users(db.Model):
     __tablename__ = 'vpn_users'
@@ -82,6 +83,7 @@ class Vpn_users(db.Model):
     organizations = db.Column(db.Integer, db.ForeignKey('organizations.id_organizations'))
     allowedips = db.relationship('Allowedips', backref='allowedips', lazy='dynamic')
     name_org =  db.relationship('Organizations', backref='organizations',  lazy="select", uselist=False)
+    adres_vpn = db.Column(db.String(15), nullable=False)
 
     @property
     def dt_create_vpn_usersstr(self):
