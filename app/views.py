@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from app import app
-from flask import render_template, request, redirect, url_for, flash, make_response, session
+from flask import render_template, request, redirect, url_for, flash, make_response, session, send_from_directory
 from flask_login import login_required, login_user, current_user, logout_user
 from .models import Users, Vpn_users, Organizations, db, Allowedips, Vpn_key, rebuild_config
 from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm
@@ -11,6 +11,12 @@ import datetime
 from datetime import timedelta
 
 sql_upd_conf = text("update rebuild_config set rebuld=true")
+
+
+@app.route('/download/wgclient.conf')
+def download(filename):
+    return send_from_directory('/opt/wireguard1/files', 'wgclient.conf')
+
 
 @app.route('/')
 @login_required
@@ -91,8 +97,8 @@ def vpn_users():
 
     if request.method == 'POST':
         print('----------------POST-------------------')
-        #for k in result.keys():
-        #    print('key - ', k, '---', result[k])
+        for k in result.keys():
+            print('key - ', k, '---', result[k])
 
         if 'updt_d' in result.keys():
             form.v_user.data = True
