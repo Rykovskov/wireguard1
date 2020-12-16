@@ -148,11 +148,12 @@ def vpn_users():
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
-        for u in res:
-            name_key = 'get_'+u
-            print(name_key)
-            if name_key in result.keys():
-                print(name_key)
+        res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+        for u in res1:
+            name_key = 'get_'+u[0]
+            print(u[0])
+            #if name_key in result.keys():
+            #    print(name_key)
         print('render POST', res)
 
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
