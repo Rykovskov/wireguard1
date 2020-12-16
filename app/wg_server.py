@@ -35,7 +35,7 @@ if res[0][0]:
         #Генерруем конфигурационный файл
         conf = []
         conf.append('[Interface]\n')
-        conf.append('Address = 10.210.216.1/24\n')
+        conf.append('Address = 10.210.210.1/24\n')
         conf.append('ListenPort = ' + str(org[5])+'\n')
         conf.append('PrivateKey = ' + org[3]+'\n')
         cur.execute(sql_select_users, (org[0],))
