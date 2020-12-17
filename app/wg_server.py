@@ -7,7 +7,7 @@ import transliterate
 import codecs
 
 wireguard_patch = '/etc/wireguard'
-prefix_wg_config = 'wg1_'
+prefix_wg_config = 'wg_'
 
 conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host='localhost')
 sql_select_rebuild = """select * from rebuild_config  order by last_update desc limit 1"""
