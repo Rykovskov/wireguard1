@@ -185,7 +185,9 @@ def vpn_users():
                     for item in conf:
                         f.write("%s" % item)
                 f.close()
-                return redirect(url_for('download', filename=(un.name_vpn_users + '.conf')))
+                f_n = un.name_vpn_users + '.conf'
+                print('f_n', f_n)
+                return redirect(url_for('download', filename=f_n))
 
         print('render POST', res)
 
