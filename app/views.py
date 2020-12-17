@@ -10,7 +10,6 @@ import os
 import datetime
 from datetime import timedelta
 import codecs
-import transliterate
 
 sql_upd_conf = text("update rebuild_config set rebuld=true")
 
