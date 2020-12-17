@@ -167,12 +167,11 @@ def vpn_users():
                 conf.append('PublicKey = ' + res_server.public_vpn_key_organizations + '\n')
                 #Формируем список разрешенных ип
                 al_ip = ''
-                print('res_ip ', res_ip)
-                print(col_res_ip)
                 if col_res_ip > 1:
                     for ip_adr in res_ip:
                         al_ip = al_ip+ip_adr.ip_allowedips+'/'+ip_adr.mask_allowedips + ','
                 else:
+                    print('res_ip ', res_ip)
                     al_ip = res_ip.ip_allowedips+'/' + res_ip.mask_allowedips
                 conf.append('AllowedIPs = ' + al_ip + '\n')
                 conf.append('Endpoint =  ' + res_server.server_organizations + ':' + str(res_server.port) + '\n')
