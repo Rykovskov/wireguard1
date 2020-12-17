@@ -157,7 +157,6 @@ def vpn_users():
                 # Получаем список разрешенных адресов
                 res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).all()
                 col_res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).count()
-
                 conf = []
                 conf.append('[Interface]\n')
                 conf.append('PrivateKey = ' + res_key.privatekey + '\n')
@@ -171,14 +170,11 @@ def vpn_users():
                     for ip_adr in res_ip:
                         al_ip = al_ip + str(ip_adr) + ','
                 else:
-                    print('res_ip1111 ', res_ip[0])
                     al_ip = str(res_ip[0])+','
                 al_ip = al_ip[0:-1]
-                print(al_ip)
                 conf.append('AllowedIPs = ' + al_ip + '\n')
                 conf.append('Endpoint =  ' + res_server.server_organizations + ':' + str(res_server.port) + '\n')
                 conf.append('PersistentKeepalive = 25\n')
-                print(conf)
                 name_conf = "/opt/wireguard1/files/" + un.name_vpn_users + '.conf'
                 #Сохраняем файл
                 with codecs.open(name_conf, 'w', encoding='UTF8') as f:
@@ -186,7 +182,6 @@ def vpn_users():
                         f.write("%s" % item)
                 f.close()
                 f_n = un.name_vpn_users + '.conf'
-                print('f_n', f_n)
                 return redirect(url_for('download', filename=f_n))
 
         print('render POST', res)
