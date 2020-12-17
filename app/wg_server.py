@@ -7,7 +7,7 @@ import transliterate
 import codecs
 
 wireguard_patch = '/etc/wireguard'
-prefix_wg_config = 'wg_'
+prefix_wg_config = 'wg1_'
 
 conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host='localhost')
 sql_select_rebuild = """select * from rebuild_config  order by last_update desc limit 1"""
@@ -27,9 +27,9 @@ if True:
     org_sp = cur.fetchall()
     for org in org_sp:
         name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
-        name_wg_interface_file = name_wg_interface + '.conf1'
+        name_wg_interface_file = name_wg_interface + '.conf'
         name_wg_interface_new = name_wg_interface + '.new'
-        name_wg_interface_new_file = name_wg_interface_new + '.conf1'
+        name_wg_interface_new_file = name_wg_interface_new + '.conf'
         config_file_new = os.path.join(wireguard_patch, name_wg_interface_new_file)
         config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
         #f = open(name_wg_interface_new_file, 'w')
@@ -57,8 +57,8 @@ if True:
         cur.execute(sql_update_rebuild)
         conn.commit()
         #перезапускаем интерфейс
-        #os.system("/usr/bin/wg-quick down " + name_wg_interface)
-        #result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
-        #print(result)
+        os.system("/usr/bin/wg-quick down " + name_wg_interface)
+        result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        print(result)
 
 
