@@ -20,8 +20,8 @@ cur.execute(sql_select_rebuild)
 res = cur.fetchall()
 WireGuard = os.path.abspath(wireguard_patch)
 os.chdir(WireGuard)
-#if res[0][0]:
-if True:
+if res[0][0]:
+    #if True:
     #Начинаем обход организаций
     cur.execute(sql_select_org)
     org_sp = cur.fetchall()
