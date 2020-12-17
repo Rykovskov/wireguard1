@@ -173,7 +173,7 @@ def vpn_users():
                 else:
                     print('res_ip1111 ', res_ip[0])
                     al_ip = res_ip[0]
-                conf.append('AllowedIPs = ' + al_ip + '\n')
+                conf.append('AllowedIPs = ' + str(al_ip) + '\n')
                 conf.append('Endpoint =  ' + res_server.server_organizations + ':' + str(res_server.port) + '\n')
                 conf.append('PersistentKeepalive = 25\n')
                 print(conf)
