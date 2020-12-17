@@ -123,7 +123,6 @@ def vpn_users():
             print('#Влючаем выбранных')
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
-                    print('6666666666')
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = True
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
@@ -158,8 +157,7 @@ def vpn_users():
                 # Получаем список разрешенных адресов
                 res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).all()
                 col_res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).count()
-                print(col_res_ip)
-                print('res_ip ', res_ip)
+
                 conf = []
                 conf.append('[Interface]\n')
                 conf.append('PrivateKey = ' + res_key.privatekey + '\n')
@@ -169,6 +167,8 @@ def vpn_users():
                 conf.append('PublicKey = ' + res_server.public_vpn_key_organizations + '\n')
                 #Формируем список разрешенных ип
                 al_ip = ''
+                print('res_ip ', res_ip)
+                print(col_res_ip)
                 if col_res_ip > 1:
                     for ip_adr in res_ip:
                         al_ip = al_ip+ip_adr.ip_allowedips+'/'+ip_adr.mask_allowedips + ','
