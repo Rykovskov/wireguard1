@@ -14,7 +14,7 @@ class Allowedips(db.Model):
     vpn_user = db.Column(db.Integer, db.ForeignKey('vpn_users.id_vpn_users'))
 
     def __repr__(self):
-        return "<{}/{}>".format(self.ip_allowedips, self.mask_allowedips[:15])
+        return "{}/{}".format(self.ip_allowedips, self.mask_allowedips[:15])
 
 
 @login_manager.user_loader

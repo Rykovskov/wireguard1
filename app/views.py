@@ -169,10 +169,12 @@ def vpn_users():
                 al_ip = ''
                 if col_res_ip > 1:
                     for ip_adr in res_ip:
-                        al_ip = al_ip+ip_adr.ip_allowedips+'/'+ip_adr.mask_allowedips + ','
+                        al_ip = al_ip + ip_adr + ','
                 else:
-                    print('res_ip1111 ', res_ip[0][0])
-                    al_ip = res_ip[0][0]
+                    print('res_ip1111 ', res_ip[0])
+                    al_ip = res_ip[0]+','
+                al_ip = al_ip[0:-1]
+                print(al_ip)
                 conf.append('AllowedIPs = ' + al_ip + '\n')
                 conf.append('Endpoint =  ' + res_server.server_organizations + ':' + str(res_server.port) + '\n')
                 conf.append('PersistentKeepalive = 25\n')
