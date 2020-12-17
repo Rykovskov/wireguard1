@@ -169,10 +169,10 @@ def vpn_users():
                 al_ip = ''
                 if col_res_ip > 1:
                     for ip_adr in res_ip:
-                        al_ip = al_ip + ip_adr + ','
+                        al_ip = al_ip + str(ip_adr) + ','
                 else:
                     print('res_ip1111 ', res_ip[0])
-                    al_ip = res_ip[0]+','
+                    al_ip = str(res_ip[0])+','
                 al_ip = al_ip[0:-1]
                 print(al_ip)
                 conf.append('AllowedIPs = ' + al_ip + '\n')
