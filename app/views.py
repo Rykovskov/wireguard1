@@ -10,6 +10,7 @@ import os
 import datetime
 from datetime import timedelta
 import codecs
+import transliterate
 
 sql_upd_conf = text("update rebuild_config set rebuld=true")
 
@@ -178,12 +179,13 @@ def vpn_users():
                 conf.append('Endpoint =  ' + res_server.server_organizations + ':' + str(res_server.port) + '\n')
                 conf.append('PersistentKeepalive = 25\n')
                 print(conf)
+                name_conf = "/opt/wireguard1/files/" + un.name_vpn_users + '.conf'
                 #Сохраняем файл
-                with codecs.open('/opt/wireguard1/files/wgclient.conf', 'w', encoding='UTF8') as f:
+                with codecs.open(name_conf, 'w', encoding='UTF8') as f:
                     for item in conf:
                         f.write("%s" % item)
                 f.close()
-                return redirect(url_for('download', filename='wgclient.conf'))
+                return redirect(url_for('download', filename=(un.name_vpn_users + '.conf')))
 
         print('render POST', res)
 
