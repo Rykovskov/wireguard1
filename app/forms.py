@@ -22,8 +22,17 @@ class CreateAdminUserForm(FlaskForm):
     new_pass  = PasswordField('Пароль:')
     new_confirm_pass = PasswordField('Подтверждение пароля')
     user_list = FieldList(FormField(AdminUsersForm), min_entries=0)
+    edit_user = SubmitField("Редактировать")
     new_user = SubmitField("Добавить")
     delete_user = SubmitField("Удалить выбранных")
+
+
+class EditAdminUserForm(FlaskForm):
+    login = StringField('Login')
+    new_pass = PasswordField('Пароль:')
+    new_confirm_pass = PasswordField('Подтверждение пароля')
+    save_user = SubmitField("Сохранить")
+    cancel_user = SubmitField("Отменить")
 
 
 class VpnUsersForm(FlaskForm):

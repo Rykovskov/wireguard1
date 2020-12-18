@@ -1,0 +1,23 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Current user {{cur_user}}</title>
+    </head>
+    <form action="" method="post" name="EditAdmin">
+        {{form.hidden_tag()}}
+        <DIV class="container">
+            <body>
+                <H2 align="center">Current user - {{cur_user}}</H2>
+
+                <DIV align='right'>
+                    <p>User login: {{ form.login.data }}</p>
+                    <p>Password: {{ form.new_pass() }}</p>
+                    <p>Confirm password: {{ form.new_confirm_pass() }}</p>
+                    <p>{{ form.save_user() }}</p>
+                    <p>{{ form.cancel_user() }}</p>
+                </DIV>
+            </body>
+        </DIV>
+    </form>
+{% endblock %}

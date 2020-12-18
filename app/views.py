@@ -3,7 +3,7 @@ from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session, send_from_directory
 from flask_login import login_required, login_user, current_user, logout_user
 from .models import Users, Vpn_users, Organizations, db, Allowedips, Vpn_key, rebuild_config
-from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm
+from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
 import os
@@ -44,6 +44,10 @@ def admin():
     if request.method == 'POST':
         result = request.form
         print(result)
+        if useradminform.edit_user.data:
+            for u in res:
+                if result.get(u.name_users) == 'on':
+                    return redirect(url_for('edit_admin', id_users = u.id_users))
         if useradminform.delete_user.data:
             for u in res:
                 if result.get(u.name_users) == 'on':
@@ -74,6 +78,29 @@ def admin():
                 return redirect(url_for('admin'))
         res = Users.query.order_by(Users.name_users).all()
     return render_template('admin.html', form=useradminform, cur_user=current_user.name_users, sp_users=res)
+
+
+@app.route('/edit_admin', methods=['post', 'get'])
+@login_required
+def edit_admin(id_user):
+    user = Users.query.get(id_user)
+    edituseradminform = EditAdminUserForm(sp_users=user)
+
+    if request.method == 'POST':
+        if edituseradminform.save_user.data:
+            if edituseradminform.new_pass.data == edituseradminform.new_confirm_pass.data:
+                print('password confirm')
+                # Сохраняем пользователя
+                user.set_password(edituseradminform.new_pass.data)
+                db.session.add(user)
+                db.session.commit()
+                print('Update user complete')
+                return redirect(url_for('admin'))
+            else:
+                flash("Пароли не совпадают!!!", 'error')
+                return redirect(url_for('edit_admin'))
+        if edituseradminform.cancel_user.data:
+            return redirect(url_for('admin'))
 
 
 @app.route('/vpn_users', methods=['post', 'get'])
