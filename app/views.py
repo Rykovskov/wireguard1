@@ -43,10 +43,10 @@ def admin():
     useradminform = CreateAdminUserForm(user_list=init_merits)
     if request.method == 'POST':
         result = request.form
-        print(result)
         if useradminform.edit_user.data:
             for u in res:
                 if result.get(u.name_users) == 'on':
+                    print('u.id_users', u.id_users)
                     return redirect(url_for('edit_admin', id_users = u.id_users))
         if useradminform.delete_user.data:
             for u in res:
@@ -82,7 +82,7 @@ def admin():
 
 @app.route('/edit_admin', methods=['post', 'get'])
 @login_required
-def edit_admin(id_user):
+def edit_admin(id_user=None):
     user = Users.query.get(id_user)
     edituseradminform = EditAdminUserForm(sp_users=user)
 
