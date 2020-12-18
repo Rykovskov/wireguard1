@@ -89,7 +89,7 @@ def edit_admin():
     print('id_user ', id_user)
     user = Users.query.get(id_user)
     print('user  ', user)
-    edituseradminform = EditAdminUserForm(field_user_id=user.id_users)
+    edituseradminform = EditAdminUserForm(login=user.name_users, field_user_id=user.id_users)
     print('222222222')
     if request.method == 'POST':
         if edituseradminform.save_user.data:
