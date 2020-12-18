@@ -31,6 +31,7 @@ class EditAdminUserForm(FlaskForm):
     login = StringField('Login')
     new_pass = PasswordField('Пароль:')
     new_confirm_pass = PasswordField('Подтверждение пароля')
+    field_user_id = IntegerField('user_id')
     save_user = SubmitField("Сохранить")
     cancel_user = SubmitField("Отменить")
 

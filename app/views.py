@@ -83,9 +83,10 @@ def admin():
 @app.route('/edit_admin', methods=['post', 'get'])
 @login_required
 def edit_admin():
+    print('INPUTTT', request.args)
     id_user = request.args.get("id_user")
     user = Users.query.get(id_user)
-    edituseradminform = EditAdminUserForm(sp_users=user)
+    edituseradminform = EditAdminUserForm(field_user_id=user)
 
     if request.method == 'POST':
         if edituseradminform.save_user.data:
