@@ -46,7 +46,6 @@ def admin():
         if useradminform.edit_user.data:
             for u in res:
                 if result.get(u.name_users) == 'on':
-                    print('u.id_users', u.id_users)
                     return redirect(url_for('edit_admin', id_users = u.id_users))
         if useradminform.delete_user.data:
             for u in res:
