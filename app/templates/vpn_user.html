@@ -62,13 +62,14 @@
                         <tr>
                     {% endfor %}
                 </table>
-                <DIV align='right'>
+
+            </body>
+        </DIV>
+        <DIV align='right'>
                     <p><input type="submit" value="Отключить пользователя" name="d_user"> <input type="submit" value="Включить пользователя" name="e_user"></p>
                     <p>{{ form.new_user() }} {{ form.edit_user() }} {{ form.delete_user() }}</p>
                     <input type="submit" value="updt_e" name="updt_e" id = "updt_e" style="visibility: hidden">
                     <input type="submit" value="updt_d" name="updt_d" id = "updt_d" style="visibility: hidden">
                 </DIV>
-            </body>
-        </DIV>
     </form>
 {% endblock %}
