@@ -83,8 +83,10 @@ def admin():
 @app.route('/edit_admin', methods=['post', 'get'])
 @login_required
 def edit_admin():
+    print('request.method', request.method)
     print('INPUTTT', request.args)
     id_user = request.args.get("id_user")
+    print('id_user ', id_user)
     user = Users.query.get(id_user)
     print('user  ', user)
     edituseradminform = EditAdminUserForm(field_user_id=user)
