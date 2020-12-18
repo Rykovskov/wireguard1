@@ -86,11 +86,8 @@ def edit_admin():
     print('request.method', request.method)
     print('INPUTTT', request.args)
     id_user = request.args.get("id_users")
-    print('id_user ', id_user)
     user = Users.query.get(id_user)
-    print('user  ', user)
-    edituseradminform = EditAdminUserForm(login=user.name_users, field_user_id=user.id_users)
-    print('222222222')
+    edituseradminform = EditAdminUserForm(cur_user=current_user.name_users, login=user.name_users, field_user_id=user.id_users)
     if request.method == 'POST':
         if edituseradminform.save_user.data:
             if edituseradminform.new_pass.data == edituseradminform.new_confirm_pass.data:
