@@ -83,20 +83,16 @@ def admin():
 @app.route('/edit_admin', methods=['post', 'get'])
 @login_required
 def edit_admin():
-    print('request.method', request.method)
-    print('INPUTTT', request.args)
     id_user = request.args.get("id_users")
     user = Users.query.get(id_user)
     form = EditAdminUserForm(login=user.name_users, field_user_id=user.id_users)
     if request.method == 'POST':
         if form.save_user.data:
             if form.new_pass.data == form.new_confirm_pass.data:
-                print('password confirm')
                 # Сохраняем пользователя
                 user.set_password(form.new_pass.data)
                 db.session.add(user)
                 db.session.commit()
-                print('Update user complete')
                 return redirect(url_for('admin'))
             else:
                 flash("Пароли не совпадают!!!", 'error')

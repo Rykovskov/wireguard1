@@ -22,7 +22,7 @@ class CreateAdminUserForm(FlaskForm):
     new_pass  = PasswordField('Пароль:')
     new_confirm_pass = PasswordField('Подтверждение пароля')
     user_list = FieldList(FormField(AdminUsersForm), min_entries=0)
-    edit_user = SubmitField("Редактировать")
+    edit_user = SubmitField("Редактировать выбранных")
     new_user = SubmitField("Добавить")
     delete_user = SubmitField("Удалить выбранных")
 
