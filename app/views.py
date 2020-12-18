@@ -106,7 +106,7 @@ def edit_admin():
                 return redirect(url_for('edit_admin'))
         if edituseradminform.cancel_user.data:
             return redirect(url_for('admin'))
-    return render_template('admin.edit_admin', form=edituseradminform)
+    return render_template('edit_admin', form=edituseradminform)
 
 
 @app.route('/vpn_users', methods=['post', 'get'])
