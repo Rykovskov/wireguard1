@@ -85,7 +85,7 @@ def admin():
 def edit_admin():
     print('request.method', request.method)
     print('INPUTTT', request.args)
-    id_user = request.args.get("id_user")
+    id_user = request.args.get("id_users")
     print('id_user ', id_user)
     user = Users.query.get(id_user)
     print('user  ', user)
