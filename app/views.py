@@ -87,14 +87,13 @@ def edit_admin():
     print('INPUTTT', request.args)
     id_user = request.args.get("id_users")
     user = Users.query.get(id_user)
-    print('current_user.name_users ', current_user.name_users)
-    edituseradminform = EditAdminUserForm(cur_user=current_user.name_users, login=user.name_users, field_user_id=user.id_users)
+    form = EditAdminUserForm(login=user.name_users, field_user_id=user.id_users)
     if request.method == 'POST':
-        if edituseradminform.save_user.data:
-            if edituseradminform.new_pass.data == edituseradminform.new_confirm_pass.data:
+        if form.save_user.data:
+            if form.new_pass.data == form.new_confirm_pass.data:
                 print('password confirm')
                 # Сохраняем пользователя
-                user.set_password(edituseradminform.new_pass.data)
+                user.set_password(form.new_pass.data)
                 db.session.add(user)
                 db.session.commit()
                 print('Update user complete')
@@ -102,9 +101,9 @@ def edit_admin():
             else:
                 flash("Пароли не совпадают!!!", 'error')
                 return redirect(url_for('edit_admin'))
-        if edituseradminform.cancel_user.data:
+        if form.cancel_user.data:
             return redirect(url_for('admin'))
-    return render_template('edit_admin.html', form=edituseradminform)
+    return render_template('edit_admin.html', cur_user=current_user.name_users, form=form)
 
 
 @app.route('/vpn_users', methods=['post', 'get'])
