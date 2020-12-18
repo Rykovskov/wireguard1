@@ -91,6 +91,7 @@ def edit_admin():
             if form.new_pass.data == form.new_confirm_pass.data:
                 # Сохраняем пользователя
                 user.set_password(form.new_pass.data)
+                user.name_users = form.login
                 db.session.add(user)
                 db.session.commit()
                 return redirect(url_for('admin'))
