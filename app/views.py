@@ -86,6 +86,7 @@ def edit_admin():
     print('INPUTTT', request.args)
     id_user = request.args.get("id_user")
     user = Users.query.get(id_user)
+    print('user  ', user)
     edituseradminform = EditAdminUserForm(field_user_id=user)
 
     if request.method == 'POST':
