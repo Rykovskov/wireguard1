@@ -15,6 +15,7 @@
                     <td><b>Наименование</b></Td>
                     <td><b>Сервер</b></Td>
                     <td><b>Порт</b></Td>
+                    <td><b>Подсеть</b></Td>
                     <td><b>Publick Key</b></Td>
                     <td><b>Private Key</b></Td>
                 </tr>
@@ -24,6 +25,7 @@
                         <td>{{o.name_organizations}}</td>
                         <td>{{o.server_organizations}}</td>
                         <td>{{o.port}}</td>
+                        <td>{{o.subnet}}</td>
                         <td>{{o.public_vpn_key_organizations}}</td>
                         <td>{{o.private_vpn_key_organizations}}</td>
                     <tr>
@@ -33,6 +35,8 @@
             <DIV align='right'>
                     <p>Наименование: {{ form.name_organizations() }}</p>
                     <p>IP адрес сервера: {{ form.server_organizations() }}</p>
+                    <p>Порт сервера: {{ form.server_organizations() }}</p>
+                    <p>Подсеть: {{ form.subnet() }}</p>
                     <p>Публичный ключь: {{ form.public_vpn_key_organizations() }}</p>
                     <p>Закрытый ключь: {{ form.private_vpn_key_organizations() }}</p>
                     <p> {{ form.add_org() }}</p>

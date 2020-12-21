@@ -11,7 +11,9 @@ import datetime
 from datetime import timedelta
 import codecs
 
+#Служебные SQL запросы
 sql_upd_conf = text("update rebuild_config set rebuld=true")
+sql_last_used_ip = text("select  id_vpn_users, adres_vpn from public.vpn_users where organizations=3 and id_vpn_users=9")
 
 
 @app.route('/')
@@ -265,6 +267,9 @@ def new_vpn_users():
             db.session.commit()
             id_new_vpn = new_vpn_key.id_vpn_key
             act_user = form.now_active.data
+            #Заполняем адрес клиента
+            r = db.engine.execute(sql_upd_conf)
+            adr_client =
             new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
                                      name_vpn_users=form.new_vpn_login.data,
                                      email_vpn_users=form.email_vpn_users.data,
@@ -310,7 +315,12 @@ def organizations():
                 q1 = len(Organizations.query.filter_by(name_organizations=form.name_organizations.data).all())
                 if q1 == 0:
                     #Добавляем новую организацию
-                    new_org = Organizations(name_organizations=form.name_organizations.data, server_organizations=form.server_organizations.data, public_vpn_key_organizations=form.public_vpn_key_organizations.data, private_vpn_key_organizations=form.private_vpn_key_organizations.data)
+                    new_org = Organizations(name_organizations=form.name_organizations.data,
+                                            server_organizations=form.server_organizations.data,
+                                            port=form.port.date,
+                                            subnet=form.subnet.data,
+                                            public_vpn_key_organizations=form.public_vpn_key_organizations.data,
+                                            private_vpn_key_organizations=form.private_vpn_key_organizations.data)
                     db.session.add_all([new_org, ])
                     db.session.commit()
                 else:

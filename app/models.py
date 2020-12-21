@@ -67,8 +67,9 @@ class Organizations(db.Model):
     private_vpn_key_organizations = db.Column(db.String(255))
     vpn_users = db.relationship('Vpn_users', backref='vpn_users', lazy='dynamic')
     port = db.Column(db.Integer(), nullable=False)
+    subnet = db.Column(db.String(255))
     def __repr__(self):
-        return "{}:  {} Srv: {}".format(self.id_organizations, self.name_organizations, self.server_organizations)
+        return "{}:  {} Srv: {}:{}".format(self.id_organizations, self.name_organizations, self.server_organizations, self.port)
 
 class Vpn_users(db.Model):
     __tablename__ = 'vpn_users'
