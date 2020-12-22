@@ -57,7 +57,7 @@ class Vpn_key(db.Model):
     def __repr__(self):
         return "<{}:{}>".format(self.publickey, self.privatekey)
 
-class org_last_adres(db.Model)
+class org_last_adres(db.Model):
     __tablename__ = 'org_last_addres'
     id_organizations = db.Column(db.Integer(), primary_key=True)
     last_ip = db.Column(db.String(255))
