@@ -61,7 +61,7 @@ class org_last_addres(db.Model):
     __tablename__ = 'org_last_addres'
     id_organizations = db.Column(db.Integer(), primary_key=True)
     last_ip = db.Column(db.String(255))
-    organizations = db.Column(db.Integer, db.ForeignKey('organizations.id_organizations'))
+    #organizations = db.Column(db.Integer, db.ForeignKey('organizations.id_organizations'))
 
 class Organizations(db.Model):
     __tablename__ = 'organizations'
