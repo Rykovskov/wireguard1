@@ -13,7 +13,9 @@ import codecs
 
 #Служебные SQL запросы
 sql_upd_conf = text("update rebuild_config set rebuld=true")
-sql_last_used_ip = text("select  id_vpn_users, adres_vpn from public.vpn_users where organizations=3 and id_vpn_users=9")
+sql_last_used_ip = text('''select id_organizations, name_organizations, server_organizations, port,
+                        (select adres_vpn as aa from vpn_users_view where organizations =id_organizations  order by n_ip
+                        desc limit 1) from organizations''')
 
 
 @app.route('/')
@@ -226,7 +228,11 @@ def download(filename):
 def new_vpn_users():
     res_org = Organizations.query.order_by(Organizations.name_organizations).all()
     form = NewVpnUserForm()
-    form.new_vpn_organizations.choices = res_org
+    #form.new_vpn_organizations.choices = res_org
+    #Последний использованный адрес
+    r = db.engine.execute(sql_last_used_ip)
+    form.new_vpn_organizations.choices = r
+    #last_adr =
     if request.method == 'POST':
         result = request.form
         if form.save_user.data:
@@ -267,9 +273,6 @@ def new_vpn_users():
             db.session.commit()
             id_new_vpn = new_vpn_key.id_vpn_key
             act_user = form.now_active.data
-            #Заполняем адрес клиента
-            r = db.engine.execute(sql_upd_conf)
-            adr_client =
             new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
                                      name_vpn_users=form.new_vpn_login.data,
                                      email_vpn_users=form.email_vpn_users.data,

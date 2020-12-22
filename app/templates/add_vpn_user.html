@@ -17,7 +17,7 @@
                         <td align="left">E-mail:</td><td align="right">{{ form.email_vpn_users() }}</td>
                     </tr>
                     <tr>
-                        <td align="left">Организация: </td><td align="right">{{ form.new_vpn_organizations() }}</td>
+                        <td align="left">Организация: </td><td align="right">{{ form.new_vpn_organizations(size=180) }}</td>
                     </tr>
                     <tr>
                         <td align="left">Дата активации: </td><td align="right"><input type="date" id="date_act" name="date_act"/></td>
@@ -27,9 +27,6 @@
                     </tr>
                     <tr>
                         <td align="left">Активированть пользователя: </td><td align="right">{{ form.now_active() }}</td>
-                    </tr>
-                    <tr>
-                        <td align="left">Адрес клиента: </td><td align="right">{{ form.adres_vpn() }}</td>
                     </tr>
                     <tr>
                         <td align="left">IP доступа: </td><td align="right"><textarea name="al_ip"></textarea></td>
