@@ -13,9 +13,7 @@ import codecs
 
 #Служебные SQL запросы
 sql_upd_conf = text("update rebuild_config set rebuld=true")
-sql_last_used_ip = text('''select id_organizations, name_organizations, server_organizations, port,
-                        (select adres_vpn as aa from vpn_users_view where organizations =id_organizations  order by n_ip
-                        desc limit 1) from organizations''')
+sql_last_used_ip = text("select id_organizations, name_organizations, server_organizations, port, (select adres_vpn as aa from vpn_users_view where organizations =id_organizations  order by n_ip desc limit 1) from organizations")
 
 
 @app.route('/')
