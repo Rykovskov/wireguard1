@@ -229,7 +229,8 @@ def new_vpn_users():
     #form.new_vpn_organizations.choices = res_org
     #Последний использованный адрес
     r = db.engine.execute(sql_last_used_ip)
-    print('r ', r)
+    for row in r:
+        print('row ', row)
     form.new_vpn_organizations.choices = r
     #last_adr =
     if request.method == 'POST':
