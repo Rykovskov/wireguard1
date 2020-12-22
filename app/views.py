@@ -2,7 +2,7 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session, send_from_directory
 from flask_login import login_required, login_user, current_user, logout_user
-from .models import Users, Vpn_users, Organizations, db, Allowedips, Vpn_key, rebuild_config
+from .models import Users, Vpn_users, Organizations, org_last_addres, db, Allowedips, Vpn_key, rebuild_config
 from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
@@ -48,7 +48,7 @@ def admin():
         if useradminform.edit_user.data:
             for u in res:
                 if result.get(u.name_users) == 'on':
-                    return redirect(url_for('edit_admin', id_users = u.id_users))
+                    return redirect(url_for('edit_admin', id_users=u.id_users))
         if useradminform.delete_user.data:
             for u in res:
                 if result.get(u.name_users) == 'on':
@@ -224,7 +224,8 @@ def download(filename):
 @app.route('/add_vpn_user', methods=['post', 'get'])
 @login_required
 def new_vpn_users():
-    res_org = Organizations.query.order_by(Organizations.name_organizations).all()
+    #res_org = Organizations.query.order_by(Organizations.name_organizations).all()
+    res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
     form = NewVpnUserForm()
     form.new_vpn_organizations.choices = res_org
     #last_adr =
