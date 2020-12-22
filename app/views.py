@@ -226,12 +226,7 @@ def download(filename):
 def new_vpn_users():
     res_org = Organizations.query.order_by(Organizations.name_organizations).all()
     form = NewVpnUserForm()
-    #form.new_vpn_organizations.choices = res_org
-    #Последний использованный адрес
-    r = db.engine.execute(sql_last_used_ip)
-    for row in r:
-        print('row ', row)
-    form.new_vpn_organizations.choices = r
+    form.new_vpn_organizations.choices = res_org
     #last_adr =
     if request.method == 'POST':
         result = request.form
