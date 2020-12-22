@@ -59,6 +59,7 @@ class Vpn_key(db.Model):
 
 class org_last_addres(db.Model):
     __tablename__ = 'org_last_addres'
+    id = db.Column(db.Integer(), primary_key=True)
     id_organizations = db.Column(db.Integer(), db.ForeignKey('organizations.id_organizations'))
     last_ip = db.Column(db.String(255))
 
