@@ -59,9 +59,8 @@ class Vpn_key(db.Model):
 
 class org_last_addres(db.Model):
     __tablename__ = 'org_last_addres'
-    id_organizations = db.Column(db.Integer(), primary_key=True)
+    id_organizations = db.Column(db.Integer(), db.ForeignKey('organizations.id_organizations'))
     last_ip = db.Column(db.String(255))
-    organizations_id = db.Column(db.Integer, db.ForeignKey('organizations_id'))
 
 class Organizations(db.Model):
     __tablename__ = 'organizations'
@@ -71,7 +70,7 @@ class Organizations(db.Model):
     public_vpn_key_organizations = db.Column(db.String(255))
     private_vpn_key_organizations = db.Column(db.String(255))
     vpn_users = db.relationship('Vpn_users', backref='vpn_users', lazy='dynamic')
-    #last_ip = db.relationship('org_last_addres', foreign_keys=[id_organizations])
+    last_ip = db.relationship('org_last_addres', backref='last_ip', foreign_keys=[org_last_addres.id_organizations])
     port = db.Column(db.Integer(), nullable=False)
     subnet = db.Column(db.String(255))
     def __repr__(self):
