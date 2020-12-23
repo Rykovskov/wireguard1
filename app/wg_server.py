@@ -63,6 +63,6 @@ if res[0][0]:
         # Протоколируем операцию
         cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла !',))
         conn.commit()
-        print(result)
+        #print(result)
 
 
