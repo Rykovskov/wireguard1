@@ -182,7 +182,7 @@ def vpn_users():
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
                     Logging.user_id = current_user.id_users
-                    Logging.descr = 'Включение пользователя ' + u.name_users
+                    Logging.descr = 'Включение пользователя ' + u.name_vpn_users
                     db.session.add(Logging)
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
@@ -200,7 +200,7 @@ def vpn_users():
                     db.session.delete(del_user)
                     db.session.commit()
                     Logging.user_id = current_user.id_users
-                    Logging.descr = 'Удаление пользователя ' + u.name_users
+                    Logging.descr = 'Удаление пользователя ' + u.name_vpn_users
                     db.session.add(Logging)
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
