@@ -13,8 +13,7 @@ import codecs
 
 #Служебные SQL запросы
 sql_upd_conf = text("update rebuild_config set rebuld=true")
-sql_last_used_ip = text("select id_organizations, name_organizations, server_organizations, port, (select adres_vpn as aa from vpn_users_view where organizations =id_organizations  order by n_ip desc limit 1) from organizations")
-
+sql_logging = text("select * from logging_view order by dt_event desc")
 
 @app.route('/')
 @login_required
@@ -25,7 +24,7 @@ def index():
 @login_required
 def Loggin():
     form = LogginViewForm()
-    res = Logging_view.query.order_by(Logging_view.name_users).all()
+    res = db.engine.execute(sql_logging)
     print('res ', res)
     return render_template('logging.html', form=form, cur_user=current_user.name_users, sp_logging=res)
 
