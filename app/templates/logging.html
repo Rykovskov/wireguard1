@@ -17,9 +17,9 @@
                     <tr>
                         <Td><b>Пользователь</b></Td><td><b>Событие</b></Td><td><b>Время</b></Td>
                     </tr>
-                    {% for l in sp_loggin %}
+                    {% for l in sp_logging %}
                         <tr>
-                            <td>{{ l.name_users.data }}></td><td>{{l.descr.data}}</td><td>{{l.dt_event.data}}</td>
+                            <td>{{l.name_users.data}}</td><td>{{l.descr.data}}</td><td>{{l.dt_event.data}}</td>
                         <tr>
                     {% endfor %}
                 </table>
