@@ -1,0 +1,31 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Current user {{cur_user}}</title>
+    </head>
+    <form action="" method="post" name="LogginList">
+        {{form.hidden_tag()}}
+        <DIV class="container">
+            <body>
+                <H2 align="center">Current user - {{cur_user}}</H2>
+                <DIV align='right'>
+                    <p>Фильтрация по дате: <INPUT type="text" name="filtr_dt"></p>
+                    <p>Фильтрация по имени: <INPUT type="text" name="filtr_name"></p>
+                </DIV>
+                <table class="table table-bordered">
+                    <tr>
+                        <td></td><Td><b>Пользователь</b></Td><td><b>Событие</b></Td><td><b>Время</b></Td>
+                    </tr>
+                    {% for l in sp_loggin %}
+                        <tr>
+                            <td>{{ l.name_users.data }}></td><td>{{l.descr.data}}</td><td>{{l.dt_event.data}}</td>
+                        <tr>
+                    {% endfor %}
+                </table>
+                <p>
+
+            </body>
+        </DIV>
+    </form>
+{% endblock %}

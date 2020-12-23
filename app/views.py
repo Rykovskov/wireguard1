@@ -2,8 +2,8 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session, send_from_directory
 from flask_login import login_required, login_user, current_user, logout_user
-from .models import Users, Vpn_users, Organizations, org_last_addres, db, Allowedips, Vpn_key, rebuild_config
-from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm
+from .models import Users, Vpn_users, Organizations, org_last_addres, db, Allowedips, Vpn_key, rebuild_config, Logging, Logging_view
+from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm, LogginViewForm
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
 import os
@@ -21,16 +21,32 @@ sql_last_used_ip = text("select id_organizations, name_organizations, server_org
 def index():
     return render_template('index.html', user=current_user.name_users)
 
+@app.route('/Loggin/', methods=['post', 'get'])
+@login_required
+def Loggin():
+    form = LogginViewForm()
+    res = Logging_view.order_by(Logging_view.dt_event).all()
+    return render_template('loggin.html', form=form, cur_user=current_user.name_users, sp_loggin=res)
+
 
 @app.route('/login/', methods=['post', 'get'])
 def login():
     if current_user.is_authenticated:
+        # Логируем вход пользователя
+        Logging.user_id = current_user.id_users
+        Logging.descr = 'Вход пользователя'
+        db.session.add(Logging)
+        db.session.commit()
         return redirect(url_for('admin'))
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.query(Users).filter(Users.name_users == form.username.data).first()
         if user.check_password(form.password.data):
             login_user(user, remember=form.remember.data)
+            Logging.user_id = current_user.id_users
+            Logging.descr = 'Регистрация пользователя'
+            db.session.add(Logging)
+            db.session.commit()
             return redirect(url_for('admin'))
         flash("Invalid username/password", 'error')
         return redirect(url_for('login'))
@@ -61,13 +77,15 @@ def admin():
                 q1 = len(Users.query.filter_by(name_users = useradminform.new_login.data).all())
                 if q1 == 0:
                     if useradminform.new_pass.data == useradminform.new_confirm_pass.data:
-                        print('password confirm')
                         #Создаем пользователя
                         new_user = Users(name_users=useradminform.new_login.data)
                         new_user.set_password(useradminform.new_pass.data)
                         db.session.add_all([new_user,])
                         db.session.commit()
-                        print('Crete user complete')
+                        Logging.user_id = current_user.id_users
+                        Logging.descr = 'Создание пользователя ' + useradminform.new_login.data
+                        db.session.add(Logging)
+                        db.session.commit()
                     else:
                         flash("Пароли не совпадают!!!", 'error')
                         return redirect(url_for('admin'))
@@ -94,6 +112,10 @@ def edit_admin():
                 user.set_password(form.new_pass.data)
                 user.name_users = form.login.data
                 db.session.add(user)
+                db.session.commit()
+                Logging.user_id = current_user.id_users
+                Logging.descr = 'Редактирование пользователя ' + form.login.data
+                db.session.add(Logging)
                 db.session.commit()
                 return redirect(url_for('admin'))
             else:
@@ -143,6 +165,10 @@ def vpn_users():
                     update_user.active_vpn_users = False
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
                     db.session.commit()
+                    Logging.user_id = current_user.id_users
+                    Logging.descr = 'Отключение пользователя ' + u.name_users
+                    db.session.add(Logging)
+                    db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'e_user' in result.keys():
             # Делаем пометку что база обнавлена
@@ -154,6 +180,10 @@ def vpn_users():
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = True
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
+                    db.session.commit()
+                    Logging.user_id = current_user.id_users
+                    Logging.descr = 'Включение пользователя ' + u.name_users
+                    db.session.add(Logging)
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if form.get_setting.data:
@@ -169,6 +199,10 @@ def vpn_users():
                     del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     db.session.delete(del_user)
                     db.session.commit()
+                    Logging.user_id = current_user.id_users
+                    Logging.descr = 'Удаление пользователя ' + u.name_users
+                    db.session.add(Logging)
+                    db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
@@ -176,12 +210,14 @@ def vpn_users():
             name_key = 'get_'+un.name_vpn_users
             if name_key in result.keys():
                 print('Генерим файл настроек для пользователя ', un.name_vpn_users)
+                Logging.user_id = current_user.id_users
+                Logging.descr = 'Получение настроек для пользователя ' + un.name_vpn_users
+                db.session.add(Logging)
+                db.session.commit()
                 #Получаем пару ключей для пользователя
                 res_key = Vpn_key.query.filter_by(id_vpn_key=un.vpn_key).first()
-                print('res_key ', res_key)
                 # Получаем адрес сервера
                 res_server = Organizations.query.filter_by(id_organizations=un.organizations).first()
-                print('res_server ', res_server)
                 # Получаем список разрешенных адресов
                 res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).all()
                 col_res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).count()
@@ -280,6 +316,10 @@ def new_vpn_users():
                                      adres_vpn=form.adres_vpn.data)
             db.session.add_all([new_vpn_user, ])
             db.session.commit()
+            Logging.user_id = current_user.id_users
+            Logging.descr = 'Создание нового пользователя VPN ' + form.new_vpn_login.data
+            db.session.add(Logging)
+            db.session.commit()
             return redirect(url_for('vpn_users'))
 
     return render_template('add_vpn_user.html', form=form, cur_user=current_user.name_users)
@@ -304,6 +344,10 @@ def organizations():
                         del_org = Organizations.query.filter_by(id_organizations=o.id_organizations).first()
                         db.session.delete(del_org)
                         db.session.commit()
+                        Logging.user_id = current_user.id_users
+                        Logging.descr = 'Удаление организации ' + o.name_organizations
+                        db.session.add(Logging)
+                        db.session.commit()
                 else:
                     flash('У организации: '+o.name_organizations+', есть пользователи - удалять нельзя!!!', 'error')
                     return redirect(url_for('organizations'))
@@ -321,6 +365,10 @@ def organizations():
                                             public_vpn_key_organizations=form.public_vpn_key_organizations.data,
                                             private_vpn_key_organizations=form.private_vpn_key_organizations.data)
                     db.session.add_all([new_org, ])
+                    db.session.commit()
+                    Logging.user_id = current_user.id_users
+                    Logging.descr = 'Добавление организации ' + form.name_organizations.data
+                    db.session.add(Logging)
                     db.session.commit()
                 else:
                     flash("Такая организация уже есть!!!", 'error')

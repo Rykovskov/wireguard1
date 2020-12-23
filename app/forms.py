@@ -72,3 +72,11 @@ class OrganizationsForm(FlaskForm):
     private_vpn_key_organizations = StringField('Закрытый ключ')
     add_org = SubmitField("Добавить организацию")
     del_org = SubmitField("Удалить выбранные организации")
+
+
+class LogginViewForm(FlaskForm):
+    id_login = IntegerField('Id')
+    user_id = IntegerField('Id')
+    admin_name = StringField('Имя администратора')
+    descr = StringField('Событие')
+    dt_event = DateField('Дата')

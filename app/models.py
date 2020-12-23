@@ -81,7 +81,8 @@ class Organizations(db.Model):
     port = db.Column(db.Integer(), nullable=False)
     subnet = db.Column(db.String(255))
     def __repr__(self):
-        return "{}:  {} Srv: {}:{} LastIP:".format(self.id_organizations, self.name_organizations, self.server_organizations, self.port)
+        return "{}:  {} Srv: {}:{} ".format(self.id_organizations, self.name_organizations, self.server_organizations, self.port)
+
 
 class Vpn_users(db.Model):
     __tablename__ = 'vpn_users'
@@ -112,3 +113,24 @@ class Vpn_users(db.Model):
 
     def __repr__(self):
         return "<{}:  {}>".format(self.name_vpn_users, self.active_vpn_users)
+
+
+class Logging(db.Model):
+    __tablename__ = 'logging'
+    id_login = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), nullable=False)
+    dt_event = db.Column(db.DateTime(), default=datetime.utcnow)
+    descr = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return "<{}:  {}>".format(self.user_id, self.descr)
+
+
+class Logging_view(db.Model):
+    __tablename__ = 'logging_view'
+    name_users = db.Column(db.String(255))
+    descr = db.Column(db.String(255))
+    dt_event = db.Column(db.DateTime())
+
+    def __repr__(self):
+        return "<Админ: {}: Событие: {} Время: {}>".format(self.name_users, self.descr, self.dt_event)
