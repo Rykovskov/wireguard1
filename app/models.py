@@ -128,6 +128,7 @@ class Logging(db.Model):
 
 class Logging_view(db.Model):
     __tablename__ = 'logging_view'
+    id_login = db.Column(db.Integer(), primary_key=True)
     name_users = db.Column(db.String(255))
     descr = db.Column(db.String(255))
     dt_event = db.Column(db.DateTime())
