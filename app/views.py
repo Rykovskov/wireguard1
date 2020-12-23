@@ -26,7 +26,7 @@ def index():
 def Loggin():
     form = LogginViewForm()
     res = Logging_view.query.order_by(Logging_view.name_users).all()
-    return render_template('loggin.html', form=form, cur_user=current_user.name_users, sp_loggin=res)
+    return render_template('logging.html', form=form, cur_user=current_user.name_users, sp_loggin=res)
 
 
 @app.route('/login/', methods=['post', 'get'])
