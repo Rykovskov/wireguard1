@@ -25,7 +25,7 @@ def index():
 @login_required
 def Loggin():
     form = LogginViewForm()
-    res = Logging_view.order_by(Logging_view.dt_event).all()
+    res = Logging_view.query.order_by(Logging_view.name_users).all()
     return render_template('loggin.html', form=form, cur_user=current_user.name_users, sp_loggin=res)
 
 
