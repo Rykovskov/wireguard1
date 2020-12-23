@@ -15,6 +15,7 @@ sql_select_org = """select id_organizations, name_organizations, server_organiza
 sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select * from allowedips where vpn_user = %s"""
 sql_update_rebuild = """update rebuild_config set rebuld=false"""
+sql_logged = """insert into logging (user_id,descr) values (0,%s)"""
 cur = conn.cursor()
 cur.execute(sql_select_rebuild)
 res = cur.fetchall()
@@ -57,8 +58,11 @@ if res[0][0]:
         cur.execute(sql_update_rebuild)
         conn.commit()
         #перезапускаем интерфейс
-        os.system("/usr/bin/wg-quick down " + name_wg_interface)
-        result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        #os.system("/usr/bin/wg-quick down " + name_wg_interface)
+        #result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        # Протоколируем операцию
+        cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла !',))
+        conn.commit()
         print(result)
 
 
