@@ -14,7 +14,7 @@ import codecs
 #Служебные SQL запросы
 sql_upd_conf = text("update rebuild_config set rebuld=true")
 sql_logging = text("select * from logging_view order by dt_event desc")
-
+sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=%s")
 @app.route('/')
 @login_required
 def index():
@@ -194,9 +194,10 @@ def vpn_users():
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     print('u.id_vpn_users', u.id_vpn_users)
-                    del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
-                    db.session.delete(del_user)
-                    db.session.commit()
+                    r = db.engine.execute(sql_delete_vpn_user, (u.id_vpn_users,))
+                    #del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
+                    #db.session.delete(del_user)
+                    #db.session.commit()
                     print('1')
                     #Удаляем связанные ip
                     del_allow_ip = Allowedips.query.filter_by(id_vpn_key=u.id_vpn_users).all()
@@ -212,6 +213,8 @@ def vpn_users():
                                           descr='Удаление пользователя ' + u.name_vpn_users)
                     db.session.add_all([new_Logging2, ])
                     db.session.commit()
+                    # Делаем пометку что база обнавлена
+                    r = db.engine.execute(sql_upd_conf)
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
@@ -295,7 +298,7 @@ def new_vpn_users():
                 db.session.commit()
                 # Формируем правила для iptables
                 print('request.form')
-                pr = '-d ' + ip_addr + ' -j LOG --log-prefix ": "'+ result['new_vpn_login']
+                pr = '-d ' + ip_addr + ' -j LOG --log-prefix ": ' + result['new_vpn_login'] + '"'
                 new_filter_rule = Iptable_rules(vpn_user=id_next_vpn_user, rules=pr, active_rules=True)
                 db.session.add_all([new_filter_rule, ])
                 db.session.commit()
@@ -311,8 +314,6 @@ def new_vpn_users():
             f_pub_key.close()
             dt_activ = result.get('date_act')
             dt_disable = result.get('date_dis')
-            #if dt_disable == '':
-            #    dt_disable = dt_activ + timedelta(days=3366)
 
              #Вставляем новый VPN key
             new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
