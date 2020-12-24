@@ -190,11 +190,19 @@ def vpn_users():
             #print('Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
         if form.delete_user.data:
-            #print('#Показываем форму удаления пользователя')
+            print('#Показываем форму удаления пользователя')
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     db.session.delete(del_user)
+                    db.session.commit()
+                    #Удаляем связанные ip
+                    del_allow_ip = Allowedips.query.filter_by(id_vpn_key=u.id_vpn_users).all()
+                    db.session.delete(del_allow_ip)
+                    db.session.commit()
+                    #Удаляем ключи
+                    key_user = Vpn_key.query.filter_by(id_vpn_key=u.first()).first()
+                    db.session.delete(key_user)
                     db.session.commit()
                     new_Logging2 = Logging(user_id=current_user.id_users,
                                           descr='Удаление пользователя ' + u.name_vpn_users)
