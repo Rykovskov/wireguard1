@@ -294,7 +294,7 @@ def new_vpn_users():
                 db.session.add_all([new_allowedips, ])
                 db.session.commit()
                 # Формируем правила для iptables
-                pr = '-d ' + ip_addr + ' -j LOG --log-prefix ": "'+request.form.new_vpn_login
+                pr = '-d ' + ip_addr + ' -j LOG --log-prefix ": "'+request.form.new_vpn_login.data
                 new_filter_rule = Iptable_rules(vpn_user=id_next_vpn_user, rules=pr, active_rules=True)
                 db.session.add_all([new_filter_rule, ])
                 db.session.commit()
