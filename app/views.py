@@ -14,7 +14,7 @@ import codecs
 #Служебные SQL запросы
 sql_upd_conf = text("update rebuild_config set rebuld=true")
 sql_logging = text("select * from logging_view order by dt_event desc")
-sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val")
+sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delete from allowedips where vpn_user = :val; delete from vpn_key where id_vpn_key=:val1")
 @app.route('/')
 @login_required
 def index():
@@ -194,21 +194,21 @@ def vpn_users():
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     print('u.id_vpn_users', u.id_vpn_users)
-                    r = db.engine.execute(sql_delete_vpn_user, {'val': u.id_vpn_users})
+                    r = db.engine.execute(sql_delete_vpn_user, {'val': u.id_vpn_users, 'val1': u.vpn_key})
                     #del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     #db.session.delete(del_user)
                     #db.session.commit()
                     print('1')
                     #Удаляем связанные ip
-                    del_allow_ip = Allowedips.query.filter_by(vpn_user=u.id_vpn_users).all()
-                    db.session.delete(del_allow_ip)
-                    db.session.commit()
-                    print('2')
+                    #del_allow_ip = Allowedips.query.filter_by(vpn_user=u.id_vpn_users).all()
+                    #db.session.delete(del_allow_ip)
+                    #db.session.commit()
+                    #print('2')
                     #Удаляем ключи
-                    key_user = Vpn_key.query.filter_by(id_vpn_key=u.first()).first()
-                    db.session.delete(key_user)
-                    db.session.commit()
-                    print('3')
+                    #key_user = Vpn_key.query.filter_by(id_vpn_key=u.first()).first()
+                    #db.session.delete(key_user)
+                    #db.session.commit()
+                    #print('3')
                     new_Logging2 = Logging(user_id=current_user.id_users,
                                           descr='Удаление пользователя ' + u.name_vpn_users)
                     db.session.add_all([new_Logging2, ])
