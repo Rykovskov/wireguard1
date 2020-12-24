@@ -139,6 +139,6 @@ class Logging_view(db.Model):
 class Iptable_rules(db.Model):
     __tablename__ = 'iptables_rules'
     id  = db.Column(db.Integer(), primary_key=True)
-    vpn_user = db.Column(db.Integer, db.ForeignKey('Vpn_users.id_vpn_users'))
+    vpn_user = db.Column(db.Integer, nullable=False)
     rules = db.Column(db.Text(), nullable=False)
     active_rules = db.Column(db.Boolean(), default=False)
