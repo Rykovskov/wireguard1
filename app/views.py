@@ -2,7 +2,7 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session, send_from_directory
 from flask_login import login_required, login_user, current_user, logout_user
-from .models import Users, Vpn_users, Organizations, org_last_addres, db, Allowedips, Vpn_key, rebuild_config, Logging, Logging_view
+from .models import Users, Vpn_users, Organizations, org_last_addres, db, Allowedips, Vpn_key, rebuild_config, Logging, Logging_view, Iptable_rules
 from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm, LogginViewForm
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
@@ -280,6 +280,11 @@ def new_vpn_users():
                 ip_addr, mask = ips.split('/')
                 new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
                 db.session.add_all([new_allowedips, ])
+                db.session.commit()
+                # Формируем правила для iptables
+                pr = '-d ' + ip_addr + ' -j LOG --log-prefix ": "'+request.form.new_vpn_login
+                new_filter_rule = Iptable_rules(vpn_user=id_next_vpn_user, rules=pr, active_rules=True)
+                db.session.add_all([new_filter_rule, ])
                 db.session.commit()
             WireGuard = os.path.abspath("/etc/wireguard")
             os.chdir(WireGuard)

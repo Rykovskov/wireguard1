@@ -8,14 +8,15 @@ import codecs
 
 wireguard_patch = '/etc/wireguard'
 prefix_wg_config = 'wg_'
-
+ip_tables_name_file = '/etc/wireguard/iptables.sh'
 conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host='localhost')
 sql_select_rebuild = """select * from rebuild_config  order by last_update desc limit 1"""
 sql_select_org = """select id_organizations, name_organizations, server_organizations, public_vpn_key_organizations, private_vpn_key_organizations, port, subnet from organizations """
 sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key from vpn_users where active_vpn_users=true and organizations =  %s"""
-sql_select_allowips = """select * from allowedips where vpn_user = %s"""
+sql_select_allowips = """select ip_allowedips||'/'||mask_allowedips from public.allowedips where vpn_user= %s"""
 sql_update_rebuild = """update rebuild_config set rebuld=false"""
 sql_logged = """insert into logging (user_id,descr) values (0,%s)"""
+sql_filter_rules = """select * from iptables_rules where vpn_user = %s and active_rules=true"""
 cur = conn.cursor()
 cur.execute(sql_select_rebuild)
 res = cur.fetchall()
@@ -33,8 +34,15 @@ if res[0][0]:
         name_wg_interface_new_file = name_wg_interface_new + '.conf'
         config_file_new = os.path.join(wireguard_patch, name_wg_interface_new_file)
         config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
-        #f = open(name_wg_interface_new_file, 'w')
-        #Генерруем конфигурационный файл
+
+        #Генерруем конфигурационный файл для wireguard и iptables
+        # Генерируем правила для iptables
+        ipt = []
+        ipt.append('#!/bin/bash\n')
+        ipt.append('\n')
+        ipt.append('iptables -F\n')
+        ipt.append('iptables -X\n')
+        ipt.append('\n')
         conf = []
         conf.append('[Interface]\n')
         conf.append('Address = ' + org[6] + '\n')
@@ -48,6 +56,16 @@ if res[0][0]:
             conf.append('[Peer]\n')
             conf.append('PublicKey = ' + vpn_user[2]+'\n')
             conf.append('AllowedIPs = ' + vpn_user[1] + '\n')
+            #iptables
+            cur.execute(sql_select_allowips,(vpn_user[0],))
+            allow_ips = cur.fetchall()
+            for allow_ip in allow_ips:
+                ipt.append('iptable -A FORWARD -s '+ vpn_user[1] + ' -d ' + allow_ip[0]+' -j LOG --log-prefix peer '+str(vpn_user[0])+'\n')
+
+        with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
+            for item in conf:
+                f.write("%s" % item)
+        f.close()
         with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
             for item in conf:
                 f.write("%s" % item)
@@ -58,11 +76,11 @@ if res[0][0]:
         cur.execute(sql_update_rebuild)
         conn.commit()
         #перезапускаем интерфейс
-        os.system("/usr/bin/wg-quick down " + name_wg_interface)
-        result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        #os.system("/usr/bin/wg-quick down " + name_wg_interface)
+        #result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
         # Протоколируем операцию
         cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла !',))
         conn.commit()
-        print(result)
+        #print(result)
 
 
