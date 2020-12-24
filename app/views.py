@@ -200,7 +200,7 @@ def vpn_users():
                     #db.session.commit()
                     print('1')
                     #Удаляем связанные ip
-                    del_allow_ip = Allowedips.query.filter_by(id_vpn_key=u.id_vpn_users).all()
+                    del_allow_ip = Allowedips.query.filter_by(vpn_user=u.id_vpn_users).all()
                     db.session.delete(del_allow_ip)
                     db.session.commit()
                     print('2')
