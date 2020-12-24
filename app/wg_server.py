@@ -66,7 +66,7 @@ if res[0][0]:
             for item in conf:
                 f.write("%s" % item)
         f.close()
-        with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
+        with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
             for item in conf:
                 f.write("%s" % item)
         f.close()
