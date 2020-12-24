@@ -66,6 +66,7 @@ if res[0][0]:
             for item in conf:
                 f.write("%s" % item)
         f.close()
+        print('ipt ', ipt)
         with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
             for item in ipt:
                 f.write("%s" % item)
