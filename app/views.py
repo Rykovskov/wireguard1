@@ -14,7 +14,7 @@ import codecs
 #Служебные SQL запросы
 sql_upd_conf = text("update rebuild_config set rebuld=true")
 sql_logging = text("select * from logging_view order by dt_event desc")
-sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=%s")
+sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val")
 @app.route('/')
 @login_required
 def index():
@@ -194,7 +194,7 @@ def vpn_users():
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     print('u.id_vpn_users', u.id_vpn_users)
-                    r = db.engine.execute(sql_delete_vpn_user, (u.id_vpn_users,))
+                    r = db.engine.execute(sql_delete_vpn_user, {'val': u.id_vpn_users})
                     #del_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     #db.session.delete(del_user)
                     #db.session.commit()
