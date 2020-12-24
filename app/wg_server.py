@@ -67,7 +67,7 @@ if res[0][0]:
                 f.write("%s" % item)
         f.close()
         with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
-            for item in conf:
+            for item in ipt:
                 f.write("%s" % item)
         f.close()
         # перезаписываем файл в рабочий
