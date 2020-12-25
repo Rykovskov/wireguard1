@@ -140,8 +140,8 @@ def vpn_users():
 
     if request.method == 'POST':
         print('----------------POST-------------------')
-        for k in result.keys():
-            print('key - ', k, '---', result[k])
+        #for k in result.keys():
+        #    print('key - ', k, '---', result[k])
 
         if 'updt_d' in result.keys():
             form.v_user.data = True
@@ -183,17 +183,13 @@ def vpn_users():
                     db.session.add_all([new_Logging1, ])
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
-        if form.get_setting.data:
-            #Cкачиваем настройки
-            print(form.get_setting.name)
         if form.new_user.data:
             #print('Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
         if form.delete_user.data:
-            print('#Показываем форму удаления пользователя')
+            #print('#удаления пользователя')
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
-                    print('u.id_vpn_users', u.id_vpn_users)
                     r = db.engine.execute(sql_delete_vpn_user, {'val': u.id_vpn_users, 'val1': u.vpn_key})
                     new_Logging2 = Logging(user_id=current_user.id_users,
                                           descr='Удаление пользователя ' + u.name_vpn_users)
