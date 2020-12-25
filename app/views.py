@@ -129,7 +129,7 @@ def vpn_users():
     view_d = 'on'
     form = VpnUsersForm()
     result = request.form
-    res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+    res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
 
     if request.method == 'GET':
         print('----------------GET-------------------')
