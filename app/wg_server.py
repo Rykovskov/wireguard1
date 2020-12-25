@@ -60,7 +60,7 @@ if res[0][0]:
             cur.execute(sql_select_allowips,(vpn_user[0],))
             allow_ips = cur.fetchall()
             for allow_ip in allow_ips:
-                ipt.append('iptables -A FORWARD -s '+ vpn_user[1] + ' -d ' + allow_ip[0]+' -j LOG --log-prefix peer "'+str(vpn_user[0])+'"\n')
+                ipt.append('iptables -A FORWARD -s '+ vpn_user[1] + ' -d ' + allow_ip[0]+' -j LOG --log-prefix "peer '+str(vpn_user[0])+'"\n')
 
         with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
             for item in conf:
