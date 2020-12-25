@@ -12,7 +12,7 @@ ip_tables_name_file = '/etc/wireguard/iptables.sh'
 conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host='localhost')
 sql_select_rebuild = """select * from rebuild_config  order by last_update desc limit 1"""
 sql_select_org = """select id_organizations, name_organizations, server_organizations, public_vpn_key_organizations, private_vpn_key_organizations, port, subnet from organizations """
-sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key from vpn_users where active_vpn_users=true and organizations =  %s"""
+sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key, name_vpn_users from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select ip_allowedips||'/'||mask_allowedips from public.allowedips where vpn_user= %s"""
 sql_update_rebuild = """update rebuild_config set rebuld=false"""
 sql_logged = """insert into logging (user_id,descr) values (0,%s)"""
@@ -60,7 +60,7 @@ if res[0][0]:
             cur.execute(sql_select_allowips,(vpn_user[0],))
             allow_ips = cur.fetchall()
             for allow_ip in allow_ips:
-                ipt.append('iptables -A FORWARD -s '+ vpn_user[1] + ' -d ' + allow_ip[0]+' -j LOG --log-prefix "peer '+str(vpn_user[0])+'"\n')
+                ipt.append('iptables -A FORWARD -s ' + vpn_user[1] + ' -d ' + allow_ip[0]+' -j LOG --log-prefix "peer ' + vpn_user[2] + '"\n')
 
         with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
             for item in conf:
