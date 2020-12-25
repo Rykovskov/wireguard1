@@ -133,7 +133,7 @@ def vpn_users():
 
     if request.method == 'GET':
         print('----------------GET-------------------')
-        res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+        res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
         print('render GET', res)
         form.v_user.data = False
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
