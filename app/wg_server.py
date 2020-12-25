@@ -42,6 +42,7 @@ if res[0][0]:
         ipt.append('\n')
         ipt.append('iptables -F\n')
         ipt.append('iptables -X\n')
+        ipt.append('iptables -P FORWARD DROP\n')
         ipt.append('\n')
         conf = []
         conf.append('[Interface]\n')
@@ -84,11 +85,12 @@ if res[0][0]:
         cur.execute(sql_update_rebuild)
         conn.commit()
         #перезапускаем интерфейс
-        #os.system("/usr/bin/wg-quick down " + name_wg_interface)
-        #result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        os.system("/usr/bin/wg-quick down " + name_wg_interface)
+        result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        print(result)
         # Протоколируем операцию
         cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла !',))
         conn.commit()
-        #print(result)
+
 
 
