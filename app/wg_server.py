@@ -60,13 +60,12 @@ if res[0][0]:
             cur.execute(sql_select_allowips,(vpn_user[0],))
             allow_ips = cur.fetchall()
             for allow_ip in allow_ips:
-                ipt.append('iptable -A FORWARD -s '+ vpn_user[1] + ' -d ' + allow_ip[0]+' -j LOG --log-prefix peer '+str(vpn_user[0])+'\n')
+                ipt.append('iptables -A FORWARD -s '+ vpn_user[1] + ' -d ' + allow_ip[0]+' -j LOG --log-prefix peer '+str(vpn_user[0])+'\n')
 
         with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
             for item in conf:
                 f.write("%s" % item)
         f.close()
-        print('ipt ', ipt)
         with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
             for item in ipt:
                 f.write("%s" % item)
@@ -74,6 +73,9 @@ if res[0][0]:
         #Применяем правила фаервола
         os.system("/usr/bin/chmod +x " + ip_tables_name_file)
         os.system(ip_tables_name_file)
+        # Протоколируем операцию
+        cur.execute(sql_logged, ('Правила фаервола применены!',))
+        conn.commit()
         # перезаписываем файл в рабочий
         os.replace(config_file_new, config_file_old)
         #Обновляем rebuild config
