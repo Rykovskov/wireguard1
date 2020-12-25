@@ -60,7 +60,7 @@ if res[0][0]:
             cur.execute(sql_select_allowips,(vpn_user[0],))
             allow_ips = cur.fetchall()
             ipt.append('iptables -N ' + vpn_user[3] + '\n')
-            ipt.append('iptables -A FORWARD -s ' + vpn_user[1] + '-j ' + vpn_user[3] + '\n')
+            ipt.append('iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
             for allow_ip in allow_ips:
                 ipt.append('iptables -A ' + vpn_user[3] + ' -d ' + allow_ip[0] + '-j ACCEPT\n')
 
