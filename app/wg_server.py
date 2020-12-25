@@ -71,6 +71,9 @@ if res[0][0]:
             for item in ipt:
                 f.write("%s" % item)
         f.close()
+        #Применяем правила фаервола
+        os.system("/usr/bin/chmod +x " + ip_tables_name_file)
+        os.system(ip_tables_name_file)
         # перезаписываем файл в рабочий
         os.replace(config_file_new, config_file_old)
         #Обновляем rebuild config
