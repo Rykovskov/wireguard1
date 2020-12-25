@@ -166,7 +166,7 @@ def vpn_users():
                                           descr='Отключение пользователя ' + u.name_vpn_users)
                     db.session.add_all([new_Logging, ])
                     db.session.commit()
-            res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
         if 'e_user' in result.keys():
             # Делаем пометку что база обнавлена
             r = db.engine.execute(sql_upd_conf)
@@ -182,7 +182,7 @@ def vpn_users():
                                           descr='Включение пользователя ' + u.name_vpn_users)
                     db.session.add_all([new_Logging1, ])
                     db.session.commit()
-            res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
         if form.new_user.data:
             #print('Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
