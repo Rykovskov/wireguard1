@@ -43,6 +43,7 @@ if res[0][0]:
         ipt.append('/sbin/iptables -F\n')
         ipt.append('/sbin/iptables -X\n')
         ipt.append('/sbin/iptables -P FORWARD DROP\n')
+        ipt.append('/sbin/iptables -t nat -A POSTROUTING -o ens18 -j MASQUERADE\n')
         ipt.append('\n')
         conf = []
         conf.append('[Interface]\n')
