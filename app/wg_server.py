@@ -43,7 +43,7 @@ if res[0][0]:
         ipt.append('/sbin/iptables -F\n')
         ipt.append('/sbin/iptables -X\n')
         ipt.append('/sbin/iptables -P FORWARD DROP\n')
-        ipt.append('/sbin/iptables -A FORWARD -d ' + org[7]+ ' -j ACCEPT\n')
+        ipt.append('/sbin/iptables -A FORWARD -d ' + org[7] + ' -j ACCEPT\n')
         ipt.append('\n')
         conf = []
         conf.append('[Interface]\n')
