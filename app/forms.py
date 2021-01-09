@@ -74,6 +74,13 @@ class OrganizationsForm(FlaskForm):
     del_org = SubmitField("Удалить выбранные организации")
 
 
+class Apple_hostsForm(FlaskForm):
+    id_apple_hosts = IntegerField('Id')
+    host_name = StringField('HostName')
+    name_org = SelectField('Организация')
+    id_org = IntegerField('Id Org')
+
+
 class LogginViewForm(FlaskForm):
     id_login = IntegerField('Id')
     user_id = IntegerField('Id')

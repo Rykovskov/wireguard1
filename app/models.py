@@ -80,8 +80,20 @@ class Organizations(db.Model):
     vpn_users = db.relationship('Vpn_users', backref='vpn_users', lazy='dynamic')
     port = db.Column(db.Integer(), nullable=False)
     subnet = db.Column(db.String(255))
+
     def __repr__(self):
         return "{}:  {} Srv: {}:{} ".format(self.id_organizations, self.name_organizations, self.server_organizations, self.port)
+
+
+
+class apple_hosts(db.Model):
+    __tablename__ = 'apple_hosts'
+    id_apple_hosts = db.Column(db.Integer(), primary_key=True)
+    host_name = db.Column(db.String(200), nullable=False)
+    id_org =  db.Column(db.Integer(), nullable=False)
+
+    def __repr__(self):
+        return "Host: {}:  id_org: {}".format(self.host_name, self.id_org)
 
 
 class Vpn_users(db.Model):

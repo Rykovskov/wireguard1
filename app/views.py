@@ -2,8 +2,8 @@
 from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session, send_from_directory
 from flask_login import login_required, login_user, current_user, logout_user
-from .models import Users, Vpn_users, Organizations, org_last_addres, db, Allowedips, Vpn_key, rebuild_config, Logging, Logging_view, Iptable_rules
-from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm, LogginViewForm
+from .models import Users, Vpn_users, Organizations, org_last_addres, db, Allowedips, Vpn_key, rebuild_config, Logging, Logging_view, Iptable_rules, apple_hosts
+from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm, LogginViewForm, Apple_hostsForm
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
 import os
@@ -321,6 +321,18 @@ def new_vpn_users():
             return redirect(url_for('vpn_users'))
 
     return render_template('add_vpn_user.html', form=form, cur_user=current_user.name_users)
+
+
+@app.route('/work_hosts', methods=['post', 'get'])
+@login_required
+def work_hosts():
+    res = apple_hosts.query.order_by(apple_hosts.host_name).all()
+    form = Apple_hostsForm()
+    if request.method == 'POST':
+        result = request.form
+
+    return render_template('work_hosts.html', form=form, cur_user=current_user.name_users)
+
 
 
 @app.route('/org', methods=['post', 'get'])

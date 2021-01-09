@@ -1,0 +1,35 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Current user {{cur_user}}</title>
+    </head>
+    <form action="" method="post" name="work_hosts">
+        {{form.hidden_tag()}}
+        <DIV class="container">
+            <title>Current user {{cur_user}}</title>
+            <H2 align="center">Current user - {{cur_user}}</H2>
+            <table class="table table-bordered">
+                <tr>
+                    <td></td>
+                    <td><b>Name hosts</b></Td>
+                    <td><b>Organitashion</b></Td>
+                </tr>
+                {% for h in sp_hosts %}
+                    <tr>
+                        <td><input type="checkbox" name="{{ h.organizations }}"></td>
+                        <td>{{h.host_name}}</td>
+                        <td>{{h.organizations}}</td>
+                    <tr>
+                {% endfor %}
+            </table>
+            <p>
+            <DIV align='right'>
+                    <p>Host: {{ form.host_name() }}</p>
+                    <p align="left">Организация: </p><p align="right">{{ form.name_org(with=200) }}</p>
+                    <p> {{ form.add_work_host() }}</p>
+                    <p> {{ form.del_work_host() }}</p>
+            </DIV>
+        </DIV>
+    </form>>
+{% endblock %}
