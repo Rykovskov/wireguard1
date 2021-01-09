@@ -330,8 +330,29 @@ def work_hosts():
     form = Apple_hostsForm()
     if request.method == 'POST':
         result = request.form
+        if form.add_work_host.data:
+            #проверяем что все поля заполнены
+            if form.host_name.data !='' and form.name_org.data !='':
+                #проверяем что такого хоста еще нет
+                q1 = len(apple_hosts.query.filter_by(host_name=form.host_name.data).all())
+                if q1 == 0:
+                    #Добавляем новый хост
+                    new_hosts = apple_hosts(host_name=form.host_name.data,
+                                            id_org=form.name_org.data.id_organizations)
+                    db.session.add_all([new_hosts, ])
+                    db.session.commit()
+                    new_Logging1 = Logging(user_id=current_user.id_users,
+                                          descr='Добавление рабочего хоста ' + form.host_name.data)
+                    db.session.add_all([new_Logging1, ])
+                    db.session.commit()
+                else:
+                    flash("Такой хост уже есть!!!", 'error')
+                    return redirect(url_for('work_hosts'))
+            else:
+                flash("Не все поля заполнены!!!", 'error')
+                return redirect(url_for('work_hosts'))
 
-    return render_template('work_hosts.html', form=form, cur_user=current_user.name_users)
+    return render_template('work_hosts.html', form=form, cur_user=current_user.name_users, sp_hosts=res)
 
 
 
