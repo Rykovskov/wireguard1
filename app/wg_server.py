@@ -75,19 +75,19 @@ if res[0][0]:
                 f.write("%s" % item)
         f.close()
         #Применяем правила фаервола
-        os.system("/usr/bin/chmod +x " + ip_tables_name_file)
-        os.system(ip_tables_name_file)
+        #os.system("/usr/bin/chmod +x " + ip_tables_name_file)
+        #os.system(ip_tables_name_file)
         # Протоколируем операцию
         cur.execute(sql_logged, ('Правила фаервола применены!',))
         conn.commit()
         # перезаписываем файл в рабочий
-        os.replace(config_file_new, config_file_old)
+        #os.replace(config_file_new, config_file_old)
         #Обновляем rebuild config
         cur.execute(sql_update_rebuild)
         conn.commit()
         #перезапускаем интерфейс
-        os.system("/usr/bin/wg-quick down " + name_wg_interface)
-        result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
+        #os.system("/usr/bin/wg-quick down " + name_wg_interface)
+        #result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
         print(result)
         # Протоколируем операцию
         cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла !',))
