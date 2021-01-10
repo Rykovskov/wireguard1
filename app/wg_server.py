@@ -43,9 +43,9 @@ for h in host_sp:
         ipt.append('#!/bin/bash\n')
         ipt.append('\n')
         ipt.append('/sbin/iptables -F\n')
-        ipt.append('/sbin/iptables -X\n\n\n')
+        ipt.append('/sbin/iptables -X\n\n')
         ipt.append('/sbin/ipset -F\n')
-        ipt.append('/sbin/ipset -X\n')
+        ipt.append('/sbin/ipset -X\n\n')
         for org in org_sp:
             #ПРо
             name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
@@ -56,7 +56,7 @@ for h in host_sp:
             config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
             #Генерруем конфигурационный файл для wireguard и iptables
             # Генерируем правила для iptables
-            ipt.append('#Org: ' + org[1] + '\n\n')
+            ipt.append('#Org: ' + org[1] + '\n')
             #ipt.append('/sbin/iptables -A FORWARD -d ' + org[7] + ' -j ACCEPT\n')
             ipt.append('\n')
             conf = []
