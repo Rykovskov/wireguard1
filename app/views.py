@@ -163,7 +163,7 @@ def vpn_users():
                     r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
                     print('r - ', r)
                     print(r[0])
-                    r1 = db.engine.execute(sql_upd_conf, org=r[0])
+                    r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = False
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
@@ -182,7 +182,7 @@ def vpn_users():
                     # выясняем для какой организации обнавлена база
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
                     r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
-                    r1 = db.engine.execute(sql_upd_conf, org=r[0])
+                    r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = True
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
@@ -208,7 +208,7 @@ def vpn_users():
                     # выясняем для какой организации обнавлена база
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
                     r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
-                    r1 = db.engine.execute(sql_upd_conf, org=r[0])
+                    r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
@@ -321,7 +321,7 @@ def new_vpn_users():
             # выясняем для какой организации обнавлена база
             sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
             r = db.engine.execute(sql, id_vpn_users=id_next_vpn_user)
-            r1 = db.engine.execute(sql_upd_conf, org=r[0])
+            r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
             new_Logging = Logging(user_id=current_user.id_users,
                                    descr='Создание нового пользователя VPN ' + form.new_vpn_login.data)
             db.session.add_all([new_Logging, ])
