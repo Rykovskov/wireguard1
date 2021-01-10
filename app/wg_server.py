@@ -47,6 +47,8 @@ for h in host_sp:
             ipt.append('#!/bin/bash\n')
             ipt.append('\n')
             ipt.append('/sbin/iptables -F\n')
+            ipt.append('/sbin/ipset -F\n')
+            ipt.append('/sbin/ipset -X\n')
             ipt.append('/sbin/iptables -X\n\n\n')
             #ipt.append('/sbin/iptables -P FORWARD DROP\n')
             for org in org_sp:
@@ -80,8 +82,10 @@ for h in host_sp:
                     allow_ips = cur.fetchall()
                     ipt.append('/sbin/iptables -N ' + vpn_user[3] + '\n')
                     ipt.append('/sbin/iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
+                    ipt.append('/sbin/ipset -N ' + vpn_user[3] + ' iphash\n')
                     for allow_ip in allow_ips:
-                        ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -d ' + allow_ip[0] + ' -j ACCEPT\n')
+                        ipt.append('/sbin/ipset -A ' + vpn_user[3] + ' ' + allow_ip[0] + '\n')
+                    ipt.append('/sbin/iptables -A -m set ! --match-set ' + vpn_user[3] +' dst -j DROP\n')
 
                 with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
                     for item in conf:
