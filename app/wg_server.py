@@ -95,8 +95,11 @@ for h in host_sp:
                 os.system("/usr/bin/chmod +x " + ip_tables_name_file)
                 #os.system(ip_tables_name_file)
                 # Протоколируем операцию
-                cur.execute(sql_logged, ('Правила фаервола применены!',))
-                conn.commit()
+                try:
+                    cur_m.execute(sql_logged, ('Правила фаервола применены!',))
+                    conn_m.commit()
+                except:
+                    print('Недоступен главный сервер БД')
                 # перезаписываем файл в рабочий
                 os.replace(config_file_new, config_file_old)
                 #Обновляем rebuild config
