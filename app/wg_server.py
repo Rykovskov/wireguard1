@@ -38,8 +38,10 @@ cur.execute(sl_select_work_hosts)
 host_sp = cur.fetchall()
 for h in host_sp:
     # if True:
+    print('Run host')
     if hostname.lower() == h[1].lower():
         if res_rebuild[0][0]:
+            print('Run org')
             #Начинаем обход организацийds
             cur.execute(sql_select_org, (h[0], h[0]))
             org_sp = cur.fetchall()
