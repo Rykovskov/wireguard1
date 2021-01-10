@@ -393,7 +393,7 @@ def organizations():
                     #Добавляем новую организацию
                     new_org = Organizations(name_organizations=form.name_organizations.data,
                                             server_organizations=form.server_organizations.data,
-                                            port=form.port.date,
+                                            port=form.port.data,
                                             subnet=form.subnet.data,
                                             public_vpn_key_organizations=form.public_vpn_key_organizations.data,
                                             private_vpn_key_organizations=form.private_vpn_key_organizations.data)
