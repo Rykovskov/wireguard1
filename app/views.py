@@ -332,6 +332,7 @@ def work_hosts():
     form.name_org.choices = res_org
     if request.method == 'POST':
         result = request.form
+        id_org = result['name_org'].split(':')[:-1]
         if form.add_work_host.data:
             #проверяем что все поля заполнены
             if form.host_name.data !='' and form.name_org.data !='':
@@ -340,7 +341,7 @@ def work_hosts():
                 if q1 == 0:
                     #Добавляем новый хост
                     new_hosts = apple_hosts(host_name=form.host_name.data,
-                                            id_org=form.name_org.data.id_organizations)
+                                            id_org=id_org)
                     db.session.add_all([new_hosts, ])
                     db.session.commit()
                     new_Logging1 = Logging(user_id=current_user.id_users,
