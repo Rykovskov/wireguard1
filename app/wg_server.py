@@ -12,6 +12,10 @@ print('name host - ', hostname)
 wireguard_patch = '/etc/wireguard'
 prefix_wg_config = 'wg_'
 ip_tables_name_file = '/etc/wireguard/iptables.sh'
+main_host = '10.200.98.3'
+conn_m = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host=main_host)
+cur_m = conn_m.cursor()
+
 conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host='localhost')
 sql_select_rebuild = """select * from rebuild_config  order by last_update desc limit 1"""
 sql_select_org = """select id_organizations, name_organizations, server_organizations, public_vpn_key_organizations, 
@@ -96,15 +100,21 @@ for h in host_sp:
                 # перезаписываем файл в рабочий
                 os.replace(config_file_new, config_file_old)
                 #Обновляем rebuild config
-                cur.execute(sql_update_rebuild, (h[0],))
-                conn.commit()
+                try:
+                    cur_m.execute(sql_update_rebuild, (h[0],))
+                    conn_m.commit()
+                except:
+                    print('Недоступен главный сервер БД')
                 #перезапускаем интерфейс
                 #os.system("/usr/bin/wg-quick down " + name_wg_interface)
                 #result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
                 #print(result)
                 # Протоколируем операцию
-                cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + 'для хоста ' + h[1],))
-                conn.commit()
+                try:
+                    cur_m.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + 'для хоста ' + h[1],))
+                    conn_m.commit()
+                except:
+                    print('Недоступен главный сервер БД')
 
 
 
