@@ -12,7 +12,7 @@ from datetime import timedelta
 import codecs
 
 #Служебные SQL запросы
-sql_upd_conf = text("update rebuild_config set rebuld=true where org=%s")
+sql_upd_conf = text("update rebuild_config set rebuld=true where org=:org")
 sql_logging = text("select * from logging_view order by dt_event desc")
 sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delete from allowedips where vpn_user = :val; delete from vpn_key where id_vpn_key=:val1")
 sql_sp_hosts = text("select * from hosts_sp order by name_organizations")
@@ -159,8 +159,8 @@ def vpn_users():
                 if result.get(u.name_vpn_users) == 'on':
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
-                    sql = text("select organizations from vpn_users where id_vpn_users = %s")
-                    r = db.engine.execute(sql, u.id_vpn_users)
+                    sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+                    r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
                     r1 = db.engine.execute(sql_upd_conf, r[0][0])
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = False
@@ -178,8 +178,8 @@ def vpn_users():
                 if result.get(u.name_vpn_users) == 'on':
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
-                    sql = text("select organizations from vpn_users where id_vpn_users = %s")
-                    r = db.engine.execute(sql, u.id_vpn_users)
+                    sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+                    r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
                     r1 = db.engine.execute(sql_upd_conf, r[0][0])
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = True
@@ -204,8 +204,8 @@ def vpn_users():
                     db.session.commit()
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
-                    sql = text("select organizations from vpn_users where id_vpn_users = %s")
-                    r = db.engine.execute(sql, u.id_vpn_users)
+                    sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+                    r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
                     r1 = db.engine.execute(sql_upd_conf, r[0][0])
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
@@ -317,8 +317,8 @@ def new_vpn_users():
             db.session.commit()
             # Делаем пометку что база обнавлена
             # выясняем для какой организации обнавлена база
-            sql = text("select organizations from vpn_users where id_vpn_users = %s")
-            r = db.engine.execute(sql, id_next_vpn_user)
+            sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+            r = db.engine.execute(sql, id_vpn_users=id_next_vpn_user)
             r1 = db.engine.execute(sql_upd_conf, r[0][0])
             new_Logging = Logging(user_id=current_user.id_users,
                                    descr='Создание нового пользователя VPN ' + form.new_vpn_login.data)
