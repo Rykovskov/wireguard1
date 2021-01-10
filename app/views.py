@@ -329,6 +329,7 @@ def new_vpn_users():
 def work_hosts():
 
     res = db.engine.execute(sql_sp_hosts)
+    print('res_host = ', res)
     res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
     form = Apple_hostsForm()
     form.name_org.choices = res_org
