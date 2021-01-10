@@ -33,7 +33,7 @@ for h in host_sp:
     # if True:
     print('hosts - ', h[0][0])
     if res_rebuild[0][0]:
-        #Начинаем обход организаций
+        #Начинаем обход организацийds
         cur.execute(sql_select_org, h[0][0])
         org_sp = cur.fetchall()
         ipt = []
