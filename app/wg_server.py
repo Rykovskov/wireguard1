@@ -22,7 +22,7 @@ sql_filter_rules = """select * from iptables_rules where vpn_user = %s and activ
 sl_select_work_hosts = "select id_organizations, host_name from hosts_sp"
 cur = conn.cursor()
 cur.execute(sql_select_rebuild)
-res = cur.fetchall()
+res_rebuild = cur.fetchall()
 WireGuard = os.path.abspath(wireguard_patch)
 os.chdir(WireGuard)
 # выбираем какие организации должны быть на данном хосте
@@ -30,7 +30,7 @@ cur.execute(sl_select_work_hosts)
 host_sp = cur.fetchall()
 for h in host_sp:
     # if True:
-    if res[0][0]:
+    if res_rebuild[0][0]:
         #Начинаем обход организаций
         cur.execute(sql_select_org, h[0])
         org_sp = cur.fetchall()
@@ -41,6 +41,7 @@ for h in host_sp:
         ipt.append('/sbin/iptables -X\n')
         #ipt.append('/sbin/iptables -P FORWARD DROP\n')
         for org in org_sp:
+            #ПРо
             name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
             name_wg_interface_file = name_wg_interface + '.conf'
             name_wg_interface_new = name_wg_interface + '.new'
@@ -82,13 +83,13 @@ for h in host_sp:
                     f.write("%s" % item)
             f.close()
             #Применяем правила фаервола
-            #os.system("/usr/bin/chmod +x " + ip_tables_name_file)
+            os.system("/usr/bin/chmod +x " + ip_tables_name_file)
             #os.system(ip_tables_name_file)
             # Протоколируем операцию
             cur.execute(sql_logged, ('Правила фаервола применены!',))
             conn.commit()
             # перезаписываем файл в рабочий
-            #os.replace(config_file_new, config_file_old)
+            os.replace(config_file_new, config_file_old)
             #Обновляем rebuild config
             cur.execute(sql_update_rebuild)
             conn.commit()

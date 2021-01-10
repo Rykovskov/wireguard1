@@ -12,7 +12,7 @@ from datetime import timedelta
 import codecs
 
 #Служебные SQL запросы
-sql_upd_conf = text("update rebuild_config set rebuld=true")
+sql_upd_conf = text("update rebuild_config set rebuld=true where org=%s")
 sql_logging = text("select * from logging_view order by dt_event desc")
 sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delete from allowedips where vpn_user = :val; delete from vpn_key where id_vpn_key=:val1")
 sql_sp_hosts = text("select * from hosts_sp order by name_organizations")
@@ -153,12 +153,15 @@ def vpn_users():
             #print('Скрываем отключенных пользователей')
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         if 'd_user' in result.keys():
-            # Делаем пометку что база обнавлена
-            r = db.engine.execute(sql_upd_conf)
             #print('#Отключаем выбранных')
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
+                    # Делаем пометку что база обнавлена
+                    # выясняем для какой организации обнавлена база
+                    sql = text("select organizations from vpn_users where id_vpn_users = %s")
+                    r = db.engine.execute(sql, u.id_vpn_users)
+                    r1 = db.engine.execute(sql_upd_conf, r[0][0])
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = False
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
@@ -169,12 +172,15 @@ def vpn_users():
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
         if 'e_user' in result.keys():
-            # Делаем пометку что база обнавлена
-            r = db.engine.execute(sql_upd_conf)
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             print('#Влючаем выбранных')
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
+                    # Делаем пометку что база обнавлена
+                    # выясняем для какой организации обнавлена база
+                    sql = text("select organizations from vpn_users where id_vpn_users = %s")
+                    r = db.engine.execute(sql, u.id_vpn_users)
+                    r1 = db.engine.execute(sql_upd_conf, r[0][0])
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = True
                     update_user.dt_disable_vpn_users = datetime.datetime.now()
@@ -197,7 +203,10 @@ def vpn_users():
                     db.session.add_all([new_Logging2, ])
                     db.session.commit()
                     # Делаем пометку что база обнавлена
-                    r = db.engine.execute(sql_upd_conf)
+                    # выясняем для какой организации обнавлена база
+                    sql = text("select organizations from vpn_users where id_vpn_users = %s")
+                    r = db.engine.execute(sql, u.id_vpn_users)
+                    r1 = db.engine.execute(sql_upd_conf, r[0][0])
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
@@ -263,8 +272,6 @@ def new_vpn_users():
     if request.method == 'POST':
         result = request.form
         if form.save_user.data:
-            #Делаем пометку что база обнавлена
-            r = db.engine.execute(sql_upd_conf)
             #Сохраняем пользователя
             sql = text("select nextval('vpn_users_id_vpn_users_seq') as ss")
             r = db.engine.execute(sql)
@@ -279,12 +286,6 @@ def new_vpn_users():
                 new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
                 db.session.add_all([new_allowedips, ])
                 db.session.commit()
-                # Формируем правила для iptables
-                print('request.form')
-                pr = '-d ' + ip_addr + ' -j LOG --log-prefix ": ' + result['new_vpn_login'] + '"'
-                new_filter_rule = Iptable_rules(vpn_user=id_next_vpn_user, rules=pr, active_rules=True)
-                db.session.add_all([new_filter_rule, ])
-                db.session.commit()
             WireGuard = os.path.abspath("/etc/wireguard")
             os.chdir(WireGuard)
             os.system("/usr/bin/wg genkey > privatekey.tmp")
@@ -297,8 +298,7 @@ def new_vpn_users():
             f_pub_key.close()
             dt_activ = result.get('date_act')
             dt_disable = result.get('date_dis')
-
-             #Вставляем новый VPN key
+            #Вставляем новый VPN key
             new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
             db.session.add_all([new_vpn_key, ])
             db.session.commit()
@@ -315,6 +315,11 @@ def new_vpn_users():
                                      adres_vpn=form.adres_vpn.data)
             db.session.add_all([new_vpn_user, ])
             db.session.commit()
+            # Делаем пометку что база обнавлена
+            # выясняем для какой организации обнавлена база
+            sql = text("select organizations from vpn_users where id_vpn_users = %s")
+            r = db.engine.execute(sql, id_next_vpn_user)
+            r1 = db.engine.execute(sql_upd_conf, r[0][0])
             new_Logging = Logging(user_id=current_user.id_users,
                                    descr='Создание нового пользователя VPN ' + form.new_vpn_login.data)
             db.session.add_all([new_Logging, ])
@@ -403,6 +408,11 @@ def organizations():
                                             private_vpn_key_organizations=form.private_vpn_key_organizations.data)
                     db.session.add_all([new_org, ])
                     db.session.commit()
+                    #Добавляем организацию в таблицу флагов для пересборки конфиг файла
+                    sql = text("select id_organizations from organizations where name_organizations=%s")
+                    r = db.engine.execute(sql, form.name_organizations.data)
+                    sql = text("insert into rebuild_config (org) values (%s)")
+                    r = db.engine.execute(sql, r[0])
                     new_Logging1 = Logging(user_id=current_user.id_users,
                                           descr='Добавление организации ' + form.name_organizations.data)
                     db.session.add_all([new_Logging1, ])
