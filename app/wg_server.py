@@ -38,7 +38,7 @@ cur.execute(sl_select_work_hosts)
 host_sp = cur.fetchall()
 for h in host_sp:
     # if True:
-    print('Run host')
+    print('Run host ', h[1].lower())
     if hostname.lower() == h[1].lower():
         if res_rebuild[0][0]:
             print('Run org')
