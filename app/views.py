@@ -327,7 +327,9 @@ def new_vpn_users():
 @login_required
 def work_hosts():
     res = apple_hosts.query.order_by(apple_hosts.host_name).all()
+    res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
     form = Apple_hostsForm()
+    form.name_org.choices = res_org
     if request.method == 'POST':
         result = request.form
         if form.add_work_host.data:
