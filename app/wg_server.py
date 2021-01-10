@@ -47,9 +47,9 @@ for h in host_sp:
             ipt.append('#!/bin/bash\n')
             ipt.append('\n')
             ipt.append('/sbin/iptables -F\n')
+            ipt.append('/sbin/iptables -X\n\n\n')
             ipt.append('/sbin/ipset -F\n')
             ipt.append('/sbin/ipset -X\n')
-            ipt.append('/sbin/iptables -X\n\n\n')
             #ipt.append('/sbin/iptables -P FORWARD DROP\n')
             for org in org_sp:
                 #ПРо
