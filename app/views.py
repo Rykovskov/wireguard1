@@ -341,7 +341,7 @@ def work_hosts():
                 if q1 == 0:
                     #Добавляем новый хост
                     new_hosts = apple_hosts(host_name=form.host_name.data,
-                                            id_org=id_org)
+                                            id_org=id_org[0])
                     db.session.add_all([new_hosts, ])
                     db.session.commit()
                     new_Logging1 = Logging(user_id=current_user.id_users,
