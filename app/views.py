@@ -131,6 +131,8 @@ def vpn_users():
     form = VpnUsersForm()
     result = request.form
     res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
+    res_org = Organizations.query.order_by(Organizations.name_organizations).all()
+    form.vpn_organizations_sel.choices = res_org
 
     if request.method == 'GET':
         print('----------------GET-------------------')

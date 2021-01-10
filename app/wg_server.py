@@ -92,7 +92,7 @@ for h in host_sp:
             f.close()
             #Применяем правила фаервола
             os.system("/usr/bin/chmod +x " + ip_tables_name_file)
-            #os.system(ip_tables_name_file)
+            os.system(ip_tables_name_file)
             # Протоколируем операцию
             try:
                 cur_m.execute(sql_logged, ('Правила фаервола применены!',))
@@ -113,7 +113,7 @@ for h in host_sp:
             #print(result)
             # Протоколируем операцию
             try:
-                cur_m.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + 'для хоста ' + h[1],))
+                cur_m.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + ' для хоста ' + h[1],))
                 conn_m.commit()
             except:
                 print('Недоступен главный сервер БД')
