@@ -62,7 +62,7 @@ for h in host_sp:
                 #Генерруем конфигурационный файл для wireguard и iptables
                 # Генерируем правила для iptables
                 ipt.append('#Org: ' + org[1] + '\n\n')
-                ipt.append('/sbin/iptables -A FORWARD -d ' + org[7] + ' -j ACCEPT\n')
+                #ipt.append('/sbin/iptables -A FORWARD -d ' + org[7] + ' -j ACCEPT\n')
                 ipt.append('\n')
                 conf = []
                 conf.append('[Interface]\n')
@@ -82,10 +82,10 @@ for h in host_sp:
                     allow_ips = cur.fetchall()
                     ipt.append('/sbin/iptables -N ' + vpn_user[3] + '\n')
                     ipt.append('/sbin/iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
-                    ipt.append('/sbin/ipset -N ' + vpn_user[3] + ' iphash\n')
+                    ipt.append('/sbin/ipset -N ' + vpn_user[3] + '_set iphash\n')
                     for allow_ip in allow_ips:
                         ipt.append('/sbin/ipset -A ' + vpn_user[3] + ' ' + allow_ip[0] + '\n')
-                    ipt.append('/sbin/iptables -A ' + vpn_user[3] +' -m set ! --match-set ' + vpn_user[3] +' dst -j DROP\n')
+                    ipt.append('/sbin/iptables -A ' + vpn_user[3] +' -m set ! --match-set ' + vpn_user[3] +'_set dst -j DROP\n')
 
                 with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
                     for item in conf:
