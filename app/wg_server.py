@@ -36,6 +36,7 @@ for h in host_sp:
     # if True:
     if res_rebuild[0][0]:
         #Начинаем обход организацийds
+        print('h[0]', h[0])
         cur.execute(sql_select_org, (h[0],))
         org_sp = cur.fetchall()
         ipt = []
