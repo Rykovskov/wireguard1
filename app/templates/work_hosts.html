@@ -17,9 +17,9 @@
                 </tr>
                 {% for h in sp_hosts %}
                     <tr>
-                        <td><input type="checkbox" name="{{ h.organizations }}"></td>
-                        <td>{{h.host_name}}</td>
-                        <td>{{h.organizations}}</td>
+                        <td><input type="checkbox" name=id_"{{ h.id_organizations }}"></td>
+                        <td>{{h.host_name.data}}</td>
+                        <td>{{h.name_organizations.data}}</td>
                     <tr>
                 {% endfor %}
             </table>

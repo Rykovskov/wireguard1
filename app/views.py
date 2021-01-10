@@ -15,6 +15,7 @@ import codecs
 sql_upd_conf = text("update rebuild_config set rebuld=true")
 sql_logging = text("select * from logging_view order by dt_event desc")
 sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delete from allowedips where vpn_user = :val; delete from vpn_key where id_vpn_key=:val1")
+sql_sp_hosts = text("select * from hosts_sp order by name_organizations")
 @app.route('/')
 @login_required
 def index():
@@ -326,7 +327,8 @@ def new_vpn_users():
 @app.route('/work_hosts', methods=['post', 'get'])
 @login_required
 def work_hosts():
-    res = apple_hosts.query.order_by(apple_hosts.host_name).all()
+
+    res = db.engine.execute(sql_sp_hosts)
     res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
     form = Apple_hostsForm()
     form.name_org.choices = res_org
