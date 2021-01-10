@@ -13,7 +13,7 @@ prefix_wg_config = 'wg_'
 ip_tables_name_file = '/etc/wireguard/iptables.sh'
 conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host='localhost')
 sql_select_rebuild = """select * from rebuild_config  order by last_update desc limit 1"""
-sql_select_org = """select id_organizations, name_organizations, server_organizations, public_vpn_key_organizations, private_vpn_key_organizations, port, subnet, replace(subnet,'.1/', '.0/') as subnet_1 from organizations where  id_organizations =%s"""
+sql_select_org = """select id_organizations, name_organizations, server_organizations, public_vpn_key_organizations, private_vpn_key_organizations, port, subnet, replace(subnet,'.1/', '.0/') as subnet_1 from organizations where  id_organizations = %s"""
 sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key, name_vpn_users from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select ip_allowedips||'/'||mask_allowedips from public.allowedips where vpn_user= %s"""
 sql_update_rebuild = """update rebuild_config set rebuld=false"""
@@ -32,6 +32,7 @@ for h in host_sp:
     # if True:
     if res_rebuild[0][0]:
         #Начинаем обход организацийds
+        print('h[0]', h[0])
         cur.execute(sql_select_org, h[0])
         org_sp = cur.fetchall()
         ipt = []
