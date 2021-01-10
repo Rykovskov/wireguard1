@@ -20,7 +20,7 @@ sql_select_org = """select id_organizations, name_organizations, server_organiza
                     where    (id_organizations = %s) and (select rebuld from public.rebuild_config where org =%s)"""
 sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key, name_vpn_users from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select ip_allowedips||'/'||mask_allowedips from public.allowedips where vpn_user= %s"""
-sql_update_rebuild = """update rebuild_config set rebuld=false"""
+sql_update_rebuild = """update rebuild_config set rebuld=false where org = %s"""
 sql_logged = """insert into logging (user_id,descr) values (0,%s)"""
 sql_filter_rules = """select * from iptables_rules where vpn_user = %s and active_rules=true"""
 sl_select_work_hosts = "select id_organizations, host_name from hosts_sp"
@@ -96,7 +96,7 @@ for h in host_sp:
                 # перезаписываем файл в рабочий
                 os.replace(config_file_new, config_file_old)
                 #Обновляем rebuild config
-                cur.execute(sql_update_rebuild)
+                cur.execute(sql_update_rebuild, (h[0],))
                 conn.commit()
                 #перезапускаем интерфейс
                 #os.system("/usr/bin/wg-quick down " + name_wg_interface)
