@@ -79,6 +79,8 @@ class Apple_hostsForm(FlaskForm):
     host_name = StringField('HostName')
     name_org = SelectField('Организация')
     id_org = IntegerField('Id Org')
+    add_work_host = SubmitField("Добавить узел")
+    del_work_host = SubmitField("Удалить выбранный узел")
 
 
 class LogginViewForm(FlaskForm):
