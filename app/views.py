@@ -161,8 +161,6 @@ def vpn_users():
                     # выясняем для какой организации обнавлена база
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
                     r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
-                    print('r - ', r)
-                    print(r[0])
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = False
