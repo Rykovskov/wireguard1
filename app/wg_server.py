@@ -28,13 +28,11 @@ os.chdir(WireGuard)
 # выбираем какие организации должны быть на данном хосте
 cur.execute(sl_select_work_hosts)
 host_sp = cur.fetchall()
-print(host_sp)
 for h in host_sp:
     # if True:
-    print('hosts - ', h[0])
     if res_rebuild[0][0]:
         #Начинаем обход организацийds
-        cur.execute(sql_select_org, h[0][0])
+        cur.execute(sql_select_org, h[0])
         org_sp = cur.fetchall()
         ipt = []
         ipt.append('#!/bin/bash\n')
@@ -98,9 +96,9 @@ for h in host_sp:
             #перезапускаем интерфейс
             #os.system("/usr/bin/wg-quick down " + name_wg_interface)
             #result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
-            print(result)
+            #print(result)
             # Протоколируем операцию
-            cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + 'для хоста ' + h[1][0],))
+            cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + 'для хоста ' + h[1],))
             conn.commit()
 
 
