@@ -8,7 +8,6 @@ import codecs
 import socket
 
 hostname = socket.gethostname()
-print('name host - ', hostname)
 wireguard_patch = '/etc/wireguard'
 prefix_wg_config = 'wg_'
 ip_tables_name_file = '/etc/wireguard/iptables.sh'
