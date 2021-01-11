@@ -54,7 +54,7 @@ for h in host_sp:
             config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
             #Генерруем конфигурационный файл для wireguard и iptables
             # Генерируем правила для iptables
-            ipt.append('#Org: ' + org[1] + '\n')
+            ipt.append('#Org: ' + org[1] + '\n\n')
             #ipt.append('/sbin/iptables -A FORWARD -d ' + org[7] + ' -j ACCEPT\n')
             ipt.append('\n')
             conf = []
