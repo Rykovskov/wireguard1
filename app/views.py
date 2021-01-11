@@ -271,7 +271,7 @@ def download(filename):
 
 @app.route('/edit_vpn_user', methods=['post', 'get'])
 @login_required
-def new_vpn_users():
+def edit_vpn_users():
     #res_org = Organizations.query.order_by(Organizations.name_organizations).all()
     res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
     form = EditVpnUserForm()
