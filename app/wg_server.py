@@ -86,7 +86,7 @@ for h in host_sp:
             f.close()
             #Применяем правила фаервола
             os.system("/usr/bin/chmod +x " + ip_tables_name_file)
-            #os.system(ip_tables_name_file)
+            os.system(ip_tables_name_file)
             # Протоколируем операцию
             try:
                 cur_m.execute(sql_logged, ('Правила фаервола применены!',))
