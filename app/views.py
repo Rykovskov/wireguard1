@@ -204,6 +204,7 @@ def vpn_users():
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     print('u ', u)
+                    print('id_vpn_users ', u.id_vpn_users)
                     r = db.engine.execute(sql_delete_vpn_user, {'val': u.id_vpn_users, 'val1': u.vpn_key})
                     new_Logging2 = Logging(user_id=current_user.id_users,
                                           descr='Удаление пользователя ' + u.name_vpn_users)
@@ -211,7 +212,6 @@ def vpn_users():
                     db.session.commit()
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
-                    print('id_vpn_users ', u.id_vpn_users)
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
                     r = db.engine.execute(sql, {'id_vpn_users': u.id_vpn_users})
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
