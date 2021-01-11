@@ -207,7 +207,7 @@ def vpn_users():
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
-                    r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
+                    r = db.engine.execute(sql, id_vpn_users=(u.id_vpn_users,))
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
