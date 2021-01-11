@@ -64,6 +64,7 @@ for h in host_sp:
             conf.append('Address = ' + org[6] + '\n')
             conf.append('ListenPort = ' + str(org[5])+'\n')
             conf.append('PrivateKey = ' + org[4]+'\n')
+            conf.append('DNS = 10.200.10.5\n')
             cur.execute(sql_select_users, (org[0],))
             vpn_users_sp = cur.fetchall()
             #Обход пользователей

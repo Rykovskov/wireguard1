@@ -3,7 +3,7 @@ from app import app
 from flask import render_template, request, redirect, url_for, flash, make_response, session, send_from_directory
 from flask_login import login_required, login_user, current_user, logout_user
 from .models import Users, Vpn_users, Organizations, org_last_addres, db, Allowedips, Vpn_key, rebuild_config, Logging, Logging_view, Iptable_rules, apple_hosts
-from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm, LogginViewForm, Apple_hostsForm
+from .forms import LoginForm, CreateAdminUserForm, AdminUsersForm, VpnUsersForm, OrganizationsForm, NewVpnUserForm, EditAdminUserForm, LogginViewForm, Apple_hostsForm, EditVpnUserForm
 from werkzeug.datastructures import MultiDict
 from sqlalchemy import text
 import os
@@ -137,7 +137,7 @@ def vpn_users():
     if request.method == 'GET':
         print('----------------GET-------------------')
         res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
-        print('render GET', res)
+        #print('render GET', res)
         form.v_user.data = False
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
 
@@ -195,6 +195,10 @@ def vpn_users():
         if form.new_user.data:
             #print('Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
+        if form.edit_user.data:
+            print('Показываем форму редактирования нового пользователя')
+            return redirect(url_for('edit_vpn_users'))
+
         if form.delete_user.data:
             #print('#удаления пользователя')
             for u in res:
@@ -206,6 +210,7 @@ def vpn_users():
                     db.session.commit()
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
+                    print('id_vpn_users ', u.id_vpn_users)
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
                     r = db.engine.execute(sql, id_vpn_users=(u.id_vpn_users,))
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
@@ -231,6 +236,7 @@ def vpn_users():
                 conf.append('[Interface]\n')
                 conf.append('PrivateKey = ' + res_key.privatekey + '\n')
                 conf.append('Address = ' + un.adres_vpn + '\n')
+                conf.append('DNS = 10.200.10.5\n')
                 conf.append('\n')
                 conf.append('[Peer]\n')
                 conf.append('PublicKey = ' + res_server.public_vpn_key_organizations + '\n')
@@ -263,6 +269,17 @@ def download(filename):
     return send_from_directory('/opt/wireguard1/files/', filename)
 
 
+@app.route('/edit_vpn_user', methods=['post', 'get'])
+@login_required
+def new_vpn_users():
+    #res_org = Organizations.query.order_by(Organizations.name_organizations).all()
+    res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
+    form = EditVpnUserForm()
+    form.edit_vpn_organizations.choices = res_org
+    if request.method == 'POST':
+        result = request.form
+
+
 @app.route('/add_vpn_user', methods=['post', 'get'])
 @login_required
 def new_vpn_users():
@@ -270,7 +287,6 @@ def new_vpn_users():
     res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
     form = NewVpnUserForm()
     form.new_vpn_organizations.choices = res_org
-    #last_adr =
     if request.method == 'POST':
         result = request.form
         if form.save_user.data:

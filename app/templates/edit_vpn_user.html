@@ -1,0 +1,42 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Current user {{cur_user}}</title>
+    </head>
+    <form action="" method="post" name="NewVpnUser">
+        {{form.hidden_tag()}}
+        <DIV class="container">
+            <body>
+                <H2 align="center">Current user - {{cur_user}}</H2>
+                <table class="table">
+                    <tr>
+                        <td align="left">Имя пользователя:</td><td align="right">{{ form.new_vpn_login() }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">E-mail:</td><td align="right">{{ form.email_vpn_users() }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Организация: </td><td align="right">{{ form.new_vpn_organizations(with=200) }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Дата отключения: </td><td align="right"><input type="date" id="date_dis" name="date_dis"/></td>
+                    </tr>
+                    <tr>
+                        <td align="left">Адрес клиента:</td><td align="right">{{ form.adres_vpn() }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">IP доступа: </td><td align="right"><textarea name="al_ip"></textarea></td>
+                    </tr>
+                </table>
+                <p></p>
+                <p></p>
+
+                <DIV align='right'>
+                    <p>{{ form.save_user() }}</p>
+                    <p>{{ form.cancel_user() }}</p>
+                </DIV>
+            </body>
+        </DIV>
+    </form>
+{% endblock %}
