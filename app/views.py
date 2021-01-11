@@ -203,6 +203,7 @@ def vpn_users():
             #print('#удаления пользователя')
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
+                    print('u ', u)
                     r = db.engine.execute(sql_delete_vpn_user, {'val': u.id_vpn_users, 'val1': u.vpn_key})
                     new_Logging2 = Logging(user_id=current_user.id_users,
                                           descr='Удаление пользователя ' + u.name_vpn_users)
@@ -212,7 +213,7 @@ def vpn_users():
                     # выясняем для какой организации обнавлена база
                     print('id_vpn_users ', u.id_vpn_users)
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
-                    r = db.engine.execute(sql, id_vpn_users=(u.id_vpn_users,))
+                    r = db.engine.execute(sql, {'id_vpn_users': u.id_vpn_users})
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
             res = Vpn_users.query.filter_by(active_vpn_users='True').all()
         #Проверяем есть запрос на файл настроек
