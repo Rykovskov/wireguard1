@@ -235,7 +235,7 @@ def vpn_users():
                 conf.append('[Interface]\n')
                 conf.append('PrivateKey = ' + res_key.privatekey + '\n')
                 conf.append('Address = ' + un.adres_vpn + '\n')
-                conf.append('DNS = 10.200.10.5\n')
+                conf.append('DNS = 10.200.10.5, 172.16.20.2\n')
                 conf.append('\n')
                 conf.append('[Peer]\n')
                 conf.append('PublicKey = ' + res_server.public_vpn_key_organizations + '\n')

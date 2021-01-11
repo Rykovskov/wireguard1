@@ -44,8 +44,6 @@ for h in host_sp:
         ipt.append('\n')
         ipt.append('/sbin/iptables -F\n')
         ipt.append('/sbin/iptables -X\n\n')
-        ipt.append('/sbin/ipset -F\n')
-        ipt.append('/sbin/ipset -X\n\n')
         for org in org_sp:
             #ПРо
             name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
@@ -64,7 +62,7 @@ for h in host_sp:
             conf.append('Address = ' + org[6] + '\n')
             conf.append('ListenPort = ' + str(org[5])+'\n')
             conf.append('PrivateKey = ' + org[4]+'\n')
-            conf.append('DNS = 10.200.10.5\n')
+            conf.append('DNS = 10.200.10.5, 172.16.20.2\n')
             cur.execute(sql_select_users, (org[0],))
             vpn_users_sp = cur.fetchall()
             #Обход пользователей
@@ -79,8 +77,8 @@ for h in host_sp:
                 ipt.append('/sbin/iptables -N ' + vpn_user[3] + '\n')
                 ipt.append('/sbin/iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
                 for allow_ip in allow_ips:
-                    ipt.append('/sbin/iptables -A ' + vpn_user[3]  + '  -d' + allow_ip[0] + '\n')
-                ipt.append('/sbin/iptables -A ' + vpn_user[3] +' -m set ! --match-set ' + vpn_user[3] +'_set dst -j DROP\n')
+                    ipt.append('/sbin/iptables -A ' + vpn_user[3]  + ' -d' + allow_ip[0] + ' -j ACCEPT\n')
+                ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -j DROP\n')
 
             with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
                 for item in conf:
