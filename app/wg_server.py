@@ -78,8 +78,7 @@ for h in host_sp:
                 ipt.append('/sbin/iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
                 for allow_ip in allow_ips:
                     ipt.append('/sbin/iptables -A ' + vpn_user[3]  + ' -d ' + allow_ip[0] + ' -j ACCEPT\n')
-                ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -j DROP\n')
-
+                ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -j DROP\n\n')
             with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
                 for item in conf:
                     f.write("%s" % item)
