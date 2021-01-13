@@ -197,7 +197,11 @@ def vpn_users():
             return redirect(url_for('new_vpn_users'))
         if form.edit_user.data:
             print('Показываем форму редактирования нового пользователя')
-            return redirect(url_for('edit_vpn_users'))
+            #выясняем номер редактируемого пользоаателя
+            res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+            for u in res:
+                if result.get(u.name_vpn_users) == 'on':
+                    return redirect(url_for('edit_vpn_users', user_id=u.id_vpn_users))
 
         if form.delete_user.data:
             #print('#удаления пользователя')
@@ -275,6 +279,9 @@ def edit_vpn_users():
     res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
     form = EditVpnUserForm()
     form.edit_vpn_organizations.choices = res_org
+    id_user = request.args.get("user_id")
+    user = Vpn_users.query.get(id_user)
+    print(user)
     if request.method == 'POST':
         result = request.form
     return render_template('edit_vpn_user.html', form=form, cur_user=current_user.name_users)
