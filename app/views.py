@@ -281,7 +281,8 @@ def edit_vpn_users():
     id_user = request.args.get("user_id")
     user = Vpn_users.query.get(id_user)
     #Получаем список разрешенных ип
-    res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).all()
+    res_ip = Allowedips.query.filter_by(vpn_user=id_user).all()
+    print('res_ip', res_ip)
     form = EditVpnUserForm(vpn_login=user.name_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=res_ip)
     form.edit_vpn_organizations.choices = res_org
     print(user)
