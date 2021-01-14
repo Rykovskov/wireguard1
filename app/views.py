@@ -16,6 +16,7 @@ sql_upd_conf = text("update rebuild_config set rebuld=true where org=:org")
 sql_logging = text("select * from logging_view order by dt_event desc")
 sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delete from allowedips where vpn_user = :val; delete from vpn_key where id_vpn_key=:val1")
 sql_sp_hosts = text("select * from hosts_sp order by name_organizations")
+sql_sp_allowedips = text("select (ip_allowedips||'/'||mask_allowedips) as ip from public.allowedips where vpn_user=:vpn_user")
 @app.route('/')
 @login_required
 def index():
@@ -277,10 +278,12 @@ def download(filename):
 def edit_vpn_users():
     #res_org = Organizations.query.order_by(Organizations.name_organizations).all()
     res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
-    form = EditVpnUserForm()
-    form.edit_vpn_organizations.choices = res_org
     id_user = request.args.get("user_id")
     user = Vpn_users.query.get(id_user)
+    #Получаем список разрешенных ип
+    res_ip = Allowedips.query.filter_by(vpn_user=un.id_vpn_users).all()
+    form = EditVpnUserForm(vpn_login=user.name_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=res_ip)
+    form.edit_vpn_organizations.choices = res_org
     print(user)
     if request.method == 'POST':
         result = request.form

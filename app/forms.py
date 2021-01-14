@@ -68,7 +68,6 @@ class EditVpnUserForm(FlaskForm):
     edit_vpn_organizations = SelectField('Организация')
     email_vpn_users = StringField('E-mail адрес')
     allowedips_ip = StringField('IP адрес')
-    allowedips_mask = StringField('Маска')
     adres_vpn = StringField('Адрес клиента')
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     save_user = SubmitField("Сохранить пользователя")
