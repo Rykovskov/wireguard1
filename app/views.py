@@ -282,10 +282,9 @@ def edit_vpn_users():
     user = Vpn_users.query.get(id_user)
     #Получаем список разрешенных ип
     res_ip = Allowedips.query.filter_by(vpn_user=id_user).all()
-    sp_ip =[]
+    form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn)
     for ip in res_ip:
-        sp_ip.append(ip)
-    form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=sp_ip)
+        form.allowedips_ip.append(ip)
     form.edit_vpn_organizations.choices = res_org
     if request.method == 'POST':
         result = request.form
