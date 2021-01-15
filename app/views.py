@@ -286,9 +286,12 @@ def edit_vpn_users():
     for ip in res_ip:
         s = s + str(ip) + '\n'
     form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:])
-    form.edit_vpn_organizations.choices = [(row.id_organizations, row.name_organizations) for row in Organizations.query.all()]
-    print('user.organizations', user.organizations)
+    form.edit_vpn_organizations.choices = [(row.id_organizations, row) for row in Organizations.query.all()]
     form.edit_vpn_organizations.default = user.organizations
+    form.vpn_login = user.name_vpn_users
+    form.email_vpn_users = user.email_vpn_users
+    form.adres_vpn = user.adres_vpn
+    form.allowedips_ip = s[:-1:]
     form.process()
     if request.method == 'POST':
         result = request.form
