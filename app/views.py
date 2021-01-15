@@ -288,7 +288,7 @@ def edit_vpn_users():
     form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:])
     form.edit_vpn_organizations.choices = [(row.id_organizations, row.name_organizations) for row in Organizations.query.all()]
     print('user.organizations', user.organizations)
-    form.edit_vpn_organizations.data = Organizations.query.filter_by(id_organizations=user.organizations).first()
+    form.edit_vpn_organizations.default = user.organizations
     form.process()
     if request.method == 'POST':
         result = request.form
