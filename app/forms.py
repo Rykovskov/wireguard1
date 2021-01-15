@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import Form, ValidationError
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField, DateField
 from wtforms.validators import DataRequired
+from wtforms.widgets import TextArea
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -67,7 +68,7 @@ class EditVpnUserForm(FlaskForm):
     vpn_login = StringField('Имя пользователя')
     edit_vpn_organizations = SelectField('Организация')
     email_vpn_users = StringField('E-mail адрес')
-    allowedips_ip = StringField('IP адрес')
+    allowedips_ip = StringField('IP адреса',widget=TextArea())
     adres_vpn = StringField('Адрес клиента')
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     save_user = SubmitField("Сохранить пользователя")

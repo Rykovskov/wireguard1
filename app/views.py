@@ -288,7 +288,7 @@ def edit_vpn_users():
     print(user)
     if request.method == 'POST':
         result = request.form
-    return render_template('edit_vpn_user.html', form=form, cur_user=current_user.name_users, al_ip=res_ip)
+    return render_template('edit_vpn_user.html', form=form, cur_user=current_user.name_users, allowedips_ip=res_ip)
 
 
 @app.route('/add_vpn_user', methods=['post', 'get'])
