@@ -276,8 +276,6 @@ def download(filename):
 @app.route('/edit_vpn_user', methods=['post', 'get'])
 @login_required
 def edit_vpn_users():
-    #res_org = Organizations.query.order_by(Organizations.name_organizations).all()
-    #res_org = org_last_addres.query.order_by(org_last_addres.name_organizations).all()
     id_user = request.args.get("user_id")
     user = Vpn_users.query.get(id_user)
     #Получаем список разрешенных ип
@@ -288,6 +286,14 @@ def edit_vpn_users():
     form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:], edit_vpn_organizations=user.organizations)
     if request.method == 'POST':
         result = request.form
+        if form.save_user.data:
+            #Сохраняем пользователя
+            id_org = result['new_vpn_organizations'].split(':')[:-1]
+            sp_ip = result['al_ip'].split('\r\n')
+            # сохраняем список разрешенных ип
+            print('id_org ', id_org)
+            print('sp_ip ', sp_ip)
+            return redirect(url_for('vpn_users'))
     return render_template('edit_vpn_user.html', form=form, cur_user=current_user.name_users)
 
 
