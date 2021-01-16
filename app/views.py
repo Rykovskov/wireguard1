@@ -285,7 +285,7 @@ def edit_vpn_users():
     s = ''
     for ip in res_ip:
         s = s + str(ip) + '\n'
-    form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:], edit_vpn_organizations=user.organizations, cur_org=user.organizations)
+    form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:], edit_vpn_organizations=user.organizations)
     if request.method == 'POST':
         result = request.form
     return render_template('edit_vpn_user.html', form=form, cur_user=current_user.name_users)
