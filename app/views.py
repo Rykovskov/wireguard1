@@ -286,10 +286,11 @@ def edit_vpn_users():
     form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:], edit_vpn_organizations=user.organizations)
     if request.method == 'POST':
         result = request.form
+        print('result ', result)
         if form.save_user.data:
             #Сохраняем пользователя
-            id_org = result['new_vpn_organizations'].split(':')[:-1]
-            sp_ip = result['al_ip'].split('\r\n')
+            id_org = result['edit_vpn_organizations'].split(':')[:-1]
+            sp_ip = result['allowedips_ip'].split('\r\n')
             # сохраняем список разрешенных ип
             print('id_org ', id_org)
             print('sp_ip ', sp_ip)
