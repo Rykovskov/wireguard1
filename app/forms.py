@@ -4,6 +4,7 @@ from wtforms import Form, ValidationError
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField, DateField
 from wtforms.validators import DataRequired
 from wtforms.widgets import TextArea
+from .models import Organizations
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -35,6 +36,7 @@ class EditAdminUserForm(FlaskForm):
     field_user_id = IntegerField('user_id')
     save_user = SubmitField("Сохранить")
     cancel_user = SubmitField("Отменить")
+
 
 
 class VpnUsersForm(FlaskForm):
@@ -73,6 +75,10 @@ class EditVpnUserForm(FlaskForm):
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     save_user = SubmitField("Сохранить пользователя")
     cancel_user = SubmitField("Отменить")
+
+    def __init__(self, edit_vpn_organizations, *args, **kwargs):
+        super(EditVpnUserForm, self).__init__(*args, **kwargs)
+        self.edit_vpn_organizations.choices = [(row.id_organizations, row) for row in Organizations.query.all()]
 
 
 class OrganizationsForm(FlaskForm):
