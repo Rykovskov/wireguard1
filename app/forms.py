@@ -66,20 +66,17 @@ class NewVpnUserForm(FlaskForm):
     cancel_user = SubmitField("Отменить")
 
 
+
 class EditVpnUserForm(FlaskForm):
+    dz = IntegerField('Id')
     vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
-    edit_vpn_organizations = SelectField('Организация', validators=[DataRequired()], coerce=int)
+    edit_vpn_organizations = SelectField('Организация', validators=[DataRequired()], choices=[(row.id_organizations, row.name_organizations) for row in Organizations.query.all()], default=dz)
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
     allowedips_ip = StringField('IP адреса', widget=TextArea(), validators=[DataRequired()])
     adres_vpn = StringField('Адрес клиента', validators=[DataRequired()])
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     save_user = SubmitField("Сохранить пользователя")
     cancel_user = SubmitField("Отменить")
-
-    def __init__(self, edit_vpn_organizations, *args, **kwargs):
-        super(EditVpnUserForm, self).__init__(*args, **kwargs)
-        self.edit_vpn_organizations.choices = [(row.id_organizations, row.name_organizations) for row in Organizations.query.all()]
-
 
 class OrganizationsForm(FlaskForm):
     id_organizations = IntegerField('Id')
