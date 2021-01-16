@@ -68,7 +68,7 @@ class NewVpnUserForm(FlaskForm):
 
 class EditVpnUserForm(FlaskForm):
     vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
-    edit_vpn_organizations = SelectField('Организация', validators=[DataRequired()])
+    edit_vpn_organizations = SelectField('Организация', validators=[DataRequired()], coerce=int)
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
     allowedips_ip = StringField('IP адреса', widget=TextArea(), validators=[DataRequired()])
     adres_vpn = StringField('Адрес клиента', validators=[DataRequired()])
