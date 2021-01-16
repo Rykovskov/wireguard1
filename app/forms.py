@@ -75,10 +75,12 @@ class EditVpnUserForm(FlaskForm):
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     save_user = SubmitField("Сохранить пользователя")
     cancel_user = SubmitField("Отменить")
+    cur_org = IntegerField('cur_org')
 
     def __init__(self, edit_vpn_organizations, *args, **kwargs):
         super(EditVpnUserForm, self).__init__(*args, **kwargs)
         self.edit_vpn_organizations.choices = [(row.id_organizations, row) for row in Organizations.query.all()]
+        self.edit_vpn_organizations.default = self.cur_org
 
 
 class OrganizationsForm(FlaskForm):
