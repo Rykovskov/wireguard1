@@ -303,8 +303,8 @@ def edit_vpn_users():
             user.name_vpn_users = form.vpn_login.data
             user.adres_vpn = form.adres_vpn.data
             user.email_vpn_users = form.email_vpn_users.data
-            print('ate_dis', ate_dis)
-            if result['ate_dis'] == '':
+            print('date_dis', result['date_dis'])
+            if result['date_dis']:
                 print('Меняем')
             else:
                 print('не меняем')
