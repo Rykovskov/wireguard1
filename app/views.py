@@ -290,6 +290,12 @@ def edit_vpn_users():
         print('result ', result)
         if form.save_user.data:
             #Сохраняем пользователя
+            user.name_vpn_users = form.vpn_login.data
+            user.adres_vpn = form.adres_vpn.data
+            user.email_vpn_users = form.email_vpn_users.data
+            print('date_dis', result['date_dis'])
+            if result['date_dis']:
+                user.dt_disable_vpn_users = result['date_dis']
             id_org = result['edit_vpn_organizations']
             sp_ip = result['allowedips_ip'].split('\r\n')
             #Удаляем старые ип sql_delete_old_ips
@@ -300,14 +306,6 @@ def edit_vpn_users():
                 ip_addr, mask = ips.split('/')
                 new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_user)
                 db.session.add_all([new_allowedips, ])
-            user.name_vpn_users = form.vpn_login.data
-            user.adres_vpn = form.adres_vpn.data
-            user.email_vpn_users = form.email_vpn_users.data
-            print('date_dis', result['date_dis'])
-            if result['date_dis']:
-                print('Меняем')
-            else:
-                print('не меняем')
             db.session.add(user)
             db.session.commit()
 
