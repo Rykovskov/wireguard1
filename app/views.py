@@ -294,7 +294,7 @@ def edit_vpn_users():
             sp_ip = result['allowedips_ip'].split('\r\n')
             #Удаляем старые ип sql_delete_old_ips
             r = db.engine.execute(sql_delete_old_ips, {'vpn_user': id_user})
-            # сохраняем список разрешенных ип
+            # сохраняем список разрешенных ип 172.16.20.19/32
             for ips in sp_ip:
                 #Отделяем маску от адреса
                 ip_addr, mask = ips.split('/')
@@ -303,7 +303,8 @@ def edit_vpn_users():
             user.name_vpn_users = form.vpn_login.data
             user.adres_vpn = form.adres_vpn.data
             user.email_vpn_users = form.email_vpn_users.data
-            if result['ate_dis']:
+            print('ate_dis', ate_dis)
+            if result['ate_dis'] == '':
                 print('Меняем')
             else:
                 print('не меняем')
