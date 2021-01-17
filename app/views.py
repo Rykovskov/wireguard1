@@ -292,9 +292,8 @@ def edit_vpn_users():
             #Сохраняем пользователя
             id_org = result['edit_vpn_organizations']
             sp_ip = result['allowedips_ip'].split('\r\n')
-            #Удаляем старые ип
-            del_allowips = Allowedips.query.filter_by(vpn_user=id_user).all()
-            db.session.delete(del_allowips)
+            #Удаляем старые ип sql_delete_old_ips
+            r = db.engine.execute(sql_delete_old_ips, {'vpn_user': id_user})
             # сохраняем список разрешенных ип
             for ips in sp_ip:
                 #Отделяем маску от адреса
