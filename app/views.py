@@ -17,6 +17,7 @@ sql_logging = text("select * from logging_view order by dt_event desc")
 sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delete from allowedips where vpn_user = :val; delete from vpn_key where id_vpn_key=:val1")
 sql_sp_hosts = text("select * from hosts_sp order by name_organizations")
 sql_sp_allowedips = text("select (ip_allowedips||'/'||mask_allowedips) as ip from public.allowedips where vpn_user=:vpn_user")
+sql_delete_old_ips = text("delete from public.allowedips where vpn_user=:vpn_user")
 @app.route('/')
 @login_required
 def index():
@@ -289,11 +290,21 @@ def edit_vpn_users():
         print('result ', result)
         if form.save_user.data:
             #Сохраняем пользователя
-            id_org = result['edit_vpn_organizations'].split(':')[:-1]
+            id_org = result['edit_vpn_organizations']
             sp_ip = result['allowedips_ip'].split('\r\n')
+            #Удаляем старые ип
+            #del_allowips = Allowedips.query.filter_by(vpn_user=user.id_users).all()
+            #db.session.delete(del_allowips)
             # сохраняем список разрешенных ип
             print('id_org ', id_org)
             print('sp_ip ', sp_ip)
+            #for ips in sp_ip:
+            #    #Отделяем маску от адреса
+            #    ip_addr, mask = ips.split('/')
+            #    new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
+            #    db.session.add_all([new_allowedips, ])
+            #db.session.commit()
+
             return redirect(url_for('vpn_users'))
     return render_template('edit_vpn_user.html', form=form, cur_user=current_user.name_users)
 
