@@ -293,17 +293,15 @@ def edit_vpn_users():
             id_org = result['edit_vpn_organizations']
             sp_ip = result['allowedips_ip'].split('\r\n')
             #Удаляем старые ип
-            #del_allowips = Allowedips.query.filter_by(vpn_user=user.id_users).all()
-            #db.session.delete(del_allowips)
+            del_allowips = Allowedips.query.filter_by(vpn_user=user.id_users).all()
+            db.session.delete(del_allowips)
             # сохраняем список разрешенных ип
-            print('id_org ', id_org)
-            print('sp_ip ', sp_ip)
-            #for ips in sp_ip:
-            #    #Отделяем маску от адреса
-            #    ip_addr, mask = ips.split('/')
-            #    new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
-            #    db.session.add_all([new_allowedips, ])
-            #db.session.commit()
+            for ips in sp_ip:
+                #Отделяем маску от адреса
+                ip_addr, mask = ips.split('/')
+                new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=user.id_users)
+                db.session.add_all([new_allowedips, ])
+            db.session.commit()
 
             return redirect(url_for('vpn_users'))
     return render_template('edit_vpn_user.html', form=form, cur_user=current_user.name_users)
