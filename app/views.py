@@ -300,6 +300,14 @@ def edit_vpn_users():
                 ip_addr, mask = ips.split('/')
                 new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_user)
                 db.session.add_all([new_allowedips, ])
+            user.name_vpn_users = form.vpn_login.data
+            user.adres_vpn = form.adres_vpn.data
+            user.email_vpn_users = form.email_vpn_users.data
+            if result['ate_dis']:
+                print('Меняем')
+            else:
+                print('не меняем')
+            db.session.add(user)
             db.session.commit()
 
             return redirect(url_for('vpn_users'))
