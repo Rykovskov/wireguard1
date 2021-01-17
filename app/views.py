@@ -293,7 +293,7 @@ def edit_vpn_users():
             id_org = result['edit_vpn_organizations']
             sp_ip = result['allowedips_ip'].split('\r\n')
             #Удаляем старые ип
-            del_allowips = Allowedips.query.filter_by(vpn_user=user.id_users).all()
+            del_allowips = Allowedips.query.filter_by(vpn_user=id_user).all()
             db.session.delete(del_allowips)
             # сохраняем список разрешенных ип
             for ips in sp_ip:
