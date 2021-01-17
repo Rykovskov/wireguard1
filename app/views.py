@@ -75,7 +75,7 @@ def admin():
         if useradminform.new_user.data:
             if (useradminform.new_login.data != '') and (useradminform.new_pass.data != ''):
                 #Проверяем нет ли такого пользователя уже в базе
-                q1 = len(Users.query.filter_by(name_users = useradminform.new_login.data).all())
+                q1 = len(Users.query.filter_by(name_users=useradminform.new_login.data).all())
                 if q1 == 0:
                     if useradminform.new_pass.data == useradminform.new_confirm_pass.data:
                         #Создаем пользователя
@@ -138,7 +138,7 @@ def vpn_users():
 
     if request.method == 'GET':
         print('----------------GET-------------------')
-        res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
+        res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=3).order_by(Vpn_users.name_vpn_users).all()
         #print('render GET', res) vpn_organizations_sel
         form.v_user.data = False
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
@@ -155,7 +155,7 @@ def vpn_users():
         if 'updt_e' in result.keys():
             form.v_user.data = False
             #print('Скрываем отключенных пользователей')
-            res = Vpn_users.query.filter_by(active_vpn_users='True').all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=3).all()
         if 'd_user' in result.keys():
             #print('#Отключаем выбранных')
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
@@ -174,7 +174,7 @@ def vpn_users():
                                           descr='Отключение пользователя ' + u.name_vpn_users)
                     db.session.add_all([new_Logging, ])
                     db.session.commit()
-            res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=3).order_by(Vpn_users.name_vpn_users).all()
         if 'e_user' in result.keys():
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             print('#Влючаем выбранных')
@@ -193,7 +193,7 @@ def vpn_users():
                                           descr='Включение пользователя ' + u.name_vpn_users)
                     db.session.add_all([new_Logging1, ])
                     db.session.commit()
-            res = Vpn_users.query.filter_by(active_vpn_users='True').order_by(Vpn_users.name_vpn_users).all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=3).order_by(Vpn_users.name_vpn_users).all()
         if form.new_user.data:
             #print('Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
