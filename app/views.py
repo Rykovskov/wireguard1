@@ -145,8 +145,8 @@ def vpn_users():
 
     if request.method == 'POST':
         print('----------------POST-------------------')
-        #for k in result.keys():
-        #    print('key - ', k, '---', result[k])
+        for k in result.keys():
+            print('key - ', k, '---', result[k])
 
         if 'updt_d' in result.keys():
             form.v_user.data = True
@@ -215,6 +215,11 @@ def vpn_users():
                     r = db.engine.execute(sql, {'id_vpn_users': u.id_vpn_users})
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
                     r = db.engine.execute(sql_delete_vpn_user, {'val': u.id_vpn_users, 'val1': u.vpn_key})
+                    # Делаем пометку что база обнавлена
+                    # выясняем для какой организации обнавлена база
+                    sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+                    r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
+                    r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
                     new_Logging2 = Logging(user_id=current_user.id_users,
                                           descr='Удаление пользователя ' + u.name_vpn_users)
                     db.session.add_all([new_Logging2, ])
@@ -307,9 +312,20 @@ def edit_vpn_users():
                 new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_user)
                 db.session.add_all([new_allowedips, ])
             db.session.add(user)
+            new_Logging2 = Logging(user_id=current_user.id_users,
+                                   descr='Редактирование пользователя ' + user.name_vpn_users)
+            db.session.add_all([new_Logging2, ])
+            # Делаем пометку что база обнавлена
+            # выясняем для какой организации обнавлена база
+            sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+            r = db.engine.execute(sql, id_vpn_users=id_user)
+            r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
             db.session.commit()
 
             return redirect(url_for('vpn_users'))
+        if form.cancel_user.data:
+            return redirect(url_for('vpn_users'))
+
     return render_template('edit_vpn_user.html', form=form, cur_user=current_user.name_users)
 
 
