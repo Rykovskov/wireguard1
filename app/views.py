@@ -298,7 +298,7 @@ def edit_vpn_users():
             for ips in sp_ip:
                 #Отделяем маску от адреса
                 ip_addr, mask = ips.split('/')
-                new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=user.id_users)
+                new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_user)
                 db.session.add_all([new_allowedips, ])
             db.session.commit()
 
