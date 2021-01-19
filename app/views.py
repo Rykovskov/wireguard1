@@ -336,8 +336,14 @@ def edit_vpn_users():
             for ips in sp_ip:
                 #Отделяем маску от адреса
                 ip_addr, mask = ips.split('/')
-                new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_user)
-                db.session.add_all([new_allowedips, ])
+                # Проверяем ip на валидность
+                if validate_ip(ip_addr) and validate_mask(mask):
+                    new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_user)
+                    db.session.add_all([new_allowedips, ])
+                else:
+                    msg = "Неверный IP адрес " + ips
+                    flash(msg, 'error')
+                    return redirect(url_for('edit_vpn_user'))
             db.session.add(user)
             new_Logging2 = Logging(user_id=current_user.id_users,
                                    descr='Редактирование пользователя ' + user.name_vpn_users)
