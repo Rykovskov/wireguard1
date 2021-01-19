@@ -413,8 +413,8 @@ def new_vpn_users():
             adr_vpn = form.adres_vpn.data
             # Проверяем что такого ип нет у существующих клиентов
             r = db.engine.execute(sql_check_ip, {'adres_vpn': adr_vpn})
-            print('len(r)', len(r))
-            if len(r) > 0:
+            print('len(r)', len(r._saved_cursor._result.rows))
+            if len(r._saved_cursor._result.rows) > 0:
                 flash("Такой адрес уже eсть!!!", 'error')
                 return redirect(url_for('add_vpn_user'))
             #Проверяем корректность адреса vpn
