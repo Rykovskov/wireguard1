@@ -18,6 +18,7 @@ sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delet
 sql_sp_hosts = text("select * from hosts_sp order by name_organizations")
 sql_sp_allowedips = text("select (ip_allowedips||'/'||mask_allowedips) as ip from public.allowedips where vpn_user=:vpn_user")
 sql_delete_old_ips = text("delete from public.allowedips where vpn_user=:vpn_user")
+sql_check_ip = text("select adres_vpn from public.vpn_users where adres_vpn =:adres_vpn")
 
 def validate_ip(s):
     a = s.split('.')
@@ -165,7 +166,6 @@ def vpn_users():
     if request.method == 'GET':
         print('----------------GET-------------------')
         res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=4).order_by(Vpn_users.name_vpn_users).all()
-        #print('render GET', res) vpn_organizations_sel
         form.v_user.data = False
         return render_template('vpn_user.html', form=form, cur_user=current_user.name_users, sp_vpn_users=res)
 
@@ -177,14 +177,11 @@ def vpn_users():
 
         if 'updt_d' in result.keys():
             form.v_user.data = True
-            #print('Показываем отключенных пользователей')
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         if 'updt_e' in result.keys():
             form.v_user.data = False
-            #print('Скрываем отключенных пользователей')
             res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).all()
         if 'd_user' in result.keys():
-            #print('#Отключаем выбранных')
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
@@ -204,7 +201,6 @@ def vpn_users():
             res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
         if 'e_user' in result.keys():
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
-            print('#Влючаем выбранных')
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     # Делаем пометку что база обнавлена
@@ -222,10 +218,8 @@ def vpn_users():
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
         if form.new_user.data:
-            #print('Показываем форму добавления нового пользователя')
             return redirect(url_for('new_vpn_users'))
         if form.edit_user.data:
-            print('Показываем форму редактирования нового пользователя')
             #выясняем номер редактируемого пользоаателя
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             for u in res:
@@ -237,7 +231,7 @@ def vpn_users():
             for u in res:
                 if result.get(u.name_vpn_users) == 'on':
                     # Делаем пометку что база обнавлена
-                    # выясняем для какой организации обнавлена база
+                    # выясняем для какой организации обнавлена база sql_check_ip
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
                     r = db.engine.execute(sql, {'id_vpn_users': u.id_vpn_users})
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
@@ -406,10 +400,8 @@ def new_vpn_users():
             pub_key = f_pub_key.readline()[:-1:]
             f_pub_key.close()
             dt_activ = result.get('date_act')
-            print('result[date_dis]', result['date_dis'])
             if result['date_dis']:
                 dt_disable = result.get('date_dis')
-                print('1')
             else:
                 dt_disable ='2030-01-01'
             #Вставляем новый VPN key
@@ -418,6 +410,13 @@ def new_vpn_users():
             db.session.commit()
             id_new_vpn = new_vpn_key.id_vpn_key
             act_user = form.now_active.data
+            adr_vpn = form.adres_vpn.data
+            # Проверяем что такого ип нет у существующих клиентов
+            r = db.engine.execute(sql_check_ip, {'adres_vpn': adr_vpn})
+            print('len(r)', len(r))
+            if len(r) > 0:
+                flash("Такой адрес уже eсть!!!", 'error')
+                return redirect(url_for('add_vpn_user'))
             #Проверяем корректность адреса vpn
             new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
                                      name_vpn_users=form.new_vpn_login.data,
@@ -427,7 +426,7 @@ def new_vpn_users():
                                      dt_disable_vpn_users=dt_disable,
                                      vpn_key=id_new_vpn,
                                      active_vpn_users=act_user,
-                                     adres_vpn=form.adres_vpn.data)
+                                     adres_vpn=adr_vpn)
             db.session.add_all([new_vpn_user, ])
             db.session.commit()
             # Делаем пометку что база обнавлена
