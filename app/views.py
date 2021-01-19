@@ -171,17 +171,18 @@ def vpn_users():
 
     if request.method == 'POST':
         print('----------------POST-------------------')
+        sel_org = 3
         for k in result.keys():
             print('key - ', k, '---', result[k])
             sel_org = result['vpn_organizations_sel']
-            res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
+        res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
 
         if 'updt_d' in result.keys():
             form.v_user.data = True
-            res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
         if 'updt_e' in result.keys():
             form.v_user.data = False
-            res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).all()
+            res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
         if 'd_user' in result.keys():
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             for u in res:
