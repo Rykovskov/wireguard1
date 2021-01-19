@@ -102,7 +102,7 @@ for h in host_sp:
             except:
                 print('Недоступен главный сервер БД')
             #перезапускаем интерфейс systemctl restart wg-quick@wg_Avtosojuz
-            #os.system("/bin/systemctl restart wg-quick@" + name_wg_interface)
+            os.system("/bin/systemctl restart wg-quick@" + name_wg_interface)
             # Протоколируем операцию
             try:
                 cur_m.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + ' для хоста ' + h[1],))
