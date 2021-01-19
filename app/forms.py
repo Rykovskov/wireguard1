@@ -50,7 +50,7 @@ class VpnUsersForm(FlaskForm):
     delete_user = SubmitField("Удалить выбранных")
     get_setting = SubmitField("Скачать настройки")
     v_user = BooleanField('Visible user ')
-    vpn_organizations_sel = SelectField('Организация')
+    vpn_organizations_sel = SelectField('Организация', choices=[(row.id_organizations, row) for row in Organizations.query.all()])
 
 class NewVpnUserForm(FlaskForm):
     new_vpn_login = StringField('Имя пользователя', validators=[DataRequired()])

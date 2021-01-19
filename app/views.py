@@ -157,11 +157,11 @@ def edit_admin():
 @login_required
 def vpn_users():
     view_d = 'on'
-    form = VpnUsersForm()
+    form = VpnUsersForm(vpn_organizations_sel=3)
     result = request.form
     res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=3).order_by(Vpn_users.name_vpn_users).all()
-    res_org = Organizations.query.order_by(Organizations.name_organizations).all()
-    form.vpn_organizations_sel.choices = res_org
+    #res_org = Organizations.query.order_by(Organizations.name_organizations).all()
+    #form.vpn_organizations_sel.choices = res_org
 
     if request.method == 'GET':
         print('----------------GET-------------------')
