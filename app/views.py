@@ -400,11 +400,13 @@ def new_vpn_users():
             pub_key = f_pub_key.readline()[:-1:]
             f_pub_key.close()
             dt_activ = result.get('date_act')
+            print('result[date_dis]', result['date_dis'])
             if result['date_dis']:
                 dt_disable = result.get('date_dis')
+                print('1')
             else:
                 dt_disable ='2030-01-01'
-                #Вставляем новый VPN key
+            #Вставляем новый VPN key
             new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
             db.session.add_all([new_vpn_key, ])
             db.session.commit()
