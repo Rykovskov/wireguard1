@@ -65,8 +65,6 @@ class NewVpnUserForm(FlaskForm):
     save_user = SubmitField("Сохранить пользователя")
     cancel_user = SubmitField("Отменить")
 
-
-
 class EditVpnUserForm(FlaskForm):
     vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
     edit_vpn_organizations = SelectField('Организация', validators=[DataRequired()], choices=[(row.id_organizations, row) for row in Organizations.query.all()])

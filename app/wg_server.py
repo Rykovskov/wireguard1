@@ -101,10 +101,8 @@ for h in host_sp:
                 conn_m.commit()
             except:
                 print('Недоступен главный сервер БД')
-            #перезапускаем интерфейс
-            #os.system("/usr/bin/wg-quick down " + name_wg_interface)
-            #result = os.system("/usr/bin/wg-quick up " + name_wg_interface)
-            #print(result)
+            #перезапускаем интерфейс systemctl restart wg-quick@wg_Avtosojuz
+            #os.system("/bin/systemctl restart wg-quick@" + name_wg_interface)
             # Протоколируем операцию
             try:
                 cur_m.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + ' для хоста ' + h[1],))

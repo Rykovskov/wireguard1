@@ -18,6 +18,32 @@ sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delet
 sql_sp_hosts = text("select * from hosts_sp order by name_organizations")
 sql_sp_allowedips = text("select (ip_allowedips||'/'||mask_allowedips) as ip from public.allowedips where vpn_user=:vpn_user")
 sql_delete_old_ips = text("delete from public.allowedips where vpn_user=:vpn_user")
+
+def validate_ip(s):
+    a = s.split('.')
+    if len(a) != 4:
+        return False
+    for x in a:
+        if not x.isdigit():
+            return False
+        i = int(x)
+        if i < 0 or i > 255:
+            return False
+    return True
+
+
+def validate_mask(s):
+    if len(s) > 2:
+        return False
+    for x in s:
+        if not x.isdigit():
+            return False
+        i = int(s)
+        if i < 16 or i > 32:
+            return False
+    return True
+
+
 @app.route('/')
 @login_required
 def index():
@@ -344,16 +370,25 @@ def new_vpn_users():
             sql = text("select nextval('vpn_users_id_vpn_users_seq') as ss")
             r = db.engine.execute(sql)
             id_next_vpn_user = int(([row[0] for row in r])[0])+1
-            #print(id_next_vpn_user)
             id_org = result['new_vpn_organizations'].split(':')[:-1]
-            sp_ip = result['al_ip'].split('\r\n')
             #сохраняем список разрешенных ип
-            for ips in sp_ip:
-                #Отделяем маску от адреса
-                ip_addr, mask = ips.split('/')
-                new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
-                db.session.add_all([new_allowedips, ])
-                db.session.commit()
+            try:
+                sp_ip = result['al_ip'].split('\r\n')
+                for ips in sp_ip:
+                    #Отделяем маску от адреса
+                    ip_addr, mask = ips.split('/')
+                    #Проверяем ip на валидность
+                    if validate_ip(ip_addr) and validate_mask(mask):
+                        new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
+                        db.session.add_all([new_allowedips, ])
+                    else:
+                        msg ="Неверный IP адрес " + ips
+                        flash(msg, 'error')
+                        return redirect(url_for('add_vpn_user'))
+            except:
+                flash("Ошибка в списке доступа !!!", 'error')
+                return redirect(url_for('add_vpn_user'))
+            db.session.commit()
             WireGuard = os.path.abspath("/etc/wireguard")
             os.chdir(WireGuard)
             os.system("/usr/bin/wg genkey > privatekey.tmp")
@@ -365,13 +400,17 @@ def new_vpn_users():
             pub_key = f_pub_key.readline()[:-1:]
             f_pub_key.close()
             dt_activ = result.get('date_act')
-            dt_disable = result.get('date_dis')
-            #Вставляем новый VPN key
+            if result['date_dis']:
+                dt_disable = result.get('date_dis')
+            else:
+                dt_disable ='2030-01-01'
+                #Вставляем новый VPN key
             new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
             db.session.add_all([new_vpn_key, ])
             db.session.commit()
             id_new_vpn = new_vpn_key.id_vpn_key
             act_user = form.now_active.data
+            #Проверяем корректность адреса vpn
             new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
                                      name_vpn_users=form.new_vpn_login.data,
                                      email_vpn_users=form.email_vpn_users.data,
