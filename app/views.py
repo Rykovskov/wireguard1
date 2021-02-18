@@ -182,7 +182,7 @@ def vpn_users():
             res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
         if 'updt_e' in result.keys():
             form.v_user.data = False
-            res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
+            res = Vpn_users.query.filter_by(active_vpn_users='false', organizations=sel_org).order_by(Vpn_users.name_vpn_users).all()
         if 'd_user' in result.keys():
             res = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
             for u in res:
