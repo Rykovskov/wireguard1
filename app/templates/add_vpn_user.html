@@ -6,6 +6,7 @@
     </head>
     <form action="" method="post" name="NewVpnUser">
         {{form.hidden_tag()}}
+        {{ form.csrf_token() }}
         <DIV class="container">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>

@@ -2,7 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, ValidationError
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField, DateField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.validators import ValidationError, DataRequired
 from wtforms.widgets import TextArea
 from .models import Organizations
 
