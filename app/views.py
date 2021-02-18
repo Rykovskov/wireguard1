@@ -374,6 +374,7 @@ def new_vpn_users():
                 id_next_vpn_user = int(([row[0] for row in r])[0])+1
                 id_org = result['new_vpn_organizations'].split(':')[:-1]
                 #сохраняем список разрешенных ип
+                print('Проверка ИП')
                 try:
                     if '/' in result['al_ip']:
                         sp_ip = result['al_ip'].split('\r\n')
@@ -387,6 +388,7 @@ def new_vpn_users():
                             else:
                                 msg ="Неверный IP адрес " + ips
                                 flash(msg, 'error')
+                                print('1 ', msg)
                                 return redirect(url_for('add_vpn_user'))
                     else:
                         print('result[al_ip', result['al_ip'])
@@ -395,6 +397,7 @@ def new_vpn_users():
                         return redirect(url_for('add_vpn_user'))
                 except:
                     flash("Ошибка в списке доступа !!!", 'error')
+                    print('Ошибка в списке доступа !!!')
                     return redirect(url_for('add_vpn_user'))
                 db.session.commit()
                 WireGuard = os.path.abspath("/etc/wireguard")
@@ -416,6 +419,7 @@ def new_vpn_users():
                 new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
                 db.session.add_all([new_vpn_key, ])
                 db.session.commit()
+                print('ggggggggg')
                 id_new_vpn = new_vpn_key.id_vpn_key
                 act_user = form.now_active.data
                 adr_vpn = form.adres_vpn.data
@@ -437,6 +441,7 @@ def new_vpn_users():
                                          adres_vpn=adr_vpn)
                 db.session.add_all([new_vpn_user, ])
                 db.session.commit()
+                print('ttttt')
                 # Делаем пометку что база обнавлена
                 # выясняем для какой организации обнавлена база
                 sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
