@@ -30,6 +30,24 @@ def validate_mask(s):
             return False
     return True
 
+
+def adres_check(form, field):
+        if not '/' in field.data:
+            raise ValidationError('Отсутствует разделить адреса и маски')
+        sp_ip = field.data.split('\r\n')
+        for ips in sp_ip:
+            # Отделяем маску от адреса
+            ip_addr, mask = ips.split('/')
+            if not (validate_ip(ip_addr) and validate_mask(mask)):
+                raise ValidationError('Ошибка в ип адресе')
+
+
+def adres_vpn_check(form, field):
+        sp_ip = Vpn_users.query.filter_by(adres_vpn=field.data).first()
+        if not sp_ip is None:
+            raise ValidationError('Такой адрес уже есть для другого клиента')
+
+
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
@@ -77,22 +95,6 @@ class VpnUsersForm(FlaskForm):
     vpn_organizations_sel = SelectField('Организация', choices=[(row.id_organizations, row) for row in Organizations.query.all()])
 
 class NewVpnUserForm(FlaskForm):
-    def adres_check(form, field):
-        if not '/' in field.data:
-            raise ValidationError('Отсутствует разделить адреса и маски')
-        sp_ip = field.data.split('\r\n')
-        for ips in sp_ip:
-            # Отделяем маску от адреса
-            ip_addr, mask = ips.split('/')
-            if not (validate_ip(ip_addr) and validate_mask(mask)):
-                raise ValidationError('Ошибка в ип адресе')
-
-    def adres_vpn_check(form, field):
-        sp_ip = Vpn_users.query.filter_by(adres_vpn=field.data).first()
-        print('sp_ip ', sp_ip)
-        if not sp_ip is None:
-            raise ValidationError('Такой адрес уже есть для другого клиента')
-
     new_vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
     new_vpn_organizations = SelectField('Организация')
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
@@ -112,8 +114,8 @@ class EditVpnUserForm(FlaskForm):
     vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
     edit_vpn_organizations = SelectField('Организация', validators=[DataRequired()], choices=[(row.id_organizations, row) for row in Organizations.query.all()])
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
-    allowedips_ip = StringField('IP адреса', widget=TextArea(), validators=[DataRequired()])
-    adres_vpn = StringField('Адрес клиента', validators=[DataRequired()])
+    allowedips_ip = StringField('IP адреса', widget=TextArea(), validators=[adres_check])
+    adres_vpn = StringField('Адрес клиента', validators=[adres_vpn_check])
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     save_user = SubmitField("Сохранить пользователя")
     cancel_user = SubmitField("Отменить")

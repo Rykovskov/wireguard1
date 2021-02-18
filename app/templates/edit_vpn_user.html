@@ -3,6 +3,12 @@
 {% block content %}
     <head>
         <title>Current user {{cur_user}}</title>
+        <h2><p class=error align="center"><FONT color="red">
+    {% for field, errors in form.errors.items() %}
+    {{ ', '.join(errors) }}
+    {% endfor %}
+    </FONT></p>
+    </h2>
     </head>
     <form action="" method="post" name="NewVpnUser">
         {{form.hidden_tag()}}
@@ -26,7 +32,7 @@
                         <td align="left">Адрес клиента:</td><td align="right">{{ form.adres_vpn() }}</td>
                     </tr>
                     <tr>
-                        <td align="left">IP доступа: </td><td align="right">{{ form.allowedips_ip(rows="6") }}</td>
+                        <td align="left">IP доступа: </td><td align="right">{{ form.allowedips_ip(rows="8") }}</td>
                     </tr>
                 </table>
                 <p></p>

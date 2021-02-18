@@ -313,44 +313,39 @@ def edit_vpn_users():
         s = s + str(ip) + '\n'
     form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:], edit_vpn_organizations=user.organizations)
     if request.method == 'POST':
-        result = request.form
-        print('result ', result)
-        if form.save_user.data:
-            #Сохраняем пользователя
-            user.name_vpn_users = form.vpn_login.data
-            user.adres_vpn = form.adres_vpn.data
-            user.email_vpn_users = form.email_vpn_users.data
-            print('date_dis', result['date_dis'])
-            if result['date_dis']:
-                user.dt_disable_vpn_users = result['date_dis']
-            id_org = result['edit_vpn_organizations']
-            sp_ip = result['allowedips_ip'].split('\r\n')
-            #Удаляем старые ип sql_delete_old_ips
-            r = db.engine.execute(sql_delete_old_ips, {'vpn_user': id_user})
-            # сохраняем список разрешенных ип 172.16.20.19/32
-            for ips in sp_ip:
-                #Отделяем маску от адреса
-                ip_addr, mask = ips.split('/')
-                # Проверяем ip на валидность
-                if validate_ip(ip_addr) and validate_mask(mask):
+        if form.validate_on_submit():
+            result = request.form
+            if form.save_user.data:
+                #Сохраняем пользователя
+                user.name_vpn_users = form.vpn_login.data
+                user.adres_vpn = form.adres_vpn.data
+                user.email_vpn_users = form.email_vpn_users.data
+                #print('date_dis', result['date_dis'])
+                if result['date_dis']:
+                    user.dt_disable_vpn_users = result['date_dis']
+                id_org = result['edit_vpn_organizations']
+                sp_ip = result['allowedips_ip'].split('\r\n')
+                #Удаляем старые ип sql_delete_old_ips
+                r = db.engine.execute(sql_delete_old_ips, {'vpn_user': id_user})
+                # сохраняем список разрешенных ип
+                for ips in sp_ip:
+                    #Отделяем маску от адреса
+                    ip_addr, mask = ips.split('/')
                     new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_user)
                     db.session.add_all([new_allowedips, ])
-                else:
-                    msg = "Неверный IP адрес " + ips
-                    flash(msg, 'error')
-                    return redirect(url_for('edit_vpn_user'))
-            db.session.add(user)
-            new_Logging2 = Logging(user_id=current_user.id_users,
-                                   descr='Редактирование пользователя ' + user.name_vpn_users)
-            db.session.add_all([new_Logging2, ])
-            # Делаем пометку что база обнавлена
-            # выясняем для какой организации обнавлена база
-            sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
-            r = db.engine.execute(sql, id_vpn_users=id_user)
-            r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
-            db.session.commit()
+                db.session.add(user)
+                new_Logging2 = Logging(user_id=current_user.id_users,
+                                       descr='Редактирование пользователя ' + user.name_vpn_users)
+                db.session.add_all([new_Logging2, ])
+                # Делаем пометку что база обнавлена
+                # выясняем для какой организации обнавлена база
+                sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+                r = db.engine.execute(sql, id_vpn_users=id_user)
+                r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
+                db.session.commit()
 
-            return redirect(url_for('vpn_users'))
+                return redirect(url_for('vpn_users'))
+        print(form.errors)
         if form.cancel_user.data:
             return redirect(url_for('vpn_users'))
 
@@ -365,17 +360,14 @@ def new_vpn_users():
     form = NewVpnUserForm()
     form.new_vpn_organizations.choices = res_org
     if request.method == 'POST':
-        print('-1')
         if form.validate_on_submit():
             result = request.form
-            print('0')
             if form.save_user.data:
                 #Сохраняем пользователя
                 sql = text("select nextval('vpn_users_id_vpn_users_seq') as ss")
                 r = db.engine.execute(sql)
                 id_next_vpn_user = int(([row[0] for row in r])[0])+1
                 id_org = result['new_vpn_organizations'].split(':')[:-1]
-                print('Список доступа - ', form.adres.data)
                 #сохраняем список разрешенных ип
                 sp_ip = form.adres.data.split('\r\n')
                 for ips in sp_ip:
@@ -400,20 +392,12 @@ def new_vpn_users():
                 else:
                     dt_disable ='2030-01-01'
                 #Вставляем новый VPN key
-                print('1')
                 new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
                 db.session.add_all([new_vpn_key, ])
                 db.session.commit()
                 id_new_vpn = new_vpn_key.id_vpn_key
                 act_user = form.now_active.data
                 adr_vpn = form.adres_vpn.data
-                # Проверяем что такого ип нет у существующих клиентов
-                r = db.engine.execute(sql_check_ip, {'adres_vpn': adr_vpn})
-                print('len(r)', r.rowcount)
-                if r.rowcount > 0:
-                    flash("Такой адрес уже eсть!!!", 'error')
-                    return redirect(url_for('add_vpn_user'))
-                #Проверяем корректность адреса vpn
                 new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
                                          name_vpn_users=form.new_vpn_login.data,
                                          email_vpn_users=form.email_vpn_users.data,
@@ -425,7 +409,6 @@ def new_vpn_users():
                                          adres_vpn=adr_vpn)
                 db.session.add_all([new_vpn_user, ])
                 db.session.commit()
-                print('2')
                 # Делаем пометку что база обнавлена
                 # выясняем для какой организации обнавлена база
                 sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
@@ -437,7 +420,6 @@ def new_vpn_users():
                 db.session.commit()
                 return redirect(url_for('vpn_users'))
             flash("Ошибка", 'error')
-            print('3')
             return redirect(url_for('add_vpn_user'))
         print(form.errors)
 
