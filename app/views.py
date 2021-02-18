@@ -241,7 +241,9 @@ def vpn_users():
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+                    print('u.id_vpn_users', u.id_vpn_users)
                     r = db.engine.execute(sql, id_vpn_users=u.id_vpn_users)
+                    print('r -', r)
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
                     new_Logging2 = Logging(user_id=current_user.id_users,
                                           descr='Удаление пользователя ' + u.name_vpn_users)
