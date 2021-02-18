@@ -3,10 +3,12 @@
 {% block content %}
     <head>
         <title>Current user {{cur_user}}</title>
+    {% for field, errors in form.errors.items() %}
+    {{ ', '.join(errors) }}
+    {% endfor %}
     </head>
     <form action="" method="post" name="NewVpnUser">
         {{form.hidden_tag()}}
-        {{ form.name }}
         <DIV class="container">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
