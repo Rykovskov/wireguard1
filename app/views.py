@@ -373,28 +373,25 @@ def new_vpn_users():
             id_next_vpn_user = int(([row[0] for row in r])[0])+1
             id_org = result['new_vpn_organizations'].split(':')[:-1]
             #сохраняем список разрешенных ип
-            try:
-                if '/' in result['al_ip']:
-                    sp_ip = result['al_ip'].split('\r\n')
-                    for ips in sp_ip:
-                        #Отделяем маску от адреса
-                        ip_addr, mask = ips.split('/')
-                        #Проверяем ip на валидность
-                        if validate_ip(ip_addr) and validate_mask(mask):
-                            new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
-                            db.session.add_all([new_allowedips, ])
-                        else:
-                            msg ="Неверный IP адрес " + ips
-                            flash(msg, 'error')
-                            return redirect(url_for('/add_vpn_user'))
-                else:
-                    print('result[al_ip', result['al_ip'])
-                    msg = "Неверный IP адрес " + result['al_ip']
-                    flash(msg, 'error')
-                    return redirect(url_for('/add_vpn_user'))
-            except:
-                flash("Ошибка в списке доступа !!!", 'error')
-                return redirect(url_for('/add_vpn_user'))
+            if '/' in result['al_ip']:
+                print('1')
+                sp_ip = result['al_ip'].split('\r\n')
+                for ips in sp_ip:
+                    #Отделяем маску от адреса
+                    ip_addr, mask = ips.split('/')
+                    #Проверяем ip на валидность
+                    if validate_ip(ip_addr) and validate_mask(mask):
+                        new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
+                        db.session.add_all([new_allowedips, ])
+                    else:
+                        msg ="Неверный IP адрес " + ips
+                        flash(msg, 'error')
+                        return redirect(url_for('add_vpn_user'))
+            else:
+                print('result[al_ip', result['al_ip'])
+                msg = "Неверный IP адрес " + result['al_ip']
+                flash(msg, 'error')
+                return redirect(url_for('add_vpn_user'))
             db.session.commit()
             WireGuard = os.path.abspath("/etc/wireguard")
             os.chdir(WireGuard)
