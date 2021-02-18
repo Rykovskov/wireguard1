@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import FlaskForm
 from wtforms import Form, ValidationError
-from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField, DateField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField, DateField, TextAreaField
 from wtforms.validators import DataRequired
 from wtforms.widgets import TextArea
 from .models import Organizations
@@ -59,6 +59,7 @@ class NewVpnUserForm(FlaskForm):
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска', validators=[DataRequired()])
     adres_vpn = StringField('Адрес клиента', validators=[DataRequired()])
+    adres = TextAreaField('Список доступа:')
     dt_activations = DateField('Дата активации пользователя', validators=[DataRequired()])
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     now_active = BooleanField('Активировать', default="checked")

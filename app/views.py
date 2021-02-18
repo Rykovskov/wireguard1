@@ -372,6 +372,7 @@ def new_vpn_users():
             r = db.engine.execute(sql)
             id_next_vpn_user = int(([row[0] for row in r])[0])+1
             id_org = result['new_vpn_organizations'].split(':')[:-1]
+            print('Список доступа - ', form.adres)
             #сохраняем список разрешенных ип
             if '/' in result['al_ip']:
                 print('1')
