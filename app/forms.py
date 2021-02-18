@@ -6,6 +6,30 @@ from wtforms.validators import DataRequired
 from wtforms.widgets import TextArea
 from .models import Organizations
 
+def validate_ip(s):
+    a = s.split('.')
+    if len(a) != 4:
+        return False
+    for x in a:
+        if not x.isdigit():
+            return False
+        i = int(x)
+        if i < 0 or i > 255:
+            return False
+    return True
+
+
+def validate_mask(s):
+    if len(s) > 2:
+        return False
+    for x in s:
+        if not x.isdigit():
+            return False
+        i = int(s)
+        if i < 16 or i > 32:
+            return False
+    return True
+
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
@@ -53,18 +77,30 @@ class VpnUsersForm(FlaskForm):
     vpn_organizations_sel = SelectField('Организация', choices=[(row.id_organizations, row) for row in Organizations.query.all()])
 
 class NewVpnUserForm(FlaskForm):
+    def adres_check(self, field):
+        if not '/' in field.data:
+            raise ValidationError('Отсутствует разделить адреса и масик')
+        sp_ip = field.data.split('\r\n')
+        for ips in sp_ip:
+            # Отделяем маску от адреса
+            ip_addr, mask = ips.split('/')
+            if not (validate_ip(ip_addr) and validate_mask(mask)):
+                raise ValidationError('Ошибка в ип адресе')
+
     new_vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
     new_vpn_organizations = SelectField('Организация')
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска', validators=[DataRequired()])
     adres_vpn = StringField('Адрес клиента', validators=[DataRequired()])
-    adres = TextAreaField('Список доступа:')
+    adres = TextAreaField('Список доступа:', validators=[adres_check()])
     dt_activations = DateField('Дата активации пользователя', validators=[DataRequired()])
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     now_active = BooleanField('Активировать', default="checked")
     save_user = SubmitField("Сохранить пользователя")
     cancel_user = SubmitField("Отменить")
+
+
 
 class EditVpnUserForm(FlaskForm):
     vpn_login = StringField('Имя пользователя', validators=[DataRequired()])

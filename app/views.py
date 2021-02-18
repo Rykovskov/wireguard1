@@ -365,85 +365,80 @@ def new_vpn_users():
     form = NewVpnUserForm()
     form.new_vpn_organizations.choices = res_org
     if request.method == 'POST':
-        result = request.form
-        if form.save_user.data:
-            #Сохраняем пользователя
-            sql = text("select nextval('vpn_users_id_vpn_users_seq') as ss")
-            r = db.engine.execute(sql)
-            id_next_vpn_user = int(([row[0] for row in r])[0])+1
-            id_org = result['new_vpn_organizations'].split(':')[:-1]
-            print('Список доступа - ', form.adres)
-            #сохраняем список разрешенных ип
-            if '/' in result['al_ip']:
-                print('1')
-                sp_ip = result['al_ip'].split('\r\n')
+        print('-1')
+        if form.validate_on_submit():
+            result = request.form
+            print('0')
+            if form.save_user.data:
+                #Сохраняем пользователя
+                sql = text("select nextval('vpn_users_id_vpn_users_seq') as ss")
+                r = db.engine.execute(sql)
+                id_next_vpn_user = int(([row[0] for row in r])[0])+1
+                id_org = result['new_vpn_organizations'].split(':')[:-1]
+                print('Список доступа - ', form.adres.data)
+                #сохраняем список разрешенных ип
+                sp_ip = form.adres.data.split('\r\n')
                 for ips in sp_ip:
                     #Отделяем маску от адреса
                     ip_addr, mask = ips.split('/')
-                    #Проверяем ip на валидность
-                    if validate_ip(ip_addr) and validate_mask(mask):
-                        new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
-                        db.session.add_all([new_allowedips, ])
-                    else:
-                        msg ="Неверный IP адрес " + ips
-                        flash(msg, 'error')
-                        return redirect(url_for('add_vpn_user'))
-            else:
-                print('result[al_ip', result['al_ip'])
-                msg = "Неверный IP адрес " + result['al_ip']
-                flash(msg, 'error')
-                return redirect(url_for('add_vpn_user'))
-            db.session.commit()
-            WireGuard = os.path.abspath("/etc/wireguard")
-            os.chdir(WireGuard)
-            os.system("/usr/bin/wg genkey > privatekey.tmp")
-            os.system("/usr/bin/wg pubkey < privatekey.tmp > publickey.tmp")
-            f_priv_key = open('privatekey.tmp')
-            priv_key = f_priv_key.readline()[:-1:]
-            f_priv_key.close()
-            f_pub_key = open('publickey.tmp')
-            pub_key = f_pub_key.readline()[:-1:]
-            f_pub_key.close()
-            dt_activ = result.get('date_act')
-            if result['date_dis']:
-                dt_disable = result.get('date_dis')
-            else:
-                dt_disable ='2030-01-01'
-            #Вставляем новый VPN key
-            new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
-            db.session.add_all([new_vpn_key, ])
-            db.session.commit()
-            id_new_vpn = new_vpn_key.id_vpn_key
-            act_user = form.now_active.data
-            adr_vpn = form.adres_vpn.data
-            # Проверяем что такого ип нет у существующих клиентов
-            r = db.engine.execute(sql_check_ip, {'adres_vpn': adr_vpn})
-            print('len(r)', r.rowcount)
-            if r.rowcount > 0:
-                flash("Такой адрес уже eсть!!!", 'error')
-                return redirect(url_for('add_vpn_user'))
-            #Проверяем корректность адреса vpn
-            new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
-                                     name_vpn_users=form.new_vpn_login.data,
-                                     email_vpn_users=form.email_vpn_users.data,
-                                     organizations=id_org[0],
-                                     dt_activate_vpn_users=dt_activ,
-                                     dt_disable_vpn_users=dt_disable,
-                                     vpn_key=id_new_vpn,
-                                     active_vpn_users=act_user,
-                                     adres_vpn=adr_vpn)
-            db.session.add_all([new_vpn_user, ])
-            db.session.commit()
-            # Делаем пометку что база обнавлена
-            # выясняем для какой организации обнавлена база
-            sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
-            r = db.engine.execute(sql, id_vpn_users=id_next_vpn_user)
-            r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
-            new_Logging = Logging(user_id=current_user.id_users,
-                                   descr='Создание нового пользователя VPN ' + form.new_vpn_login.data)
-            db.session.add_all([new_Logging, ])
-            db.session.commit()
-            return redirect(url_for('vpn_users'))
+                    new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
+                    db.session.add_all([new_allowedips, ])
+                db.session.commit()
+                WireGuard = os.path.abspath("/etc/wireguard")
+                os.chdir(WireGuard)
+                os.system("/usr/bin/wg genkey > privatekey.tmp")
+                os.system("/usr/bin/wg pubkey < privatekey.tmp > publickey.tmp")
+                f_priv_key = open('privatekey.tmp')
+                priv_key = f_priv_key.readline()[:-1:]
+                f_priv_key.close()
+                f_pub_key = open('publickey.tmp')
+                pub_key = f_pub_key.readline()[:-1:]
+                f_pub_key.close()
+                dt_activ = result.get('date_act')
+                if result['date_dis']:
+                    dt_disable = result.get('date_dis')
+                else:
+                    dt_disable ='2030-01-01'
+                #Вставляем новый VPN key
+                print('1')
+                new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
+                db.session.add_all([new_vpn_key, ])
+                db.session.commit()
+                id_new_vpn = new_vpn_key.id_vpn_key
+                act_user = form.now_active.data
+                adr_vpn = form.adres_vpn.data
+                # Проверяем что такого ип нет у существующих клиентов
+                r = db.engine.execute(sql_check_ip, {'adres_vpn': adr_vpn})
+                print('len(r)', r.rowcount)
+                if r.rowcount > 0:
+                    flash("Такой адрес уже eсть!!!", 'error')
+                    return redirect(url_for('add_vpn_user'))
+                #Проверяем корректность адреса vpn
+                new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
+                                         name_vpn_users=form.new_vpn_login.data,
+                                         email_vpn_users=form.email_vpn_users.data,
+                                         organizations=id_org[0],
+                                         dt_activate_vpn_users=dt_activ,
+                                         dt_disable_vpn_users=dt_disable,
+                                         vpn_key=id_new_vpn,
+                                         active_vpn_users=act_user,
+                                         adres_vpn=adr_vpn)
+                db.session.add_all([new_vpn_user, ])
+                db.session.commit()
+                print('2')
+                # Делаем пометку что база обнавлена
+                # выясняем для какой организации обнавлена база
+                sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
+                r = db.engine.execute(sql, id_vpn_users=id_next_vpn_user)
+                r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
+                new_Logging = Logging(user_id=current_user.id_users,
+                                       descr='Создание нового пользователя VPN ' + form.new_vpn_login.data)
+                db.session.add_all([new_Logging, ])
+                db.session.commit()
+                return redirect(url_for('vpn_users'))
+            flash("Ошибка", 'error')
+            print('3')
+            return redirect(url_for('add_vpn_user'))
 
     return render_template('add_vpn_user.html', form=form, cur_user=current_user.name_users)
 
