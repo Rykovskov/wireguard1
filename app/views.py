@@ -243,6 +243,8 @@ def vpn_users():
                                           descr='Удаление пользователя ' + u.name_vpn_users)
                     db.session.add_all([new_Logging2, ])
                     db.session.commit()
+                    print('Commit ...')
+                    print('u.name_vpn_users', u.name_vpn_users)
             res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).all()
             print('sel_org ', sel_org)
             print('OK')
