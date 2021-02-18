@@ -4,7 +4,7 @@ from wtforms import Form, ValidationError
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, TextField, DateField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired
 from wtforms.widgets import TextArea
-from .models import Organizations
+from .models import Organizations, Vpn_users
 
 def validate_ip(s):
     a = s.split('.')
@@ -79,7 +79,7 @@ class VpnUsersForm(FlaskForm):
 class NewVpnUserForm(FlaskForm):
     def adres_check(form, field):
         if not '/' in field.data:
-            raise ValidationError('Отсутствует разделить адреса и масик')
+            raise ValidationError('Отсутствует разделить адреса и маски')
         sp_ip = field.data.split('\r\n')
         for ips in sp_ip:
             # Отделяем маску от адреса
@@ -87,12 +87,18 @@ class NewVpnUserForm(FlaskForm):
             if not (validate_ip(ip_addr) and validate_mask(mask)):
                 raise ValidationError('Ошибка в ип адресе')
 
+    def adres_vpn_check(form, field):
+        sp_ip = Vpn_users.query.filter_by(adres_vpn=field.data).first()
+        print('sp_ip ', sp_ip)
+        if not sp_ip is None:
+            raise ValidationError('Такой адрес уже есть для другого клиента')
+
     new_vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
     new_vpn_organizations = SelectField('Организация')
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска')
-    adres_vpn = StringField('Адрес клиента')
+    adres_vpn = StringField('Адрес клиента', validators=[adres_vpn_check])
     adres = TextAreaField('Список доступа:', validators=[adres_check])
     dt_activations = DateField('Дата активации пользователя')
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
