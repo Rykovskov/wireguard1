@@ -244,6 +244,8 @@ def vpn_users():
                     db.session.add_all([new_Logging2, ])
                     db.session.commit()
             res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).all()
+            print('sel_org ', sel_org)
+            print('OK')
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         for un in res1:
