@@ -29,7 +29,7 @@
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <DIV align='right'>
-                    <p>Показывать отключенных <input type="checkbox" onclick="f1()" name="view_disable" id="view_disable" ></p>
+                    <p>Показать отключенных <input type="checkbox" onclick="f1()" name="view_disable" id="view_disable" ></p>
                     <p>Показывать организацию: {{ form.vpn_organizations_sel(**{"onchange":"this.form.submit()"}) }}</p>
                     <p style="visibility: hidden">{{ form.v_user }}</p>
                 </DIV>
