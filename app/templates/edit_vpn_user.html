@@ -29,7 +29,7 @@
                         <td align="left">Дата отключения: </td><td align="right"><input type="date" id="date_dis" name="date_dis"/></td>
                     </tr>
                     <tr>
-                        <td align="left">Адрес клиента:</td><td align="right">{{ form.adres_vpn() }}</td>
+                        <td align="left">Адрес клиента:</td><td align="right">{{ form.adres_vpn.data }}</td>
                     </tr>
                     <tr>
                         <td align="left">IP доступа: </td><td align="right">{{ form.allowedips_ip(rows="8") }}</td>

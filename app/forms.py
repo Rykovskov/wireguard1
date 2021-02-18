@@ -100,7 +100,7 @@ class NewVpnUserForm(FlaskForm):
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска')
-    adres_vpn = StringField('Адрес клиента', validators=[adres_vpn_check])
+    adres_vpn = StringField('Адрес клиента')
     adres = TextAreaField('Список доступа:', validators=[adres_check])
     dt_activations = DateField('Дата активации пользователя')
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
