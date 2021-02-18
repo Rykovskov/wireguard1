@@ -234,7 +234,6 @@ def vpn_users():
                 n_user = u_d.name_vpn_users
                 id_user =  u_d.id_vpn_users
                 vpn_k = u_d.vpn_key
-                print('U_d - ', u_d)
                 if result.get(u_d.name_vpn_users) == 'on':
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
@@ -247,12 +246,7 @@ def vpn_users():
                                           descr='Удаление пользователя ' + n_user)
                     db.session.add_all([new_Logging2, ])
                     db.session.commit()
-                    #print('U - ', u_d)
-                    #print('Commit ...')
-                    #print('u.name_vpn_users', n_user)
             res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).all()
-            print('sel_org ', sel_org)
-            print('OK')
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         for un in res1:
@@ -380,18 +374,23 @@ def new_vpn_users():
             id_org = result['new_vpn_organizations'].split(':')[:-1]
             #сохраняем список разрешенных ип
             try:
-                sp_ip = result['al_ip'].split('\r\n')
-                for ips in sp_ip:
-                    #Отделяем маску от адреса
-                    ip_addr, mask = ips.split('/')
-                    #Проверяем ip на валидность
-                    if validate_ip(ip_addr) and validate_mask(mask):
-                        new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
-                        db.session.add_all([new_allowedips, ])
-                    else:
-                        msg ="Неверный IP адрес " + ips
-                        flash(msg, 'error')
-                        return redirect(url_for('add_vpn_user'))
+                if '/' in result['al_ip']:
+                    sp_ip = result['al_ip'].split('\r\n')
+                    for ips in sp_ip:
+                        #Отделяем маску от адреса
+                        ip_addr, mask = ips.split('/')
+                        #Проверяем ip на валидность
+                        if validate_ip(ip_addr) and validate_mask(mask):
+                            new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_next_vpn_user)
+                            db.session.add_all([new_allowedips, ])
+                        else:
+                            msg ="Неверный IP адрес " + ips
+                            flash(msg, 'error')
+                            return redirect(url_for('add_vpn_user'))
+                else:
+                    msg = "Неверный IP адрес " + result['al_ip']
+                    flash(msg, 'error')
+                    return redirect(url_for('add_vpn_user'))
             except:
                 flash("Ошибка в списке доступа !!!", 'error')
                 return redirect(url_for('add_vpn_user'))
