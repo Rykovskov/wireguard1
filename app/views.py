@@ -230,11 +230,12 @@ def vpn_users():
 
         if form.delete_user.data:
             #print('#удаления пользователя')
-            for u in res:
-                n_user = u.name_vpn_users
-                id_user =  u.id_vpn_users
-                vpn_k = u.vpn_key
-                if result.get(u.name_vpn_users) == 'on':
+            for u_d in res:
+                n_user = u_d.name_vpn_users
+                id_user =  u_d.id_vpn_users
+                vpn_k = u_d.vpn_key
+                print('U_d - ', u_d)
+                if result.get(u_d.name_vpn_users) == 'on':
                     # Делаем пометку что база обнавлена
                     # выясняем для какой организации обнавлена база
                     sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
@@ -246,7 +247,7 @@ def vpn_users():
                                           descr='Удаление пользователя ' + n_user)
                     db.session.add_all([new_Logging2, ])
                     db.session.commit()
-                    print('U - ', u)
+                    print('U - ', u_d)
                     print('Commit ...')
                     print('u.name_vpn_users', n_user)
             res = Vpn_users.query.filter_by(active_vpn_users='True', organizations=sel_org).all()
