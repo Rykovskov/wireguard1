@@ -77,7 +77,7 @@ class VpnUsersForm(FlaskForm):
     vpn_organizations_sel = SelectField('Организация', choices=[(row.id_organizations, row) for row in Organizations.query.all()])
 
 class NewVpnUserForm(FlaskForm):
-    def adres_check(self, field):
+    def adres_check(form, field):
         if not '/' in field.data:
             raise ValidationError('Отсутствует разделить адреса и масик')
         sp_ip = field.data.split('\r\n')
@@ -93,7 +93,7 @@ class NewVpnUserForm(FlaskForm):
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска', validators=[DataRequired()])
     adres_vpn = StringField('Адрес клиента', validators=[DataRequired()])
-    adres = TextAreaField('Список доступа:', validators=[adres_check()])
+    adres = TextAreaField('Список доступа:', validators=[adres_check])
     dt_activations = DateField('Дата активации пользователя', validators=[DataRequired()])
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
     now_active = BooleanField('Активировать', default="checked")
