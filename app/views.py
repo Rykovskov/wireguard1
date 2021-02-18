@@ -439,6 +439,7 @@ def new_vpn_users():
             flash("Ошибка", 'error')
             print('3')
             return redirect(url_for('add_vpn_user'))
+        print(form.errors)
 
     return render_template('add_vpn_user.html', form=form, cur_user=current_user.name_users)
 
