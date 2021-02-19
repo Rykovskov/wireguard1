@@ -389,7 +389,7 @@ def new_vpn_users():
                 if result['date_act']:
                     dt_activ = result.get('date_act')
                 else:
-                    dt_activ = datetime.utcnow
+                    dt_activ = datetime.datetime.now()
                 if result['date_dis']:
                     dt_disable = result.get('date_dis')
                 else:
