@@ -386,7 +386,10 @@ def new_vpn_users():
                 f_pub_key = open('publickey.tmp')
                 pub_key = f_pub_key.readline()[:-1:]
                 f_pub_key.close()
-                dt_activ = result.get('date_act')
+                if result['date_act']:
+                    dt_activ = result.get('date_act')
+                else:
+                    dt_activ = datetime.utcnow
                 if result['date_dis']:
                     dt_disable = result.get('date_dis')
                 else:
