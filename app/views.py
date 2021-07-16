@@ -12,7 +12,7 @@ from datetime import timedelta
 import codecs
 
 #Служебные SQL запросы
-sql_upd_conf = text("update rebuild_config set rebuld=true where org=:org")
+sql_upd_conf = text("insert into rebuild_config (rebuld, org) values (true, :org)")
 sql_logging = text("select * from logging_view order by dt_event desc")
 sql_delete_vpn_user = text("delete from vpn_users where id_vpn_users=:val; delete from allowedips where vpn_user = :val; delete from vpn_key where id_vpn_key=:val1")
 sql_sp_hosts = text("select * from hosts_sp order by name_organizations")

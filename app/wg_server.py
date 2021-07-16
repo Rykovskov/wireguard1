@@ -34,7 +34,7 @@ cur.execute(sl_select_work_hosts)
 host_sp = cur.fetchall()
 for h in host_sp:
     if hostname.lower() == h[1].lower():
-        #Начинаем обход организацийds
+        #Начинаем обход организаций
         cur.execute(sql_select_org, (h[0], h[0]))
         org_sp = cur.fetchall()
         ipt = []
