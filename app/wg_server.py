@@ -20,6 +20,12 @@ sql_select_org = """select id_organizations, name_organizations, server_organiza
                     private_vpn_key_organizations, port, subnet, 
                     replace(subnet,'.1/', '.0/') as subnet_1 from organizations 
                     where    (id_organizations = %s) and (select rebuld from public.rebuild_config where org =%s order by last_update desc limit 1)"""
+
+sql_select_all_org = """select id_organizations, name_organizations, server_organizations, public_vpn_key_organizations, 
+                    private_vpn_key_organizations, port, subnet, 
+                    replace(subnet,'.1/', '.0/') as subnet_1 from organizations 
+                    where  (id_organizations = %s)"""
+
 sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key, name_vpn_users from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select ip_allowedips||'/'||mask_allowedips from public.allowedips where vpn_user= %s"""
 sql_update_rebuild = """update rebuild_config set rebuld=false where org = %s"""
@@ -32,16 +38,47 @@ os.chdir(WireGuard)
 # выбираем какие организации должны быть на данном хосте
 cur.execute(sl_select_work_hosts)
 host_sp = cur.fetchall()
+#Заполняем файл iptables
 for h in host_sp:
     if hostname.lower() == h[1].lower():
         #Начинаем обход организаций
-        cur.execute(sql_select_org, (h[0], h[0]))
+        cur.execute(sql_select_all_org, (h[0], h[0]))
         org_sp = cur.fetchall()
         ipt = []
         ipt.append('#!/bin/bash\n')
         ipt.append('\n')
         ipt.append('/sbin/iptables -F\n')
         ipt.append('/sbin/iptables -X\n\n')
+        for org in org_sp:
+            # Генерируем правила для iptables
+            ipt.append('#Org: ' + org[1] + '\n\n')
+            ipt.append('\n')
+            cur.execute(sql_select_users, (org[0],))
+            vpn_users_sp = cur.fetchall()
+            #Обход пользователей
+            for vpn_user in vpn_users_sp:
+                # iptables
+                cur.execute(sql_select_allowips, (vpn_user[0],))
+                allow_ips = cur.fetchall()
+                ipt.append('/sbin/iptables -N ' + vpn_user[3] + '\n')
+                ipt.append('/sbin/iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
+                for allow_ip in allow_ips:
+                    ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -d ' + allow_ip[0] + ' -j ACCEPT\n')
+                ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -j DROP\n\n')
+            with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
+                for item in ipt:
+                    f.write("%s" % item)
+            f.close()
+for h in host_sp:
+    if hostname.lower() == h[1].lower():
+        #Начинаем обход организаций
+        cur.execute(sql_select_org, (h[0], h[0]))
+        org_sp = cur.fetchall()
+        #ipt = []
+        #ipt.append('#!/bin/bash\n')
+        #ipt.append('\n')
+        #ipt.append('/sbin/iptables -F\n')
+        #ipt.append('/sbin/iptables -X\n\n')
         for org in org_sp:
             #ПРо
             name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
@@ -50,11 +87,11 @@ for h in host_sp:
             name_wg_interface_new_file = name_wg_interface_new + '.conf'
             config_file_new = os.path.join(wireguard_patch, name_wg_interface_new_file)
             config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
-            #Генерруем конфигурационный файл для wireguard и iptables
+            #Генерруем конфигурационный файл для wireguard
             # Генерируем правила для iptables
-            ipt.append('#Org: ' + org[1] + '\n\n')
+            #ipt.append('#Org: ' + org[1] + '\n\n')
             #ipt.append('/sbin/iptables -A FORWARD -d ' + org[7] + ' -j ACCEPT\n')
-            ipt.append('\n')
+            #ipt.append('\n')
             conf = []
             conf.append('[Interface]\n')
             conf.append('Address = ' + org[6] + '\n')
@@ -69,21 +106,21 @@ for h in host_sp:
                 conf.append('PublicKey = ' + vpn_user[2]+'\n')
                 conf.append('AllowedIPs = ' + vpn_user[1] + '\n')
                 #iptables
-                cur.execute(sql_select_allowips,(vpn_user[0],))
-                allow_ips = cur.fetchall()
-                ipt.append('/sbin/iptables -N ' + vpn_user[3] + '\n')
-                ipt.append('/sbin/iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
-                for allow_ip in allow_ips:
-                    ipt.append('/sbin/iptables -A ' + vpn_user[3]  + ' -d ' + allow_ip[0] + ' -j ACCEPT\n')
-                ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -j DROP\n\n')
+                #cur.execute(sql_select_allowips,(vpn_user[0],))
+                #allow_ips = cur.fetchall()
+                #ipt.append('/sbin/iptables -N ' + vpn_user[3] + '\n')
+                #ipt.append('/sbin/iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
+                #for allow_ip in allow_ips:
+                #    ipt.append('/sbin/iptables -A ' + vpn_user[3]  + ' -d ' + allow_ip[0] + ' -j ACCEPT\n')
+                #ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -j DROP\n\n')
             with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
                 for item in conf:
                     f.write("%s" % item)
             f.close()
-            with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
-                for item in ipt:
-                    f.write("%s" % item)
-            f.close()
+            #with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
+            #    for item in ipt:
+            #        f.write("%s" % item)
+            #f.close()
             #Применяем правила фаервола
             os.system("/usr/bin/chmod +x " + ip_tables_name_file)
             os.system(ip_tables_name_file)
