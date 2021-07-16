@@ -39,16 +39,16 @@ os.chdir(WireGuard)
 cur.execute(sl_select_work_hosts)
 host_sp = cur.fetchall()
 #Заполняем файл iptables
+ipt = []
+ipt.append('#!/bin/bash\n')
+ipt.append('\n')
+ipt.append('/sbin/iptables -F\n')
+ipt.append('/sbin/iptables -X\n\n')
 for h in host_sp:
     if hostname.lower() == h[1].lower():
         #Начинаем обход организаций
-        cur.execute(sql_select_all_org (h[0], ))
+        cur.execute(sql_select_all_org, (h[0], ))
         org_sp = cur.fetchall()
-        ipt = []
-        ipt.append('#!/bin/bash\n')
-        ipt.append('\n')
-        ipt.append('/sbin/iptables -F\n')
-        ipt.append('/sbin/iptables -X\n\n')
         for org in org_sp:
             # Генерируем правила для iptables
             ipt.append('#Org: ' + org[1] + '\n\n')
@@ -65,20 +65,16 @@ for h in host_sp:
                 for allow_ip in allow_ips:
                     ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -d ' + allow_ip[0] + ' -j ACCEPT\n')
                 ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -j DROP\n\n')
-            with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
-                for item in ipt:
-                    f.write("%s" % item)
-            f.close()
+with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
+     for item in ipt:
+         f.write("%s" % item)
+     f.close()
+#Заполняем файл конфигурации
 for h in host_sp:
     if hostname.lower() == h[1].lower():
         #Начинаем обход организаций
         cur.execute(sql_select_org, (h[0], h[0]))
         org_sp = cur.fetchall()
-        #ipt = []
-        #ipt.append('#!/bin/bash\n')
-        #ipt.append('\n')
-        #ipt.append('/sbin/iptables -F\n')
-        #ipt.append('/sbin/iptables -X\n\n')
         for org in org_sp:
             #ПРо
             name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
@@ -88,10 +84,6 @@ for h in host_sp:
             config_file_new = os.path.join(wireguard_patch, name_wg_interface_new_file)
             config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
             #Генерруем конфигурационный файл для wireguard
-            # Генерируем правила для iptables
-            #ipt.append('#Org: ' + org[1] + '\n\n')
-            #ipt.append('/sbin/iptables -A FORWARD -d ' + org[7] + ' -j ACCEPT\n')
-            #ipt.append('\n')
             conf = []
             conf.append('[Interface]\n')
             conf.append('Address = ' + org[6] + '\n')
@@ -105,22 +97,10 @@ for h in host_sp:
                 conf.append('[Peer]\n')
                 conf.append('PublicKey = ' + vpn_user[2]+'\n')
                 conf.append('AllowedIPs = ' + vpn_user[1] + '\n')
-                #iptables
-                #cur.execute(sql_select_allowips,(vpn_user[0],))
-                #allow_ips = cur.fetchall()
-                #ipt.append('/sbin/iptables -N ' + vpn_user[3] + '\n')
-                #ipt.append('/sbin/iptables -A FORWARD -s ' + vpn_user[1] + ' -j ' + vpn_user[3] + '\n')
-                #for allow_ip in allow_ips:
-                #    ipt.append('/sbin/iptables -A ' + vpn_user[3]  + ' -d ' + allow_ip[0] + ' -j ACCEPT\n')
-                #ipt.append('/sbin/iptables -A ' + vpn_user[3] + ' -j DROP\n\n')
             with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
                 for item in conf:
                     f.write("%s" % item)
             f.close()
-            #with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
-            #    for item in ipt:
-            #        f.write("%s" % item)
-            #f.close()
             #Применяем правила фаервола
             os.system("/usr/bin/chmod +x " + ip_tables_name_file)
             os.system(ip_tables_name_file)
