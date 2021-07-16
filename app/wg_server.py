@@ -23,8 +23,7 @@ sql_select_org = """select id_organizations, name_organizations, server_organiza
 
 sql_select_all_org = """select id_organizations, name_organizations, server_organizations, public_vpn_key_organizations, 
                     private_vpn_key_organizations, port, subnet, 
-                    replace(subnet,'.1/', '.0/') as subnet_1 from organizations 
-                    where  (id_organizations = %s)"""
+                    replace(subnet,'.1/', '.0/') as subnet_1 from organizations """
 
 sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key, name_vpn_users from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select ip_allowedips||'/'||mask_allowedips from public.allowedips where vpn_user= %s"""
@@ -42,7 +41,7 @@ host_sp = cur.fetchall()
 for h in host_sp:
     if hostname.lower() == h[1].lower():
         #Начинаем обход организаций
-        cur.execute(sql_select_all_org, (h[0], h[0]))
+        cur.execute(sql_select_all_org)
         org_sp = cur.fetchall()
         ipt = []
         ipt.append('#!/bin/bash\n')
