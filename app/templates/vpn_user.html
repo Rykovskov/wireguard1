@@ -30,7 +30,7 @@
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <DIV align='right'>
                     <p>Показать отключенных <input type="checkbox" onclick="f1()" name="view_disable" id="view_disable" ></p>
-                    <p>Показывать организацию: {{ form.vpn_organizations_sel(**{"onchange":"this.form.submit()"}) }}</p>
+                    <p>Показывать точки подключения: {{ form.vpn_organizations_sel(**{"onchange":"this.form.submit()"}) }}</p>
                     <p style="visibility: hidden">{{ form.v_user }}</p>
                 </DIV>
                 <table class="table table-bordered">
@@ -38,7 +38,9 @@
                            <td></td>
                            <Td><b>Name</b></Td>
                            <td><b>E-mail</b></Td>
-                           <td><b>Организация</b></Td>
+                           <td><b>Отдел</b></Td>
+                           <td><b>Комментарий</b></Td>
+                           <td><b>Точка подключения</b></Td>
                            <td><b>Добавлен</b></Td>
                            <td><b>Дата актививации</b></Td>
                            <td><b>Дата отключения</b></Td>
@@ -52,6 +54,8 @@
                             <td><input type="checkbox" name="{{ u.name_vpn_users }}"></td>
                             <td>{{u.name_vpn_users}}</td>
                             <td>{{u.email_vpn_users}}</td>
+                            <td>{{u.otdel_vpn_users}}</td>
+                            <td>{{u.comment_vpn_users}}</td>
                             <td>{{u.name_org}}</td>
                             <td>{{u.dt_create_vpn_usersstr}}</td>
                             <td>{{u.dt_activate_vpn_usersstr}}</td>

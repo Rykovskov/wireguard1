@@ -82,8 +82,10 @@ class EditAdminUserForm(FlaskForm):
 
 
 class VpnUsersForm(FlaskForm):
-    vpn_login = StringField('Имя пользователя')
-    vpn_organizations = StringField('Организация')
+    vpn_login = StringField('ФИО пользователя')
+    otdel_user = StringField('Отдел')
+    comment_user = StringField('Коментарий')
+    vpn_organizations = StringField('Точка входа')
     allowedips_ip = TextField('IP адрес')
     allowedips_mask = StringField('Маска')
     adres_vpn = StringField('Адрес клиента')
@@ -92,12 +94,14 @@ class VpnUsersForm(FlaskForm):
     delete_user = SubmitField("Удалить выбранных")
     get_setting = SubmitField("Скачать настройки")
     v_user = BooleanField('Visible user ')
-    vpn_organizations_sel = SelectField('Организация', choices=[(row.id_organizations, row) for row in Organizations.query.all()])
+    vpn_organizations_sel = SelectField('Точка входа', choices=[(row.id_organizations, row) for row in Organizations.query.all()])
 
 class NewVpnUserForm(FlaskForm):
-    new_vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
-    new_vpn_organizations = SelectField('Организация')
+    new_vpn_login = StringField('ФИО пользователя', validators=[DataRequired()])
+    new_vpn_organizations = SelectField('Точка входа')
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
+    otdel_user = StringField('Отдел')
+    comment_user = StringField('Комментарий')
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска')
     adres_vpn = StringField('Адрес клиента', validators=[adres_vpn_check])
@@ -111,9 +115,11 @@ class NewVpnUserForm(FlaskForm):
 
 
 class EditVpnUserForm(FlaskForm):
-    vpn_login = StringField('Имя пользователя', validators=[DataRequired()])
-    edit_vpn_organizations = SelectField('Организация', validators=[DataRequired()], choices=[(row.id_organizations, row) for row in Organizations.query.all()])
+    vpn_login = StringField('ФИО пользователя', validators=[DataRequired()])
+    edit_vpn_organizations = SelectField('Точка входа', validators=[DataRequired()], choices=[(row.id_organizations, row) for row in Organizations.query.all()])
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
+    otdel_user = StringField('Отдел')
+    comment_user = StringField('Комментарий')
     allowedips_ip = StringField('IP адреса', widget=TextArea(), validators=[adres_check])
     adres_vpn = StringField('Адрес клиента')
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
@@ -122,20 +128,20 @@ class EditVpnUserForm(FlaskForm):
 
 class OrganizationsForm(FlaskForm):
     id_organizations = IntegerField('Id')
-    name_organizations = StringField('Наименование организации')
+    name_organizations = StringField('Наименование точки входа')
     server_organizations = StringField('IP адрес сервера')
     port = StringField('Порт адрес сервера')
     subnet = StringField('Подсеть')
     public_vpn_key_organizations = StringField('Публичный ключ')
     private_vpn_key_organizations = StringField('Закрытый ключ')
-    add_org = SubmitField("Добавить организацию")
-    del_org = SubmitField("Удалить выбранные организации")
+    add_org = SubmitField("Добавить точку входа")
+    del_org = SubmitField("Удалить выбранные точки входа")
 
 
 class Apple_hostsForm(FlaskForm):
     id_apple_hosts = IntegerField('Id')
     host_name = StringField('HostName')
-    name_org = SelectField('Организация')
+    name_org = SelectField('Точка входа')
     id_org = IntegerField('Id Org')
     add_work_host = SubmitField("Добавить узел")
     del_work_host = SubmitField("Удалить выбранный узел")

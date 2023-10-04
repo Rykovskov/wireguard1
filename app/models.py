@@ -101,6 +101,8 @@ class Vpn_users(db.Model):
     id_vpn_users = db.Column(db.Integer(), primary_key=True)
     name_vpn_users = db.Column(db.String(255), nullable=False)
     email_vpn_users = db.Column(db.String(255), nullable=False)
+    otdel_vpn_users = db.Column(db.String(255))
+    comment_vpn_users = db.Column(db.String(255))
     vpn_key = db.Column(db.Integer(), nullable=False)
     dt_create_vpn_users = db.Column(db.DateTime(), default=datetime.utcnow)
     dt_activate_vpn_users = db.Column(db.DateTime(), default=datetime.utcnow)

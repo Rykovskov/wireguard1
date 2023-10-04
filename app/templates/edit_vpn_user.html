@@ -17,13 +17,19 @@
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <table class="table">
                     <tr>
-                        <td align="left">Имя пользователя:</td><td align="right">{{ form.vpn_login() }}</td>
+                        <td align="left">ФИО пользователя:</td><td align="right">{{ form.vpn_login() }}</td>
                     </tr>
                     <tr>
                         <td align="left">E-mail:</td><td align="right">{{ form.email_vpn_users() }}</td>
                     </tr>
                     <tr>
-                        <td align="left">Организация: </td><td align="right">{{ form.edit_vpn_organizations(with=200) }}</td>
+                        <td align="left">Отдел:</td><td align="right">{{ form.otdel_vpn_users() }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Комментарий:</td><td align="right">{{ form.comment_vpn_users() }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Точка входа:</td><td align="right">{{ form.edit_vpn_organizations(with=200) }}</td>
                     </tr>
                     <tr>
                         <td align="left">Дата отключения: </td><td align="right"><input type="date" id="date_dis" name="date_dis"/></td>

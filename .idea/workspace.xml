@@ -19,9 +19,23 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="052e5199-a337-452e-9c68-3eaa28e1825b" name="Default Changelist" comment="relize 4">
+    <list default="true" id="052e5199-a337-452e-9c68-3eaa28e1825b" name="Default Changelist" comment="DNS update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/add_vpn_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/add_vpn_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/edit_vpn_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/edit_vpn_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/organizations.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/organizations.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/vpn_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/vpn_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/Activate.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/Activate.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/activate" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/activate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/activate.bat" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/activate.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/deactivate.bat" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/deactivate.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/pip.exe" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/pip.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/pip3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/pip3.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/python.exe" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/python.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/pythonw.exe" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/pythonw.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/pyvenv.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pyvenv.cfg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,15 +80,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/PycharmProject/wireguard1&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/PycharmProject/wireguard1",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings module-name="wireguard" is-module-sdk="true">
@@ -102,9 +117,9 @@
       <option name="targetType" value="PATH" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="C:\Users\rykovskov.m\AppData\Local\Microsoft\WindowsApps\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -156,14 +171,15 @@
       <workItem from="1675432352595" duration="193000" />
       <workItem from="1675432548225" duration="1033000" />
       <workItem from="1675769012346" duration="1834000" />
-      <workItem from="1680078711225" duration="89000" />
-    </task>
-    <task id="LOCAL-00283" summary="edit vpn users">
-      <created>1610887644215</created>
-      <option name="number" value="00283" />
-      <option name="presentableId" value="LOCAL-00283" />
-      <option name="project" value="LOCAL" />
-      <updated>1610887644215</updated>
+      <workItem from="1680078711225" duration="258000" />
+      <workItem from="1681677965291" duration="518000" />
+      <workItem from="1681678543188" duration="71000" />
+      <workItem from="1681678970391" duration="104000" />
+      <workItem from="1681679104808" duration="47000" />
+      <workItem from="1681679467685" duration="37000" />
+      <workItem from="1681737247676" duration="169000" />
+      <workItem from="1681738014951" duration="53000" />
+      <workItem from="1696412115326" duration="5336000" />
     </task>
     <task id="LOCAL-00284" summary="edit vpn users">
       <created>1610887953603</created>
@@ -501,7 +517,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613714381698</updated>
     </task>
-    <option name="localTasksCounter" value="332" />
+    <task id="LOCAL-00332" summary="DNS update">
+      <created>1680078835585</created>
+      <option name="number" value="00332" />
+      <option name="presentableId" value="LOCAL-00332" />
+      <option name="project" value="LOCAL" />
+      <updated>1680078835585</updated>
+    </task>
+    <option name="localTasksCounter" value="333" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -532,7 +555,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="relize 3" />
     <MESSAGE value="relize 4" />
     <MESSAGE value="relize5" />
     <MESSAGE value="relize6" />
@@ -557,10 +579,11 @@
     <MESSAGE value="Error" />
     <MESSAGE value="Fix Error where vpn user delete" />
     <MESSAGE value="Add validators to add_vpn_user" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add validators to add_vpn_user" />
+    <MESSAGE value="DNS update" />
+    <option name="LAST_COMMIT_MESSAGE" value="DNS update" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/wireguard$wireguard.coverage" NAME="wireguard Coverage Results" MODIFIED="1605469781110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/wireguard1$wireguard.coverage" NAME="wireguard Coverage Results" MODIFIED="1608108693059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wireguard1$wireguard.coverage" NAME="wireguard Coverage Results" MODIFIED="1696425491858" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
