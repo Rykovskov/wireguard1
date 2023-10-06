@@ -10,6 +10,7 @@ import os
 import datetime
 from datetime import timedelta
 import codecs
+from transliterate import translit
 
 #Служебные SQL запросы
 sql_upd_conf = text("insert into rebuild_config (rebuld, org) values (true, :org)")
@@ -283,7 +284,7 @@ def vpn_users():
                 conf.append('AllowedIPs = ' + al_ip + '\n')
                 conf.append('Endpoint =  ' + res_server.server_organizations + ':' + str(res_server.port) + '\n')
                 conf.append('PersistentKeepalive = 25\n')
-                name_conf = "/opt/wireguard1/files/" + un.name_vpn_users + '.conf'
+                name_conf = ("/opt/wireguard1/files/" + translit(un.name_vpn_users, language_code='ru', reversed=True) + '.conf').replace(' ', '_')
                 #Сохраняем файл
                 with codecs.open(name_conf, 'w', encoding='UTF8') as f:
                     for item in conf:
@@ -311,7 +312,8 @@ def edit_vpn_users():
     s = ''
     for ip in res_ip:
         s = s + str(ip) + '\n'
-    form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:], edit_vpn_organizations=user.organizations)
+    form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, otdel_vpn_users= user.otdel_vpn_users,
+                           comment_vpn_users= user.comment_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:], edit_vpn_organizations=user.organizations)
     if request.method == 'POST':
         if form.validate_on_submit():
             result = request.form
@@ -320,6 +322,8 @@ def edit_vpn_users():
                 user.name_vpn_users = form.vpn_login.data
                 user.adres_vpn = form.adres_vpn.data
                 user.email_vpn_users = form.email_vpn_users.data
+                user.otdel_vpn_users = form.otdel_vpn_users.data
+                user.comment_vpn_users = form.comment_vpn_users.data
                 #print('date_dis', result['date_dis'])
                 if result['date_dis']:
                     user.dt_disable_vpn_users = result['date_dis']
@@ -393,7 +397,7 @@ def new_vpn_users():
                 if result['date_dis']:
                     dt_disable = result.get('date_dis')
                 else:
-                    dt_disable ='2030-01-01'
+                    dt_disable = datetime.datetime.now() + datetime.timedelta(days=7)
                 #Вставляем новый VPN key
                 new_vpn_key = Vpn_key(publickey=pub_key, privatekey=priv_key)
                 db.session.add_all([new_vpn_key, ])

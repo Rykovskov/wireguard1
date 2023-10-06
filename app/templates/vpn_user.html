@@ -25,7 +25,7 @@
     </head>
     <form action=""   method="post" name="VpnUserList">
         {{form.hidden_tag()}}
-        <DIV class="container">
+        <DIV class="container-fluid">
             <body>
                 <H2 align="center">Current user - {{cur_user}}</H2>
                 <DIV align='right'>
@@ -33,40 +33,44 @@
                     <p>Показывать точки подключения: {{ form.vpn_organizations_sel(**{"onchange":"this.form.submit()"}) }}</p>
                     <p style="visibility: hidden">{{ form.v_user }}</p>
                 </DIV>
-                <table class="table table-bordered">
-                       <tr>
-                           <td></td>
-                           <Td><b>Name</b></Td>
-                           <td><b>E-mail</b></Td>
-                           <td><b>Отдел</b></Td>
-                           <td><b>Комментарий</b></Td>
-                           <td><b>Точка подключения</b></Td>
-                           <td><b>Добавлен</b></Td>
-                           <td><b>Дата актививации</b></Td>
-                           <td><b>Дата отключения</b></Td>
-                           <td><b>Статус</b></Td>
-                           <td><b>Адрес клиента</b></Td>
-                           <td><b>Разрешенные IP</b></Td>
-                           <td></td>
-                       </tr>
-                    {% for u in sp_vpn_users %}
-                        <tr>
-                            <td><input type="checkbox" name="{{ u.name_vpn_users }}"></td>
-                            <td>{{u.name_vpn_users}}</td>
-                            <td>{{u.email_vpn_users}}</td>
-                            <td>{{u.otdel_vpn_users}}</td>
-                            <td>{{u.comment_vpn_users}}</td>
-                            <td>{{u.name_org}}</td>
-                            <td>{{u.dt_create_vpn_usersstr}}</td>
-                            <td>{{u.dt_activate_vpn_usersstr}}</td>
-                            <td>{{u.dt_disable_vpn_usersstr}}</td>
-                            <td>{{u.active_vpn_users}}</td>
-                            <td>{{u.adres_vpn}}</td>
-                            <td>{{u.allowedips.all()}}</td>
-                            <td><p><input type="submit" value="Скачать настройки" name="get_{{ u.name_vpn_users }}"></p><p><input type="submit" value="Отправить по почте настройки" name="mail_{{ u.name_vpn_users }}"> </p> </td>
-                        <tr>
-                    {% endfor %}
-                </table>
+                <DIV  class="container-fluid">
+                    <table class="table table-bordered">
+                           <tr>
+                               <td></td>
+                               <Td><b>ФИО</b></Td>
+                               <td><b>E-mail</b></Td>
+                               <td><b>Отдел</b></Td>
+                               <td><b>Комментарий</b></Td>
+                               <td><b>Точка подключения</b></Td>
+                               <td><b>Время последнего подключения</b></Td>
+                               <td><b>Добавлен</b></Td>
+                               <td><b>Дата актививации</b></Td>
+                               <td><b>Дата отключения</b></Td>
+                               <td><b>Статус</b></Td>
+                               <td><b>Адрес клиента</b></Td>
+                               <td><b>Разрешенные IP</b></Td>
+                               <td></td>
+                           </tr>
+                           {% for u in sp_vpn_users %}
+                           <tr>
+                                <td><input type="checkbox" name="{{ u.name_vpn_users }}"></td>
+                                <td>{{u.name_vpn_users}}</td>
+                                <td>{{u.email_vpn_users}}</td>
+                                <td>{{u.otdel_vpn_users}}</td>
+                                <td>{{u.comment_vpn_users}}</td>
+                                <td>{{u.name_org}}</td>
+                                <td>{{u.last_connect_vpn_usersstr}}</td>
+                                <td>{{u.dt_create_vpn_usersstr}}</td>
+                                <td>{{u.dt_activate_vpn_usersstr}}</td>
+                                <td>{{u.dt_disable_vpn_usersstr}}</td>
+                                <td>{{u.active_vpn_users}}</td>
+                                <td>{{u.adres_vpn}}</td>
+                                <td>{{u.allowedips.all()}}</td>
+                                <td><p><input type="submit" value="Скачать настройки" name="get_{{ u.name_vpn_users }}"></p></td>
+                            <tr>
+                        {% endfor %}
+                    </table>
+                </DIV>
 
             </body>
         </DIV>

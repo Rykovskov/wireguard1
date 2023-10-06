@@ -112,6 +112,7 @@ class Vpn_users(db.Model):
     allowedips = db.relationship('Allowedips', backref='allowedips', lazy='dynamic')
     name_org =  db.relationship('Organizations', backref='organizations',  lazy="select", uselist=False)
     adres_vpn = db.Column(db.String(15), nullable=False)
+    last_connect_vpn_users = db.Column(db.DateTime())
 
     @property
     def dt_create_vpn_usersstr(self):
@@ -124,6 +125,13 @@ class Vpn_users(db.Model):
     @property
     def dt_disable_vpn_usersstr(self):
         return self.dt_disable_vpn_users.strftime("%d.%m.%Y %H:%M")
+
+    @property
+    def last_connect_vpn_usersstr(self):
+        try:
+            return self.last_connect_vpn_users.strftime("%d.%m.%Y %H:%M")
+        except:
+            return ''
 
     def __repr__(self):
         return "<{}:  {}>".format(self.name_vpn_users, self.active_vpn_users)

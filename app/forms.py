@@ -95,13 +95,14 @@ class VpnUsersForm(FlaskForm):
     get_setting = SubmitField("Скачать настройки")
     v_user = BooleanField('Visible user ')
     vpn_organizations_sel = SelectField('Точка входа', choices=[(row.id_organizations, row) for row in Organizations.query.all()])
+    last_connect_vpn_users = TextField('Последние подключение')
 
 class NewVpnUserForm(FlaskForm):
     new_vpn_login = StringField('ФИО пользователя', validators=[DataRequired()])
     new_vpn_organizations = SelectField('Точка входа')
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
-    otdel_user = StringField('Отдел')
-    comment_user = StringField('Комментарий')
+    otdel_vpn_users = StringField('Отдел')
+    comment_vpn_users = StringField('Комментарий')
     allowedips_ip = StringField('IP адрес')
     allowedips_mask = StringField('Маска')
     adres_vpn = StringField('Адрес клиента', validators=[adres_vpn_check])
@@ -116,10 +117,14 @@ class NewVpnUserForm(FlaskForm):
 
 class EditVpnUserForm(FlaskForm):
     vpn_login = StringField('ФИО пользователя', validators=[DataRequired()])
-    edit_vpn_organizations = SelectField('Точка входа', validators=[DataRequired()], choices=[(row.id_organizations, row) for row in Organizations.query.all()])
+    edit_vpn_organizations = SelectField('Точка входа',
+                                         render_kw={'disabled': ''},
+                                         #validators=[DataRequired()],
+                                         choices=[(row.id_organizations, row) for row in Organizations.query.all()])
+    #edit_vpn_organizations = StringField(('Точка входа'))
     email_vpn_users = StringField('E-mail адрес', validators=[DataRequired()])
-    otdel_user = StringField('Отдел')
-    comment_user = StringField('Комментарий')
+    otdel_vpn_users = StringField('Отдел')
+    comment_vpn_users = StringField('Комментарий')
     allowedips_ip = StringField('IP адреса', widget=TextArea(), validators=[adres_check])
     adres_vpn = StringField('Адрес клиента')
     dt_disable_vpn_users = DateField('Дата отключения пользователя')
