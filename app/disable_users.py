@@ -12,7 +12,7 @@ sql_select_org = """select organizations from public.vpn_users
                              where dt_disable_vpn_users<now() and active_vpn_users"""
 
 
-sql_disable = """update public.vpn_users set active_vpn_users=false.
+sql_disable = """update public.vpn_users set active_vpn_users=false
                  where dt_disable_vpn_users<now() and active_vpn_users"""
 
 sql_upd_conf = "insert into rebuild_config (rebuld, org) values (true, %s)"
