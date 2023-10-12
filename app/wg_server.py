@@ -26,7 +26,10 @@ sql_select_all_org = """select id_organizations, name_organizations, server_orga
                     replace(subnet,'.1/', '.0/') as subnet_1 from organizations 
                     where  id_organizations = %s"""
 
-sql_select_users = """select  id_vpn_users, adres_vpn, (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key, name_vpn_users from vpn_users where active_vpn_users=true and organizations =  %s"""
+sql_select_users = """select  id_vpn_users, adres_vpn, 
+                      (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key, 
+                       replace(cyrillic_transliterate(name_vpn_users),' ','_') as n_user,
+                       from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select ip_allowedips||'/'||mask_allowedips from public.allowedips where vpn_user= %s"""
 sql_update_rebuild = """update rebuild_config set rebuld=false where org = %s"""
 sql_logged = """insert into logging (user_id,descr) values (0,%s)"""

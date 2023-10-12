@@ -213,7 +213,8 @@ def vpn_users():
                     r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
                     update_user = Vpn_users.query.filter_by(id_vpn_users=u.id_vpn_users).first()
                     update_user.active_vpn_users = True
-                    update_user.dt_disable_vpn_users = datetime.datetime.now()
+                    #Переносим дату отключения на 7 дней
+                    update_user.dt_disable_vpn_users = datetime.datetime.now()+datetime.timedelta(days=7)
                     db.session.commit()
                     new_Logging1 = Logging(user_id=current_user.id_users,
                                           descr='Включение пользователя ' + u.name_vpn_users)
@@ -290,7 +291,7 @@ def vpn_users():
                     for item in conf:
                         f.write("%s" % item)
                 f.close()
-                f_n = un.name_vpn_users + '.conf'
+                f_n = (translit(un.name_vpn_users, language_code='ru', reversed=True) + '.conf').replace(' ', '_')
                 return redirect(url_for('download', filename=f_n))
 
         print('render POST', res)
@@ -324,20 +325,24 @@ def edit_vpn_users():
                 user.email_vpn_users = form.email_vpn_users.data
                 user.otdel_vpn_users = form.otdel_vpn_users.data
                 user.comment_vpn_users = form.comment_vpn_users.data
-                #print('date_dis', result['date_dis'])
+                print('date_dis', result['date_dis'])
                 if result['date_dis']:
                     user.dt_disable_vpn_users = result['date_dis']
-                id_org = result['edit_vpn_organizations']
+                print("result - ", result)
+                #id_org = result['edit_vpn_organizations']
+                print("Start save3")
                 sp_ip = result['allowedips_ip'].split('\r\n')
                 #Удаляем старые ип sql_delete_old_ips
                 r = db.engine.execute(sql_delete_old_ips, {'vpn_user': id_user})
                 # сохраняем список разрешенных ип
+                print("Start save2")
                 for ips in sp_ip:
                     #Отделяем маску от адреса
                     ip_addr, mask = ips.split('/')
                     new_allowedips = Allowedips(ip_allowedips=ip_addr, mask_allowedips=mask, vpn_user=id_user)
                     db.session.add_all([new_allowedips, ])
                 db.session.add(user)
+                print("Start save2")
                 new_Logging2 = Logging(user_id=current_user.id_users,
                                        descr='Редактирование пользователя ' + user.name_vpn_users)
                 db.session.add_all([new_Logging2, ])
@@ -346,6 +351,7 @@ def edit_vpn_users():
                 sql = text("select organizations from vpn_users where id_vpn_users = :id_vpn_users")
                 r = db.engine.execute(sql, id_vpn_users=id_user)
                 r1 = db.engine.execute(sql_upd_conf, org=([row[0] for row in r])[0])
+                print("Start save1")
                 db.session.commit()
 
                 return redirect(url_for('vpn_users'))

@@ -133,6 +133,20 @@ class Vpn_users(db.Model):
         except:
             return ''
 
+    @property
+    def otdel_vpn_usersstr(self):
+        if self.otdel_vpn_users is None:
+            return ''
+        else:
+            return self.otdel_vpn_users
+
+    @property
+    def comment_vpn_usersstr(self):
+        if self.comment_vpn_users is None:
+            return ''
+        else:
+            return self.comment_vpn_users
+
     def __repr__(self):
         return "<{}:  {}>".format(self.name_vpn_users, self.active_vpn_users)
 
