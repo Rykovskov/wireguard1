@@ -11,11 +11,11 @@ hostname = socket.gethostname()
 wireguard_patch = '/etc/wireguard'
 prefix_wg_config = 'wg_'
 ip_tables_name_file = '/etc/wireguard/iptables.sh'
-main_host = '10.200.98.3'
-conn_m = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host=main_host)
-cur_m = conn_m.cursor()
+#main_host = '10.200.98.3'
+main_host = 'localhost'
+conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host=main_host)
+cur = conn.cursor()
 
-conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host='localhost')
 sql_select_org = """select id_organizations, name_organizations, server_organizations, public_vpn_key_organizations, 
                     private_vpn_key_organizations, port, subnet, 
                     replace(subnet,'.1/', '.0/') as subnet_1 from organizations 
@@ -28,14 +28,14 @@ sql_select_all_org = """select id_organizations, name_organizations, server_orga
 
 sql_select_users = """select  id_vpn_users, adres_vpn, 
                       (select publickey from vpn_key where id_vpn_key=vpn_users.vpn_key) as p_key, 
-                       replace(cyrillic_transliterate(name_vpn_users),' ','_') as n_user,
+                       replace(cyrillic_transliterate(name_vpn_users),' ','_') as n_user
                        from vpn_users where active_vpn_users=true and organizations =  %s"""
 sql_select_allowips = """select ip_allowedips||'/'||mask_allowedips from public.allowedips where vpn_user= %s"""
 sql_update_rebuild = """update rebuild_config set rebuld=false where org = %s"""
 sql_logged = """insert into logging (user_id,descr) values (0,%s)"""
 sql_filter_rules = """select * from iptables_rules where vpn_user = %s and active_rules=true"""
 sl_select_work_hosts = "select id_organizations, host_name from hosts_sp"
-cur = conn.cursor()
+
 WireGuard = os.path.abspath(wireguard_patch)
 os.chdir(WireGuard)
 # выбираем какие организации должны быть на данном хосте
@@ -109,24 +109,24 @@ for h in host_sp:
             os.system(ip_tables_name_file)
             # Протоколируем операцию
             try:
-                cur_m.execute(sql_logged, ('Правила фаервола применены!',))
-                conn_m.commit()
+                cur.execute(sql_logged, ('Правила фаервола применены!',))
+                conn.commit()
             except:
                 print('Недоступен главный сервер БД')
             # перезаписываем файл в рабочий
             os.replace(config_file_new, config_file_old)
             #Обновляем rebuild config
             try:
-                cur_m.execute(sql_update_rebuild, (h[0],))
-                conn_m.commit()
+                cur.execute(sql_update_rebuild, (h[0],))
+                conn.commit()
             except:
                 print('Недоступен главный сервер БД')
             #перезапускаем интерфейс systemctl restart wg-quick@wg_Avtosojuz
             os.system("/bin/systemctl restart wg-quick@" + name_wg_interface)
             # Протоколируем операцию
             try:
-                cur_m.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + ' для хоста ' + h[1],))
-                conn_m.commit()
+                cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + ' для хоста ' + h[1],))
+                conn.commit()
             except:
                 print('Недоступен главный сервер БД')
 
