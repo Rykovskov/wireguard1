@@ -20,19 +20,19 @@
                     <a class="p-2 text-dark" href="/work_hosts">Рабочие хосты</a>
                     <a class="p-2 text-dark" href="/Loggin/">Лог</a>
             </nav>
-  <a class="btn btn-outline-primary" href="/login">Вход</a>
-  <a class="btn btn-outline-primary" href="/logout">Выход</a>
-</header>
-    <hr>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
+            <a class="btn btn-outline-primary" href="/login">Вход</a>
+            <a class="btn btn-outline-primary" href="/logout">Выход</a>
+      </header>
+      <hr>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
         <p class=error align="center"><FONT color="red"> {{ message }} </FONT></p>
-    {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
+      {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
   </body>
 </html>
