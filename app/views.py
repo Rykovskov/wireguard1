@@ -313,7 +313,7 @@ def edit_vpn_users():
     s = ''
     for ip in res_ip:
         s = s + str(ip) + '\n'
-    form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, otdel_vpn_users= user.otdel_vpn_users,
+    form = EditVpnUserForm(vpn_login=user.name_vpn_users, email_vpn_users=user.email_vpn_users, otdel_vpn_users= user.otdel_vpn_users, active_vpn_users = user.active_vpn_users,
                            comment_vpn_users= user.comment_vpn_users, adres_vpn=user.adres_vpn, allowedips_ip=s[:-1:], edit_vpn_organizations=user.organizations)
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -325,6 +325,7 @@ def edit_vpn_users():
                 user.email_vpn_users = form.email_vpn_users.data
                 user.otdel_vpn_users = form.otdel_vpn_users.data
                 user.comment_vpn_users = form.comment_vpn_users.data
+                user.active_vpn_users = form.active_vpn_users.data
                 print('date_dis', result['date_dis'])
                 if result['date_dis']:
                     user.dt_disable_vpn_users = result['date_dis']
