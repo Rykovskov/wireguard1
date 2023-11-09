@@ -47,6 +47,7 @@ ipt.append('#!/bin/bash\n')
 ipt.append('\n')
 ipt.append('/sbin/iptables -F\n')
 ipt.append('/sbin/iptables -X\n\n')
+update_set = False
 for h in host_sp:
     if hostname.lower() == h[1].lower():
         #Начинаем обход организаций
@@ -55,6 +56,7 @@ for h in host_sp:
         org_sp = cur.fetchall()
         for org in org_sp:
             # Генерируем правила для iptables
+            update_set = True
             ipt.append('#Org: ' + org[1] + '\n\n')
             ipt.append('\n')
             cur.execute(sql_select_users, (org[0],))
@@ -70,67 +72,68 @@ for h in host_sp:
                 for allow_ip in allow_ips:
                     ipt.append('/sbin/iptables -A ' + name_chain + ' -d ' + allow_ip[0] + ' -j ACCEPT\n')
                 ipt.append('/sbin/iptables -A ' + name_chain + ' -j DROP\n\n')
-with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
-     for item in ipt:
-         f.write("%s" % item)
-     f.close()
-#Заполняем файл конфигурации
-for h in host_sp:
-    if hostname.lower() == h[1].lower():
-        #Начинаем обход организаций
-        cur.execute(sql_select_org, (h[0], h[0]))
-        org_sp = cur.fetchall()
-        for org in org_sp:
-            #ПРо
-            name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
-            name_wg_interface_file = name_wg_interface + '.conf'
-            name_wg_interface_new = name_wg_interface + '.new'
-            name_wg_interface_new_file = name_wg_interface_new + '.conf'
-            config_file_new = os.path.join(wireguard_patch, name_wg_interface_new_file)
-            config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
-            #Генерруем конфигурационный файл для wireguard
-            conf = []
-            conf.append('[Interface]\n')
-            conf.append('Address = ' + org[6] + '\n')
-            conf.append('ListenPort = ' + str(org[5])+'\n')
-            conf.append('PrivateKey = ' + org[4]+'\n\n')
-            cur.execute(sql_select_users, (org[0],))
-            vpn_users_sp = cur.fetchall()
-            #Обход пользователей
-            for vpn_user in vpn_users_sp:
-                conf.append('\n')
-                conf.append('[Peer]\n')
-                conf.append('PublicKey = ' + vpn_user[2]+'\n')
-                conf.append('AllowedIPs = ' + vpn_user[1] + '\n')
-            with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
-                for item in conf:
-                    f.write("%s" % item)
-            f.close()
-            #Применяем правила фаервола
-            os.system("/usr/bin/chmod +x " + ip_tables_name_file)
-            os.system(ip_tables_name_file)
-            # Протоколируем операцию
-            try:
-                cur.execute(sql_logged, ('Правила фаервола применены!',))
-                conn.commit()
-            except:
-                print('Недоступен главный сервер БД')
-            # перезаписываем файл в рабочий
-            os.replace(config_file_new, config_file_old)
-            #Обновляем rebuild config
-            try:
-                cur.execute(sql_update_rebuild, (h[0],))
-                conn.commit()
-            except:
-                print('Недоступен главный сервер БД')
-            #перезапускаем интерфейс systemctl restart wg-quick@wg_Avtosojuz
-            os.system("/bin/systemctl restart wg-quick@" + name_wg_interface)
-            # Протоколируем операцию
-            try:
-                cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + ' для хоста ' + h[1],))
-                conn.commit()
-            except:
-                print('Недоступен главный сервер БД')
+if update_set:
+     with codecs.open(ip_tables_name_file, 'w', encoding='UTF8') as f:
+        for item in ipt:
+            f.write("%s" % item)
+        f.close()
+    #Заполняем файл конфигурации
+    for h in host_sp:
+        if hostname.lower() == h[1].lower():
+            #Начинаем обход организаций
+            cur.execute(sql_select_org, (h[0], h[0]))
+            org_sp = cur.fetchall()
+            for org in org_sp:
+                #ПРо
+                name_wg_interface = prefix_wg_config+transliterate.translit(org[1], reversed=True)
+                name_wg_interface_file = name_wg_interface + '.conf'
+                name_wg_interface_new = name_wg_interface + '.new'
+                name_wg_interface_new_file = name_wg_interface_new + '.conf'
+                config_file_new = os.path.join(wireguard_patch, name_wg_interface_new_file)
+                config_file_old = os.path.join(wireguard_patch, name_wg_interface_file)
+                #Генерруем конфигурационный файл для wireguard
+                conf = []
+                conf.append('[Interface]\n')
+                conf.append('Address = ' + org[6] + '\n')
+                conf.append('ListenPort = ' + str(org[5])+'\n')
+                conf.append('PrivateKey = ' + org[4]+'\n\n')
+                cur.execute(sql_select_users, (org[0],))
+                vpn_users_sp = cur.fetchall()
+                #Обход пользователей
+                for vpn_user in vpn_users_sp:
+                    conf.append('\n')
+                    conf.append('[Peer]\n')
+                    conf.append('PublicKey = ' + vpn_user[2]+'\n')
+                    conf.append('AllowedIPs = ' + vpn_user[1] + '\n')
+                with codecs.open(name_wg_interface_new_file, 'w', encoding='UTF8') as f:
+                    for item in conf:
+                        f.write("%s" % item)
+                f.close()
+                #Применяем правила фаервола
+                os.system("/usr/bin/chmod +x " + ip_tables_name_file)
+                os.system(ip_tables_name_file)
+                # Протоколируем операцию
+                try:
+                    cur.execute(sql_logged, ('Правила фаервола применены!',))
+                    conn.commit()
+                except:
+                    print('Недоступен главный сервер БД')
+                # перезаписываем файл в рабочий
+                os.replace(config_file_new, config_file_old)
+                #Обновляем rebuild config
+                try:
+                    cur.execute(sql_update_rebuild, (h[0],))
+                    conn.commit()
+                except:
+                    print('Недоступен главный сервер БД')
+                #перезапускаем интерфейс systemctl restart wg-quick@wg_Avtosojuz
+                os.system("/bin/systemctl restart wg-quick@" + name_wg_interface)
+                # Протоколируем операцию
+                try:
+                    cur.execute(sql_logged, ('Произведенно обновление конфигурационного файла для организации ' + org[1] + ' для хоста ' + h[1],))
+                    conn.commit()
+                except:
+                    print('Недоступен главный сервер БД')
 
 
 
