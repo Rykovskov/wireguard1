@@ -11,8 +11,8 @@ hostname = socket.gethostname()
 wireguard_patch = '/etc/wireguard'
 prefix_wg_config = 'wg_'
 ip_tables_name_file = '/etc/wireguard/iptables.sh'
-#main_host = '10.200.98.3'
-main_host = 'localhost'
+main_host = '10.200.98.3'
+#main_host = 'localhost'
 conn = psycopg2.connect(dbname='WireGuardUsers', user='flask', password='freud105b', host=main_host)
 cur = conn.cursor()
 
