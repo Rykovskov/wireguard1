@@ -77,8 +77,8 @@ if update_set:
         for item in ipt:
             f.write("%s" % item)
         f.close()
-    #Заполняем файл конфигурации
-    for h in host_sp:
+     #Заполняем файл конфигурации
+     for h in host_sp:
         if hostname.lower() == h[1].lower():
             #Начинаем обход организаций
             cur.execute(sql_select_org, (h[0], h[0]))
