@@ -20,7 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="052e5199-a337-452e-9c68-3eaa28e1825b" name="Default Changelist" comment="add save prim in form new vpn users">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -187,21 +186,7 @@
       <workItem from="1697792833806" duration="6332000" />
       <workItem from="1699521810571" duration="4569000" />
       <workItem from="1699627330676" duration="72000" />
-      <workItem from="1705312731757" duration="4735000" />
-    </task>
-    <task id="LOCAL-00300" summary="Add validate IP adress">
-      <created>1611047309021</created>
-      <option name="number" value="00300" />
-      <option name="presentableId" value="LOCAL-00300" />
-      <option name="project" value="LOCAL" />
-      <updated>1611047309021</updated>
-    </task>
-    <task id="LOCAL-00301" summary="Error">
-      <created>1613638370945</created>
-      <option name="number" value="00301" />
-      <option name="presentableId" value="LOCAL-00301" />
-      <option name="project" value="LOCAL" />
-      <updated>1613638370946</updated>
+      <workItem from="1705312731757" duration="4983000" />
     </task>
     <task id="LOCAL-00302" summary="Fix Error where vpn user delete">
       <created>1613639581648</created>
@@ -532,7 +517,21 @@
       <option name="project" value="LOCAL" />
       <updated>1705410171149</updated>
     </task>
-    <option name="localTasksCounter" value="349" />
+    <task id="LOCAL-00349" summary="add save prim in form new vpn users">
+      <created>1705412232746</created>
+      <option name="number" value="00349" />
+      <option name="presentableId" value="LOCAL-00349" />
+      <option name="project" value="LOCAL" />
+      <updated>1705412232747</updated>
+    </task>
+    <task id="LOCAL-00350" summary="add save prim in form new vpn users">
+      <created>1705412293894</created>
+      <option name="number" value="00350" />
+      <option name="presentableId" value="LOCAL-00350" />
+      <option name="project" value="LOCAL" />
+      <updated>1705412293894</updated>
+    </task>
+    <option name="localTasksCounter" value="351" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -271,7 +271,7 @@ def vpn_users():
                 conf.append('PrivateKey = ' + res_key.privatekey + '\n')
                 conf.append('Address = ' + un.adres_vpn + '\n')
                 #conf.append('DNS = 10.200.10.50, 172.16.20.2\n')
-                #conf.append('\n')
+                conf.append('\n')
                 conf.append('[Peer]\n')
                 conf.append('PublicKey = ' + res_server.public_vpn_key_organizations + '\n')
                 #Формируем список разрешенных ип
