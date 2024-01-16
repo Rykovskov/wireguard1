@@ -19,9 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="052e5199-a337-452e-9c68-3eaa28e1825b" name="Default Changelist" comment="Update structure">
+    <list default="true" id="052e5199-a337-452e-9c68-3eaa28e1825b" name="Default Changelist" comment="add save prim in form new vpn users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/vpn_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/vpn_user.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -188,28 +187,7 @@
       <workItem from="1697792833806" duration="6332000" />
       <workItem from="1699521810571" duration="4569000" />
       <workItem from="1699627330676" duration="72000" />
-      <workItem from="1705312731757" duration="2779000" />
-    </task>
-    <task id="LOCAL-00297" summary="Add validate IP adress">
-      <created>1611045055478</created>
-      <option name="number" value="00297" />
-      <option name="presentableId" value="LOCAL-00297" />
-      <option name="project" value="LOCAL" />
-      <updated>1611045055478</updated>
-    </task>
-    <task id="LOCAL-00298" summary="Add validate IP adress">
-      <created>1611046415294</created>
-      <option name="number" value="00298" />
-      <option name="presentableId" value="LOCAL-00298" />
-      <option name="project" value="LOCAL" />
-      <updated>1611046415294</updated>
-    </task>
-    <task id="LOCAL-00299" summary="Add validate IP adress">
-      <created>1611047114553</created>
-      <option name="number" value="00299" />
-      <option name="presentableId" value="LOCAL-00299" />
-      <option name="project" value="LOCAL" />
-      <updated>1611047114553</updated>
+      <workItem from="1705312731757" duration="4735000" />
     </task>
     <task id="LOCAL-00300" summary="Add validate IP adress">
       <created>1611047309021</created>
@@ -533,7 +511,28 @@
       <option name="project" value="LOCAL" />
       <updated>1699533776771</updated>
     </task>
-    <option name="localTasksCounter" value="346" />
+    <task id="LOCAL-00346" summary="add save prim in form new vpn users">
+      <created>1705396201399</created>
+      <option name="number" value="00346" />
+      <option name="presentableId" value="LOCAL-00346" />
+      <option name="project" value="LOCAL" />
+      <updated>1705396201399</updated>
+    </task>
+    <task id="LOCAL-00347" summary="add save prim in form new vpn users">
+      <created>1705396408779</created>
+      <option name="number" value="00347" />
+      <option name="presentableId" value="LOCAL-00347" />
+      <option name="project" value="LOCAL" />
+      <updated>1705396408779</updated>
+    </task>
+    <task id="LOCAL-00348" summary="add save prim in form new vpn users">
+      <created>1705410171149</created>
+      <option name="number" value="00348" />
+      <option name="presentableId" value="LOCAL-00348" />
+      <option name="project" value="LOCAL" />
+      <updated>1705410171149</updated>
+    </task>
+    <option name="localTasksCounter" value="349" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -564,7 +563,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="relize5" />
     <MESSAGE value="relize6" />
     <MESSAGE value="relize7" />
     <MESSAGE value="relize9" />
@@ -589,7 +587,8 @@
     <MESSAGE value="Add validators to add_vpn_user" />
     <MESSAGE value="DNS update" />
     <MESSAGE value="Update structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update structure" />
+    <MESSAGE value="add save prim in form new vpn users" />
+    <option name="LAST_COMMIT_MESSAGE" value="add save prim in form new vpn users" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/wireguard$wireguard.coverage" NAME="wireguard Coverage Results" MODIFIED="1605469781110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
