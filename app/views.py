@@ -252,7 +252,7 @@ def vpn_users():
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         for un in res1:
-            name_key = 'get_'+un.name_vpn_users
+            name_key = 'get_'+un.id_vpn_users
             if name_key in result.keys():
                 print('Генерим файл настроек для пользователя ', un.name_vpn_users)
                 new_Logging3 = Logging(user_id=current_user.id_users,
@@ -415,6 +415,8 @@ def new_vpn_users():
                 new_vpn_user = Vpn_users(id_vpn_users=id_next_vpn_user,
                                          name_vpn_users=form.new_vpn_login.data,
                                          email_vpn_users=form.email_vpn_users.data,
+                                         otdel_vpn_users=form.otdel_vpn_users,
+                                         comment_vpn_users=form.comment_vpn_users,
                                          organizations=id_org[0],
                                          dt_activate_vpn_users=dt_activ,
                                          dt_disable_vpn_users=dt_disable,
