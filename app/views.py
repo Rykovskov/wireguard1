@@ -252,7 +252,7 @@ def vpn_users():
         #Проверяем есть запрос на файл настроек
         res1 = Vpn_users.query.order_by(Vpn_users.name_vpn_users).all()
         for un in res1:
-            name_key = 'get_'+un.id_vpn_users
+            name_key = 'get_'+str(un.id_vpn_users)
             if name_key in result.keys():
                 print('Генерим файл настроек для пользователя ', un.name_vpn_users)
                 new_Logging3 = Logging(user_id=current_user.id_users,
